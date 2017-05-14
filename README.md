@@ -1,2 +1,2 @@
-# FluffySpoon.TypeScript.CSharpParser
-Parses C# code as well as possible into TypeScript objects.
+# FluffySpoon.JavaScript.CSharpParser
+Parses C# code as well as possible into JavaScript objects.
