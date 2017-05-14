@@ -1,3 +1,6 @@
 ﻿{
-
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5"
+  }
 }
