@@ -43,23 +43,20 @@ var FileParser = (function () {
     };
     FileParser.prototype.parseNamespaces = function (file) {
         var outerScope = this.getOuterScopeContents();
-        var matches = RegExHelper_1.RegExHelper.getMatches(outerScope, /namespace\s+([.\w]+?)\s*{}/g);
+        var matches = RegExHelper_1.RegExHelper.getMatches(outerScope, /namespace\s+([\.\w]+?)\s*{}/g);
         for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
             var match = matches_1[_i];
-            file.namespaces.push(new Models_1.CSharpNamespace(match));
+            file.namespaces.push(new Models_1.CSharpNamespace(match[0]));
         }
     };
     FileParser.prototype.parseUsings = function (file) {
         var outerScope = this.getOuterScopeContents();
-        var lines = this.getLines(outerScope);
-        for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
-            var line = lines_1[_i];
-            var match = /using\s+(?:(\w+?)\s*=)?\s*([.\w]+?)\s*;/g.exec(line);
-            if (!match)
-                continue;
+        var matches = RegExHelper_1.RegExHelper.getMatches(outerScope, /using\s+(?:(\w+?)\s*=)?\s*([.\w]+?)\s*;/g);
+        for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
+            var match = matches_2[_i];
             file.usings.push({
-                alias: match[1],
-                namespace: new Models_1.CSharpNamespace(match[2])
+                alias: match[0],
+                namespace: new Models_1.CSharpNamespace(match[1])
             });
         }
     };

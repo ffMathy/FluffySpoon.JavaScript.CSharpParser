@@ -1,8 +1,12 @@
 ﻿export class RegExHelper {
     public static getMatches(input: string, regex: RegExp) {
-        var matches = regex.exec(input)
-        if (!matches) return [];
+        var final = [];
 
-        return matches.slice(1);
+        var groups;
+        while(groups = regex.exec(input)) {            
+            final.push(groups.slice(1));
+        }
+
+        return final;
     }
 }

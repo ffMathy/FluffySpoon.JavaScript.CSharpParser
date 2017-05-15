@@ -61,25 +61,20 @@ export class FileParser {
 
     private parseNamespaces(file: CSharpFile) {
         var outerScope = this.getOuterScopeContents();
-        var matches = RegExHelper.getMatches(outerScope, /namespace\s+([.\w]+?)\s*{}/g);
-
+        var matches = RegExHelper.getMatches(outerScope, /namespace\s+([\.\w]+?)\s*{}/g);
         for (var match of matches) {
-            file.namespaces.push(new CSharpNamespace(match));
+            file.namespaces.push(new CSharpNamespace(match[0]));
         }
     }
 
     private parseUsings(file: CSharpFile) {
         var outerScope = this.getOuterScopeContents();
-        var lines = this.getLines(outerScope);
+        var matches = RegExHelper.getMatches(outerScope, /using\s+(?:(\w+?)\s*=)?\s*([.\w]+?)\s*;/g);
 
-        for (var line of lines) {
-            var match = /using\s+(?:(\w+?)\s*=)?\s*([.\w]+?)\s*;/g.exec(line);
-            if (!match)
-                continue;
-
+        for (var match of matches) {
             file.usings.push({
-                alias: match[1],
-                namespace: new CSharpNamespace(match[2])
+                alias: match[0],
+                namespace: new CSharpNamespace(match[1])
             });
         }
     }

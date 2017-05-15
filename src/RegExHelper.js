@@ -3,10 +3,12 @@ var RegExHelper = (function () {
     function RegExHelper() {
     }
     RegExHelper.getMatches = function (input, regex) {
-        var matches = regex.exec(input);
-        if (!matches)
-            return [];
-        return matches.slice(1);
+        var final = [];
+        var groups;
+        while (groups = regex.exec(input)) {
+            final.push(groups.slice(1));
+        }
+        return final;
     };
     return RegExHelper;
 }());
