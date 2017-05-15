@@ -60,6 +60,13 @@ export class CSharpFile implements CSharpTypeDeclarationScope, CSharpUsingScope 
     usings: CSharpUsing[];
     namespaces: CSharpNamespace[];
     parent: CSharpNamespace;
+
+    constructor() {
+        this.usings = [];
+        this.namespaces = [];
+        this.classes = [];
+        this.enums = [];
+    }
 }
 
 export class CSharpMethod {

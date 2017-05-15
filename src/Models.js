@@ -36,6 +36,10 @@ var CSharpNamespace = (function () {
 exports.CSharpNamespace = CSharpNamespace;
 var CSharpFile = (function () {
     function CSharpFile() {
+        this.usings = [];
+        this.namespaces = [];
+        this.classes = [];
+        this.enums = [];
     }
     return CSharpFile;
 }());
