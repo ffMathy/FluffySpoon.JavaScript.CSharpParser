@@ -2,6 +2,7 @@
 var FileParser_1 = require("../src/FileParser");
 describe("FileParser", function () {
     describe("usings", function () {
+        //TODO: add real CSharp files and read them using NodeJS
         it("should be able to fetch file containing only usings and no scopes", function () {
             var parser = new FileParser_1.FileParser("using foo=buz.bar;\nusing blah.lol.omg;");
             var file = parser.parseFile();

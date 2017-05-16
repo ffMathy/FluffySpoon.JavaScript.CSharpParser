@@ -38,9 +38,6 @@ var FileParser = (function () {
         }
         return result;
     };
-    FileParser.prototype.getLines = function (content) {
-        return content.split('\n');
-    };
     FileParser.prototype.parseNamespaces = function (file) {
         var outerScope = this.getOuterScopeContents();
         var matches = RegExHelper_1.RegExHelper.getMatches(outerScope, /namespace\s+([\.\w]+?)\s*{}/g);

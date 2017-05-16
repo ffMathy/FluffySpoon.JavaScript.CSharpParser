@@ -55,10 +55,6 @@ export class FileParser {
         return result;
     }
 
-    private getLines(content: string) {
-        return content.split('\n');
-    }
-
     private parseNamespaces(file: CSharpFile) {
         var outerScope = this.getOuterScopeContents();
         var matches = RegExHelper.getMatches(outerScope, /namespace\s+([\.\w]+?)\s*{}/g);
