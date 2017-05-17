@@ -6,3 +6,12 @@
     FourthValue = 6,
     FifthValue
 }
+
+class Foo
+{
+    enum StuffEnum
+    {
+        Lol,
+        Bar
+    }
+}

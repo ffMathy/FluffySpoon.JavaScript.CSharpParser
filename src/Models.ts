@@ -8,7 +8,7 @@
 
     get fullName() {
         var name = this.name;
-        if (this.namespace) {
+        if (this.namespace && this.namespace.fullName) {
             name = this.namespace.fullName + "." + name;
         }
         return name;
@@ -54,7 +54,7 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
     
     get fullName() {
         var name = this.name;
-        if (this.parent) {
+        if (this.parent && this.parent.fullName) {
             name = this.parent.fullName + "." + name;
         }
         return name;
@@ -64,6 +64,7 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
 export class CSharpFile implements CSharpTypeDeclarationScope {
     innerScopeText: string;
     name: string;
+    fullName: string;
 
     classes: CSharpClass[];
     enums: CSharpEnum[];
@@ -119,7 +120,7 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
     classes: CSharpClass[];
     enums: CSharpEnum[];
 
-    parent: CSharpClass | CSharpNamespace;
+    parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;
     name: string;
@@ -135,7 +136,7 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
 
     get fullName() {
         var name = this.name;
-        if (this.parent) {
+        if (this.parent && this.parent.fullName) {
             name = this.parent.fullName + "." + name;
         }
         return name;
@@ -145,11 +146,21 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
 export class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];
 
+    parent: CSharpNamespace | CSharpFile | CSharpClass;
+
     name: string;
     innerScopeText: string;
 
     constructor(name: string) {
         this.name = name;
+    }
+
+    get fullName() {
+        var name = this.name;
+        if (this.parent && this.parent.fullName) {
+            name = this.parent.fullName + "." + name;
+        }
+        return name;
     }
 }
 

@@ -24,6 +24,7 @@ var ClassParser = (function () {
                 var enums = this.enumParser.parseEnums(scope.content);
                 for (var _b = 0, enums_1 = enums; _b < enums_1.length; _b++) {
                     var enumObject = enums_1[_b];
+                    enumObject.parent = classObject;
                     classObject.enums.push(enumObject);
                 }
                 var methods = this.methodParser.parseMethods(scope.content);

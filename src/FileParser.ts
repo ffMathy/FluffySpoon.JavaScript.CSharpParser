@@ -27,7 +27,18 @@ export class FileParser {
         file.classes = this.classParser.parseClasses(file.innerScopeText);
         file.enums = this.enumParser.parseEnums(file.innerScopeText);
 
+        this.fixParents(file, file.usings);
+        this.fixParents(file, file.namespaces);
+        this.fixParents(file, file.classes);
+        this.fixParents(file, file.enums);
+
         return file;
+    }
+
+    private fixParents(file: CSharpFile, array: Array<{ parent?: any }>) {
+        for (var item of array) {
+            item.parent = file;
+        }
     }
 
 }

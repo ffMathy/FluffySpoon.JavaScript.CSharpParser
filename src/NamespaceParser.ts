@@ -6,12 +6,14 @@ import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { UsingsParser } from './UsingsParser';
 import { ClassParser } from './ClassParser';
+import { EnumParser } from './EnumParser';
 
 export class NamespaceParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
     private usingsParser = new UsingsParser();
     private classParser = new ClassParser();
+    private enumParser = new EnumParser();
 
     constructor() {
         
@@ -27,6 +29,12 @@ export class NamespaceParser {
             for (var match of matches) {
                 var namespace = new CSharpNamespace(match[0]);
                 namespace.innerScopeText = scope.content;
+
+                var enums = this.enumParser.parseEnums(scope.content);
+                for (var enumObject of enums) {
+                    enumObject.parent = namespace;
+                    namespace.enums.push(enumObject);
+                }
 
                 var classes = this.classParser.parseClasses(scope.content);
                 for (var classObject of classes) {

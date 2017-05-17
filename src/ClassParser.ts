@@ -31,6 +31,7 @@ export class ClassParser {
 
                 var enums = this.enumParser.parseEnums(scope.content);
                 for (var enumObject of enums) {
+                    enumObject.parent = classObject;
                     classObject.enums.push(enumObject);
                 }
 

@@ -6,7 +6,7 @@ var CSharpType = (function () {
     Object.defineProperty(CSharpType.prototype, "fullName", {
         get: function () {
             var name = this.name;
-            if (this.namespace) {
+            if (this.namespace && this.namespace.fullName) {
                 name = this.namespace.fullName + "." + name;
             }
             return name;
@@ -28,7 +28,7 @@ var CSharpNamespace = (function () {
     Object.defineProperty(CSharpNamespace.prototype, "fullName", {
         get: function () {
             var name = this.name;
-            if (this.parent) {
+            if (this.parent && this.parent.fullName) {
                 name = this.parent.fullName + "." + name;
             }
             return name;
@@ -81,7 +81,7 @@ var CSharpClass = (function () {
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {
             var name = this.name;
-            if (this.parent) {
+            if (this.parent && this.parent.fullName) {
                 name = this.parent.fullName + "." + name;
             }
             return name;
@@ -96,6 +96,17 @@ var CSharpEnum = (function () {
     function CSharpEnum(name) {
         this.name = name;
     }
+    Object.defineProperty(CSharpEnum.prototype, "fullName", {
+        get: function () {
+            var name = this.name;
+            if (this.parent && this.parent.fullName) {
+                name = this.parent.fullName + "." + name;
+            }
+            return name;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return CSharpEnum;
 }());
 exports.CSharpEnum = CSharpEnum;
