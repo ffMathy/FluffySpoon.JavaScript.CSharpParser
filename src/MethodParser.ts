@@ -57,10 +57,10 @@ export class MethodParser {
         for (var argumentRegion of argumentRegions) {
             var matches = this.regexHelper.getMatches(
                 argumentRegion,
-                /(\w+?)\s+(\w+?)(?:\s*=\s*(.*?))?/g);
+                /(\w+)\s+(\w+)(?:\s*=\s*(.*))?/g);
             for (var match of matches) {
                 result.push({
-                    type: match[0],
+                    type: new CSharpType(match[0]),
                     name: match[1],
                     defaultValue: match[2]
                 });
