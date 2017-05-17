@@ -38,6 +38,9 @@ describe("FileParser", function () {
 
             expect(file.usings[1].alias).toBeUndefined();
             expect(file.usings[1].namespace.fullName).toEqual('blah');
+
+            expect(file.namespaces[0].usings[0].namespace.name).toEqual('blah.lol.omg');
+            expect(file.namespaces[0].usings[0].parent.name).toEqual('mynamespace');
         }));
 
     });
@@ -51,6 +54,11 @@ describe("FileParser", function () {
 
             expect(file.namespaces[0].name).toEqual('my.stuff');
             expect(file.namespaces[1].name).toEqual('omg');
+
+            expect(file.namespaces[0].namespaces.length).toEqual(1);
+
+            expect(file.namespaces[0].namespaces[0].name).toEqual('blah');
+            expect(file.namespaces[0].namespaces[0].fullName).toEqual('my.stuff.blah');
         }));
 
     });

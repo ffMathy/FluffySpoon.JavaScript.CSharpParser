@@ -2,7 +2,7 @@
 var RegExHelper = (function () {
     function RegExHelper() {
     }
-    RegExHelper.getMatches = function (input, regex) {
+    RegExHelper.prototype.getMatches = function (input, regex) {
         var final = [];
         var groups;
         while (groups = regex.exec(input)) {

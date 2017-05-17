@@ -11,26 +11,34 @@
     }
 }
 
-export interface CSharpUsingScope {
+export interface CSharpUsingArea {
     usings: CSharpUsing[];
     namespaces: CSharpNamespace[];
     parent: CSharpNamespace;
+
+    name: string;
 }
 
 export interface CSharpUsing {
     alias: string;
     namespace: CSharpNamespace;
-    parent?: CSharpUsingScope;
+    parent?: CSharpUsingArea;
 }
 
-export interface CSharpTypeDeclarationScope {
+export interface CSharpTypeDeclarationScope extends CSharpScope {
     name: string;
     classes: CSharpClass[];
     enums: CSharpEnum[];
 }
 
-export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingScope {
+export interface CSharpScope {
+    innerScopeText: string;
+}
+
+export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingArea {
     name: string;
+    innerScopeText: string;
+
     parent: CSharpNamespace;
     
     classes: CSharpClass[];
@@ -41,6 +49,11 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingS
 
     constructor(name: string) {
         this.name = name;
+
+        this.classes = [];
+        this.enums = [];
+        this.usings = [];
+        this.namespaces = [];
     }
     
     get fullName() {
@@ -52,8 +65,10 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingS
     }
 }
 
-export class CSharpFile implements CSharpTypeDeclarationScope, CSharpUsingScope {
+export class CSharpFile implements CSharpTypeDeclarationScope, CSharpUsingArea {
     name: string;
+    innerScopeText: string;
+
     classes: CSharpClass[];
     enums: CSharpEnum[];
 

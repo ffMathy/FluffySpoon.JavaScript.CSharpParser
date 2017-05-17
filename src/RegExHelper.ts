@@ -1,5 +1,5 @@
 ﻿export class RegExHelper {
-    public static getMatches(input: string, regex: RegExp) {
+    public getMatches(input: string, regex: RegExp) {
         var final = [];
 
         var groups;

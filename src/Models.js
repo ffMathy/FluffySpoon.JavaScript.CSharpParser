@@ -19,6 +19,10 @@ exports.CSharpType = CSharpType;
 var CSharpNamespace = (function () {
     function CSharpNamespace(name) {
         this.name = name;
+        this.classes = [];
+        this.enums = [];
+        this.usings = [];
+        this.namespaces = [];
     }
     Object.defineProperty(CSharpNamespace.prototype, "fullName", {
         get: function () {
