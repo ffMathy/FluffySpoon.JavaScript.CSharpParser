@@ -11,7 +11,6 @@ function useCSharp(file, callback) {
 }
 describe("FileParser", function () {
     describe("usings", function () {
-        //TODO: add real CSharp files and read them using NodeJS
         it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', function (parser) {
             var file = parser.parseFile();
             expect(file.usings.length).toEqual(2);
