@@ -142,11 +142,22 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
     }
 }
 
-export class CSharpEnum {
-    values: CSharpEnumValue[];
+export class CSharpEnum implements CSharpScope {
+    options: CSharpEnumOption[];
+
+    name: string;
+    innerScopeText: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
 }
 
-export class CSharpEnumValue {
+export class CSharpEnumOption {
     name: string;
     value: number;
+
+    constructor(name: string) {
+        this.name = name;
+    }
 }

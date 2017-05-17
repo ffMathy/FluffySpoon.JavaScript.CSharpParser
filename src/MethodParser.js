@@ -42,7 +42,7 @@ var MethodParser = (function () {
             .map(function (x) { return x.trim(); });
         for (var _i = 0, argumentRegions_1 = argumentRegions; _i < argumentRegions_1.length; _i++) {
             var argumentRegion = argumentRegions_1[_i];
-            var matches = this.regexHelper.getMatches(argumentRegion, /(\w+)\s+(\w+)(?:\s*=\s*(.*))?/g);
+            var matches = this.regexHelper.getMatches(argumentRegion, /(\w+)\s+(\w+)(?:\s*=\s*(.+))?/g);
             for (var _a = 0, matches_2 = matches; _a < matches_2.length; _a++) {
                 var match = matches_2[_a];
                 result.push({

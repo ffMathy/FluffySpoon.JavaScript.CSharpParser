@@ -93,14 +93,16 @@ var CSharpClass = (function () {
 }());
 exports.CSharpClass = CSharpClass;
 var CSharpEnum = (function () {
-    function CSharpEnum() {
+    function CSharpEnum(name) {
+        this.name = name;
     }
     return CSharpEnum;
 }());
 exports.CSharpEnum = CSharpEnum;
-var CSharpEnumValue = (function () {
-    function CSharpEnumValue() {
+var CSharpEnumOption = (function () {
+    function CSharpEnumOption(name) {
+        this.name = name;
     }
-    return CSharpEnumValue;
+    return CSharpEnumOption;
 }());
-exports.CSharpEnumValue = CSharpEnumValue;
+exports.CSharpEnumOption = CSharpEnumOption;

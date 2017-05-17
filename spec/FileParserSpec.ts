@@ -88,4 +88,30 @@ describe("FileParser", function () {
 
     });
 
+    describe("enums", function () {
+
+        it("should be able to fetch enums and the appropriate values", useCSharp('Enum.cs', (parser) => {
+            var file = parser.parseFile();
+
+            expect(file.enums.length).toEqual(1);
+            expect(file.enums[0].options.length).toEqual(5);
+
+            expect(file.enums[0].options[0].name).toEqual('FirstValue');
+            expect(file.enums[0].options[0].value).toEqual(0);
+
+            expect(file.enums[0].options[1].name).toEqual('SecondValue');
+            expect(file.enums[0].options[1].value).toEqual(-4);
+
+            expect(file.enums[0].options[2].name).toEqual('ThirdValue');
+            expect(file.enums[0].options[2].value).toEqual(-3);
+
+            expect(file.enums[0].options[3].name).toEqual('FourthValue');
+            expect(file.enums[0].options[3].value).toEqual(6);
+
+            expect(file.enums[0].options[4].name).toEqual('FifthValue');
+            expect(file.enums[0].options[4].value).toEqual(7);
+        }));
+
+    });
+
 });
