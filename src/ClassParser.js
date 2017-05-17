@@ -47,3 +47,4 @@ var ClassParser = (function () {
     return ClassParser;
 }());
 exports.ClassParser = ClassParser;
+//# sourceMappingURL=ClassParser.js.map

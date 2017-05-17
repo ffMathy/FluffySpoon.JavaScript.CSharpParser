@@ -57,3 +57,4 @@ var MethodParser = (function () {
     return MethodParser;
 }());
 exports.MethodParser = MethodParser;
+//# sourceMappingURL=MethodParser.js.map

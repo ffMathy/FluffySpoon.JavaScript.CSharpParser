@@ -102,7 +102,7 @@ export class CSharpMethod implements CSharpScope {
     }
 }
 
-declare type CSharpToken = boolean | number | string | CSharpNamedToken;
+export type CSharpToken = boolean | number | string | CSharpNamedToken;
 
 export class CSharpNamedToken {
     name: string;

@@ -50,3 +50,4 @@ var EnumParser = (function () {
     return EnumParser;
 }());
 exports.EnumParser = EnumParser;
+//# sourceMappingURL=EnumParser.js.map

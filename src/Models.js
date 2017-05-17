@@ -117,3 +117,4 @@ var CSharpEnumOption = (function () {
     return CSharpEnumOption;
 }());
 exports.CSharpEnumOption = CSharpEnumOption;
+//# sourceMappingURL=Models.js.map

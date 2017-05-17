@@ -20,18 +20,9 @@ var FileParser = (function () {
         file.namespaces = this.namespaceParser.parseNamespaces(file.innerScopeText);
         file.classes = this.classParser.parseClasses(file.innerScopeText);
         file.enums = this.enumParser.parseEnums(file.innerScopeText);
-        this.fixParents(file, file.usings);
-        this.fixParents(file, file.namespaces);
-        this.fixParents(file, file.classes);
-        this.fixParents(file, file.enums);
         return file;
-    };
-    FileParser.prototype.fixParents = function (file, array) {
-        for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
-            var item = array_1[_i];
-            item.parent = file;
-        }
     };
     return FileParser;
 }());
 exports.FileParser = FileParser;
+//# sourceMappingURL=FileParser.js.map

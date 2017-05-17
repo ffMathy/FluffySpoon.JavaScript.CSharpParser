@@ -55,3 +55,4 @@ var NamespaceParser = (function () {
     return NamespaceParser;
 }());
 exports.NamespaceParser = NamespaceParser;
+//# sourceMappingURL=NamespaceParser.js.map
