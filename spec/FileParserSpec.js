@@ -42,4 +42,17 @@ describe("FileParser", function () {
             expect(file.namespaces[0].namespaces[0].fullName).toEqual('my.stuff.blah');
         }));
     });
+    describe("methods", function () {
+        it("should be able to fetch methods inside classes and their parameters", useCSharp('MethodInsideClass.cs', function (parser) {
+            var file = parser.parseFile();
+            expect(file.classes.length).toEqual(1);
+            expect(file.classes[0].methods.length).toEqual(2);
+            expect(file.classes[0].methods[0].parameters.length).toEqual(0);
+            expect(file.classes[0].methods[1].parameters.length).toEqual(2);
+            expect(file.classes[0].methods[0].returnType.name).toEqual('string');
+            expect(file.classes[0].methods[0].name).toEqual('MyFunction');
+            expect(file.classes[0].methods[1].returnType.name).toEqual('void');
+            expect(file.classes[0].methods[1].name).toEqual('SomeOtherFunction');
+        }));
+    });
 });

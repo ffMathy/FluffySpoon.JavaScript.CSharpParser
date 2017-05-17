@@ -2,6 +2,10 @@
     name: string;
     namespace: CSharpNamespace;
 
+    constructor(name: string) {
+        this.name = name;
+    }
+
     get fullName() {
         var name = this.name;
         if (this.namespace) {
@@ -11,18 +15,10 @@
     }
 }
 
-export interface CSharpUsingArea {
-    usings: CSharpUsing[];
-    namespaces: CSharpNamespace[];
-    parent: CSharpNamespace;
-
-    name: string;
-}
-
 export interface CSharpUsing {
     alias: string;
     namespace: CSharpNamespace;
-    parent?: CSharpUsingArea;
+    parent?: CSharpNamespace|CSharpFile;
 }
 
 export interface CSharpTypeDeclarationScope extends CSharpScope {
@@ -35,7 +31,7 @@ export interface CSharpScope {
     innerScopeText: string;
 }
 
-export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingArea {
+export class CSharpNamespace implements CSharpTypeDeclarationScope {
     name: string;
     innerScopeText: string;
 
@@ -65,9 +61,9 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope, CSharpUsingA
     }
 }
 
-export class CSharpFile implements CSharpTypeDeclarationScope, CSharpUsingArea {
-    name: string;
+export class CSharpFile implements CSharpTypeDeclarationScope {
     innerScopeText: string;
+    name: string;
 
     classes: CSharpClass[];
     enums: CSharpEnum[];
@@ -84,11 +80,25 @@ export class CSharpFile implements CSharpTypeDeclarationScope, CSharpUsingArea {
     }
 }
 
-export class CSharpMethod {
+export class CSharpMethod implements CSharpScope {
     name: string;
+    innerScopeText: string;
+
     isConstructor: boolean;
     isExplicitImplementation: boolean;
+
+    parent: CSharpClass | CSharpMethod;
+    returnType: CSharpType;
+
     parameters: CSharpMethodParameter[];
+    methods: CSharpMethod[];
+
+    constructor(name: string) {
+        this.name = name;
+
+        this.parameters = [];
+        this.methods = [];
+    }
 }
 
 declare type CSharpToken = boolean | number | string | CSharpNamedToken;
@@ -106,10 +116,30 @@ export class CSharpMethodParameter {
 export class CSharpClass implements CSharpTypeDeclarationScope {
     constructors: CSharpMethod[];
     methods: CSharpMethod[];
-
-    name: string;
     classes: CSharpClass[];
     enums: CSharpEnum[];
+
+    parent: CSharpClass | CSharpNamespace;
+
+    innerScopeText: string;
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+
+        this.constructors = [];
+        this.methods = [];
+        this.classes = [];
+        this.enums = [];
+    }
+
+    get fullName() {
+        var name = this.name;
+        if (this.parent) {
+            name = this.parent.fullName + "." + name;
+        }
+        return name;
+    }
 }
 
 export class CSharpEnum {

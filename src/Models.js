@@ -1,6 +1,7 @@
 "use strict";
 var CSharpType = (function () {
-    function CSharpType() {
+    function CSharpType(name) {
+        this.name = name;
     }
     Object.defineProperty(CSharpType.prototype, "fullName", {
         get: function () {
@@ -49,7 +50,10 @@ var CSharpFile = (function () {
 }());
 exports.CSharpFile = CSharpFile;
 var CSharpMethod = (function () {
-    function CSharpMethod() {
+    function CSharpMethod(name) {
+        this.name = name;
+        this.parameters = [];
+        this.methods = [];
     }
     return CSharpMethod;
 }());
@@ -67,8 +71,24 @@ var CSharpMethodParameter = (function () {
 }());
 exports.CSharpMethodParameter = CSharpMethodParameter;
 var CSharpClass = (function () {
-    function CSharpClass() {
+    function CSharpClass(name) {
+        this.name = name;
+        this.constructors = [];
+        this.methods = [];
+        this.classes = [];
+        this.enums = [];
     }
+    Object.defineProperty(CSharpClass.prototype, "fullName", {
+        get: function () {
+            var name = this.name;
+            if (this.parent) {
+                name = this.parent.fullName + "." + name;
+            }
+            return name;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return CSharpClass;
 }());
 exports.CSharpClass = CSharpClass;
