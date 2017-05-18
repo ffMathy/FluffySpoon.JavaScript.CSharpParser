@@ -164,11 +164,23 @@ export class CSharpEnum implements CSharpScope {
     }
 }
 
+export class CSharpAttribute {
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
 export class CSharpEnumOption {
     name: string;
     value: number;
 
+    attributes: CSharpAttribute[];
+
     constructor(name: string) {
-        this.name = name;
+        this.name = name
+
+        this.attributes = [];
     }
 }

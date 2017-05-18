@@ -6,4 +6,5 @@ export { NamespaceParser } from './NamespaceParser';
 export { RegExHelper } from './RegExHelper';
 export { ScopeHelper } from './ScopeHelper';
 export { UsingsParser } from './UsingsParser';
-export { CSharpType, CSharpUsing, CSharpTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpEnum, CSharpEnumOption } from './Models';
+export { AttributeParser } from './AttributeParser';
+export { CSharpType, CSharpUsing, CSharpTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpEnum, CSharpEnumOption, CSharpAttribute } from './Models';

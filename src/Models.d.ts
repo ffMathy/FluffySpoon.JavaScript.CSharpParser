@@ -78,8 +78,13 @@ export declare class CSharpEnum implements CSharpScope {
     constructor(name: string);
     readonly fullName: string;
 }
+export declare class CSharpAttribute {
+    name: string;
+    constructor(name: string);
+}
 export declare class CSharpEnumOption {
     name: string;
     value: number;
+    attributes: CSharpAttribute[];
     constructor(name: string);
 }

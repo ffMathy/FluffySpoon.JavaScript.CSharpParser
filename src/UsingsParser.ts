@@ -14,7 +14,7 @@ export class UsingsParser {
 
     }
 
-    public parseUsings(content: string) {
+    parseUsings(content: string) {
         var usings = new Array<CSharpUsing>();
         var scopes = this.scopeHelper.getScopes(content);
         var scope = scopes[0];

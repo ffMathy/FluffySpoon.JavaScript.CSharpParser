@@ -2,6 +2,7 @@ import { CSharpEnum, CSharpEnumOption } from './Models';
 export declare class EnumParser {
     private scopeHelper;
     private regexHelper;
+    private attributeParser;
     constructor();
     parseEnums(content: string): CSharpEnum[];
     parseEnumValues(content: string): CSharpEnumOption[];

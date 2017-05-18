@@ -5,10 +5,12 @@
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
+import { AttributeParser } from './AttributeParser';
 
 export class EnumParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
+    private attributeParser = new AttributeParser();
 
     constructor() {
 
@@ -37,26 +39,23 @@ export class EnumParser {
 
         var nextValue = 0;
 
-        var argumentRegions = content
-            .split(',')
-            .map(x => x.trim());
-        for (var argumentRegion of argumentRegions) {
-            var matches = this.regexHelper.getMatches(
-                argumentRegion,
-                /(\w+)(?:\s*=\s*(\-*\d+))?/g);
+        var matches = this.regexHelper.getMatches(
+            content,
+            /((?:\s*\[.*\]\s*)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
+        
+        for (var match of matches) {
+            var option = new CSharpEnumOption(match[1]);
+            option.attributes = this.attributeParser.parseAttributes(match[0]);
 
-            for (var match of matches) {
-                var option = new CSharpEnumOption(match[0]);
-                if (match[1]) {
-                    option.value = parseInt(match[1]);
-                    nextValue = option.value + 1;
-                } else {
-                    option.value = nextValue;
-                    nextValue++;
-                }
-
-                result.push(option);
+            if (match[2]) {
+                option.value = parseInt(match[2]);
+                nextValue = option.value + 1;
+            } else {
+                option.value = nextValue;
+                nextValue++;
             }
+
+            result.push(option);
         }
 
         return result;

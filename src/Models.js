@@ -110,9 +110,17 @@ var CSharpEnum = (function () {
     return CSharpEnum;
 }());
 exports.CSharpEnum = CSharpEnum;
+var CSharpAttribute = (function () {
+    function CSharpAttribute(name) {
+        this.name = name;
+    }
+    return CSharpAttribute;
+}());
+exports.CSharpAttribute = CSharpAttribute;
 var CSharpEnumOption = (function () {
     function CSharpEnumOption(name) {
         this.name = name;
+        this.attributes = [];
     }
     return CSharpEnumOption;
 }());

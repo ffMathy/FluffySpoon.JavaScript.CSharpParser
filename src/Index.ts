@@ -6,6 +6,7 @@ export { NamespaceParser } from './NamespaceParser';
 export { RegExHelper } from './RegExHelper';
 export { ScopeHelper } from './ScopeHelper';
 export { UsingsParser } from './UsingsParser';
+export { AttributeParser } from './AttributeParser';
 
 export {
     CSharpType,
@@ -20,5 +21,6 @@ export {
     CSharpMethodParameter,
     CSharpClass,
     CSharpEnum,
-    CSharpEnumOption
+    CSharpEnumOption,
+    CSharpAttribute
 } from './Models';
