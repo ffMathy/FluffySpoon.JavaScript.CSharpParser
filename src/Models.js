@@ -77,6 +77,7 @@ var CSharpClass = (function () {
         this.methods = [];
         this.classes = [];
         this.enums = [];
+        this.properties = [];
     }
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {
@@ -110,6 +111,13 @@ var CSharpEnum = (function () {
     return CSharpEnum;
 }());
 exports.CSharpEnum = CSharpEnum;
+var CSharpProperty = (function () {
+    function CSharpProperty(name) {
+        this.name = name;
+    }
+    return CSharpProperty;
+}());
+exports.CSharpProperty = CSharpProperty;
 var CSharpAttribute = (function () {
     function CSharpAttribute(name) {
         this.name = name;

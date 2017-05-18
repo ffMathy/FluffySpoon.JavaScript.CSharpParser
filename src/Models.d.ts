@@ -64,6 +64,7 @@ export declare class CSharpClass implements CSharpTypeDeclarationScope {
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
+    properties: CSharpProperty[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
@@ -77,6 +78,12 @@ export declare class CSharpEnum implements CSharpScope {
     innerScopeText: string;
     constructor(name: string);
     readonly fullName: string;
+}
+export declare class CSharpProperty {
+    name: string;
+    type: CSharpType;
+    parent: CSharpClass;
+    constructor(name: string);
 }
 export declare class CSharpAttribute {
     name: string;

@@ -4,6 +4,7 @@ export declare class ClassParser {
     private regexHelper;
     private methodParser;
     private enumParser;
+    private propertyParser;
     constructor();
     parseClasses(content: string): CSharpClass[];
 }

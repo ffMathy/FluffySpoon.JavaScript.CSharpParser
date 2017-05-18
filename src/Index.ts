@@ -22,5 +22,6 @@ export {
     CSharpClass,
     CSharpEnum,
     CSharpEnumOption,
-    CSharpAttribute
+    CSharpAttribute,
+    CSharpProperty
 } from './Models';

@@ -16,28 +16,31 @@ var ScopeHelper = (function () {
                 suffix: results[2]
             });
         };
+        var pushCharacter = function (character) { return results[area] += character; };
         for (var _i = 0, content_1 = content; _i < content_1.length; _i++) {
             var character = content_1[_i];
             if (insideString && character === '\\') {
                 insideStringEscapeCharacter = true;
+                pushCharacter(character);
                 continue;
             }
             else if (insideString)
                 insideStringEscapeCharacter = false;
             if (character === '"' || character === "'")
                 insideString = !insideString;
-            if (insideString)
+            if (insideString) {
+                pushCharacter(character);
                 continue;
+            }
             if (character === '}') {
                 scope--;
                 if (scope === 0)
                     area = 2;
             }
-            if (scope === 0 || area == 1)
-                results[area] += character;
+            pushCharacter(character);
             if (character === '{') {
                 scope++;
-                if (area === 2) {
+                if (scope === 1 && area === 2) {
                     pushScope();
                     results[0] = results[2];
                     results[1] = '';
@@ -53,3 +56,4 @@ var ScopeHelper = (function () {
     return ScopeHelper;
 }());
 exports.ScopeHelper = ScopeHelper;
+//# sourceMappingURL=ScopeHelper.js.map

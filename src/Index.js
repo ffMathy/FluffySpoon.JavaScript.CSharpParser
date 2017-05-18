@@ -28,4 +28,5 @@ exports.CSharpClass = Models_1.CSharpClass;
 exports.CSharpEnum = Models_1.CSharpEnum;
 exports.CSharpEnumOption = Models_1.CSharpEnumOption;
 exports.CSharpAttribute = Models_1.CSharpAttribute;
+exports.CSharpProperty = Models_1.CSharpProperty;
 //# sourceMappingURL=Index.js.map

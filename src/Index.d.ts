@@ -7,4 +7,4 @@ export { RegExHelper } from './RegExHelper';
 export { ScopeHelper } from './ScopeHelper';
 export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
-export { CSharpType, CSharpUsing, CSharpTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpEnum, CSharpEnumOption, CSharpAttribute } from './Models';
+export { CSharpType, CSharpUsing, CSharpTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpEnum, CSharpEnumOption, CSharpAttribute, CSharpProperty } from './Models';

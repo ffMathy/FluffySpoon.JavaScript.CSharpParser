@@ -16,27 +16,31 @@ export class ScopeHelper {
 
         var scopes = new Array<Scope>();
 
-        var pushScope = () => 
+        var pushScope = () =>
             scopes.push({
                 prefix: results[0],
                 content: results[1],
                 suffix: results[2]
             });
-        
+
+        var pushCharacter = (character) => results[area] += character;
+
         for (var character of content) {
 
             if (insideString && character === '\\') {
                 insideStringEscapeCharacter = true;
+                pushCharacter(character);
                 continue;
-
             } else if (insideString)
                 insideStringEscapeCharacter = false;
 
             if (character === '"' || character === "'")
                 insideString = !insideString;
 
-            if (insideString)
+            if (insideString) {
+                pushCharacter(character);
                 continue;
+            }
 
             if (character === '}') {
                 scope--;
@@ -44,12 +48,11 @@ export class ScopeHelper {
                     area = 2;
             }
 
-            if (scope === 0 || area == 1)
-                results[area] += character;
+            pushCharacter(character);
 
             if (character === '{') {
                 scope++;
-                if (area === 2) {
+                if (scope === 1 && area === 2) {
                     pushScope();
 
                     results[0] = results[2];
