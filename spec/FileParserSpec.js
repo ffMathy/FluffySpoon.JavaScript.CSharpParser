@@ -64,6 +64,8 @@ describe("FileParser", function () {
             var file = parser.parseFile();
             expect(file.enums.length).toEqual(1);
             expect(file.enums[0].options.length).toEqual(5);
+            expect(file.classes.length).toEqual(1);
+            expect(file.classes[0].enums.length).toEqual(2);
             expect(file.enums[0].options[0].name).toEqual('FirstValue');
             expect(file.enums[0].options[0].value).toEqual(0);
             expect(file.enums[0].options[1].name).toEqual('SecondValue');

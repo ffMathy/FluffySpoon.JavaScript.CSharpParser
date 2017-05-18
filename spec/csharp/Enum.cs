@@ -14,4 +14,10 @@ class Foo
         Lol,
         Bar
     }
+
+    enum OtherEnumStuff
+    {
+        Hello,
+        World
+    }
 }

@@ -17,18 +17,16 @@ export class EnumParser {
     public parseEnums(content: string) {
         var enums = new Array<CSharpEnum>();
         var scopes = this.scopeHelper.getScopes(content);
-        var scope = scopes[0];
-        if (!scope)
-            return enums;
+        for (var scope of scopes) {
+            var matches = this.regexHelper.getMatches(
+                scope.prefix,
+                /enum\s+(\w+?)\s*{/g);
+            for (var match of matches) {
+                var enumObject = new CSharpEnum(match[0]);
+                enumObject.options = this.parseEnumValues(scope.content);
 
-        var matches = this.regexHelper.getMatches(
-            scope.prefix,
-            /enum\s+(\w+?)\s*{/g);
-        for (var match of matches) {
-            var enumObject = new CSharpEnum(match[0]);
-            enumObject.options = this.parseEnumValues(scope.content);
-
-            enums.push(enumObject);
+                enums.push(enumObject);
+            }
         }
 
         return enums;

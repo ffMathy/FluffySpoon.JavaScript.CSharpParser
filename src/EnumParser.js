@@ -10,15 +10,15 @@ var EnumParser = (function () {
     EnumParser.prototype.parseEnums = function (content) {
         var enums = new Array();
         var scopes = this.scopeHelper.getScopes(content);
-        var scope = scopes[0];
-        if (!scope)
-            return enums;
-        var matches = this.regexHelper.getMatches(scope.prefix, /enum\s+(\w+?)\s*{/g);
-        for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
-            var match = matches_1[_i];
-            var enumObject = new Models_1.CSharpEnum(match[0]);
-            enumObject.options = this.parseEnumValues(scope.content);
-            enums.push(enumObject);
+        for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
+            var scope = scopes_1[_i];
+            var matches = this.regexHelper.getMatches(scope.prefix, /enum\s+(\w+?)\s*{/g);
+            for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
+                var match = matches_1[_a];
+                var enumObject = new Models_1.CSharpEnum(match[0]);
+                enumObject.options = this.parseEnumValues(scope.content);
+                enums.push(enumObject);
+            }
         }
         return enums;
     };
