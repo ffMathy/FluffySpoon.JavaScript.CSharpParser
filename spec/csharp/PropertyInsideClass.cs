@@ -1,4 +1,4 @@
-class Foobar
+﻿class Foobar
 {
 	string MyProperty { get; set; }
 
@@ -20,5 +20,10 @@ class Foobar
         {
 			//do stuff
         }
+    }
+
+    enum Foobar
+    {
+        Stuff
     }
 }
