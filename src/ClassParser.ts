@@ -55,7 +55,9 @@ export class ClassParser {
                     classObject.classes.push(subClass);
                 }
 
-                classes.push(classObject);
+				classes.push(classObject);
+
+				console.log("Detected class", classObject.name);
             }
         }
 

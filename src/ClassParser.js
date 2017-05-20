@@ -48,6 +48,7 @@ var ClassParser = (function () {
                     classObject.classes.push(subClass);
                 }
                 classes.push(classObject);
+                console.log("Detected class", classObject.name);
             }
         }
         return classes;
