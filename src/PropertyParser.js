@@ -15,7 +15,7 @@ var PropertyParser = (function () {
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
             var subScope = this.scopeHelper
-                .getScopes(scope.content)
+                .getCurlyScopes(scope.content)
                 .map(function (x) { return x.prefix; })
                 .join('');
             var matchCandidate = scope.prefix + subScope;

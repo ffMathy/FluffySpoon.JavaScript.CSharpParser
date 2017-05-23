@@ -33,13 +33,14 @@ var MethodParser = (function () {
                     method.methods.push(subMethod);
                 }
                 methods.push(method);
+                console.log("Detected method " + method.name);
             }
         }
         return methods;
     };
     MethodParser.prototype.parseMethodParameters = function (content) {
         var result = new Array();
-        var matches = this.regexHelper.getMatches(content, /\s*((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+        var matches = this.regexHelper.getMatches(content, /((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
         for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
             var match = matches_2[_i];
             result.push({

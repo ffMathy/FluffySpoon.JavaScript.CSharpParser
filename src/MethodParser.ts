@@ -17,7 +17,7 @@ export class MethodParser {
 
 	}
 
-	public parseMethods(content: string) {
+    parseMethods(content: string) {
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
 		for (var scope of scopes) {
@@ -25,7 +25,7 @@ export class MethodParser {
 				scope.prefix,
 				/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
 			for (var match of matches) {
-				var method = new CSharpMethod(match[1]);
+                var method = new CSharpMethod(match[1]);
 				method.innerScopeText = scope.content;
 
 				method.returnType = this.typeParser.parseType(match[0] || "void");
@@ -42,7 +42,9 @@ export class MethodParser {
 					method.methods.push(subMethod);
 				}
 
-				methods.push(method);
+                methods.push(method);
+
+                console.log("Detected method " + method.name);
 			}
 		}
 
@@ -54,7 +56,7 @@ export class MethodParser {
 
 		var matches = this.regexHelper.getMatches(
 			content,
-			/\s*((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+			/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
 		for (var match of matches) {
 			result.push({
 				type: this.typeParser.parseType(match[0]),

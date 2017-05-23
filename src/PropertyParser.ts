@@ -22,7 +22,7 @@ export class PropertyParser {
         
         for (var scope of scopes) {
             var subScope = this.scopeHelper
-                .getScopes(scope.content)
+                .getCurlyScopes(scope.content)
                 .map(x => x.prefix)
                 .join('');
 
