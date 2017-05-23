@@ -1,6 +1,8 @@
 ﻿export class CSharpType {
     name: string;
-    namespace: CSharpNamespace;
+	namespace: CSharpNamespace;
+
+	genericParameters: CSharpType[];
 
     constructor(name: string) {
         this.name = name;

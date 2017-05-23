@@ -23,7 +23,7 @@ export class ClassParser {
 
     public parseClasses(content: string) {
         var classes = new Array<CSharpClass>();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,

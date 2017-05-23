@@ -67,10 +67,12 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(2);
+            expect(file.classes[0].methods.length).toEqual(3);
 
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
-            expect(file.classes[0].methods[1].parameters.length).toEqual(2);
+			expect(file.classes[0].methods[1].parameters.length).toEqual(3);
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
 
             expect(file.classes[0].methods[0].returnType.name).toEqual('string');
             expect(file.classes[0].methods[0].name).toEqual('MyFunction');
@@ -83,7 +85,14 @@ describe("FileParser", function () {
 
             expect(file.classes[0].methods[1].parameters[1].name).toEqual('parameter2');
             expect(file.classes[0].methods[1].parameters[1].type.name).toEqual('bool');
-            expect(file.classes[0].methods[1].parameters[1].defaultValue).toEqual('false');
+			expect(file.classes[0].methods[1].parameters[1].defaultValue).toEqual(false);
+
+			expect(file.classes[0].methods[1].parameters[2].name).toEqual('foo');
+			expect(file.classes[0].methods[1].parameters[2].type.name).toEqual('List<>');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].name).toEqual('Dictionary<>');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[0].name).toEqual('string');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[1].name).toEqual('int');
+			expect(file.classes[0].methods[1].parameters[2].defaultValue).toEqual('bar');
         }));
 
     });

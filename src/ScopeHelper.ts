@@ -5,7 +5,15 @@
 }
 
 export class ScopeHelper {
-    public getScopes(content: string): Scope[] {
+	public getCurlyScopes(content: string) {
+        return this.getScopes(content, "{", "}")
+	}
+
+	public getGenericTypeScopes(content: string) {
+		return this.getScopes(content, "<", ">");
+	}
+
+	public getScopes(content: string, entry: string, exit: string): Scope[] {
         var results = ['', '', ''];
 
         var scope = 0;
@@ -42,7 +50,7 @@ export class ScopeHelper {
                 continue;
             }
 
-            if (character === '}') {
+            if (character === exit) {
                 scope--;
                 if (scope === 0)
                     area = 2;
@@ -50,7 +58,7 @@ export class ScopeHelper {
 
             pushCharacter(character);
 
-            if (character === '{') {
+            if (character === entry) {
                 scope++;
                 if (scope === 1 && area === 2) {
                     pushScope();

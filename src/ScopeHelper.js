@@ -2,7 +2,13 @@
 var ScopeHelper = (function () {
     function ScopeHelper() {
     }
-    ScopeHelper.prototype.getScopes = function (content) {
+    ScopeHelper.prototype.getCurlyScopes = function (content) {
+        return this.getScopes(content, "{", "}");
+    };
+    ScopeHelper.prototype.getGenericTypeScopes = function (content) {
+        return this.getScopes(content, "<", ">");
+    };
+    ScopeHelper.prototype.getScopes = function (content, entry, exit) {
         var results = ['', '', ''];
         var scope = 0;
         var area = 0;
@@ -32,13 +38,13 @@ var ScopeHelper = (function () {
                 pushCharacter(character);
                 continue;
             }
-            if (character === '}') {
+            if (character === exit) {
                 scope--;
                 if (scope === 0)
                     area = 2;
             }
             pushCharacter(character);
-            if (character === '{') {
+            if (character === entry) {
                 scope++;
                 if (scope === 1 && area === 2) {
                     pushScope();

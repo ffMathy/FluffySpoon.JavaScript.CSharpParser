@@ -5,10 +5,12 @@
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
+import { TypeParser } from './TypeParser';
 
 export class PropertyParser {
     private scopeHelper = new ScopeHelper();
-    private regexHelper = new RegExHelper();
+	private regexHelper = new RegExHelper();
+	private typeParser = new TypeParser();
 
     constructor() {
 
@@ -16,7 +18,7 @@ export class PropertyParser {
 
     parseProperties(content: string) {
         var properties = new Array<CSharpProperty>();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         
         for (var scope of scopes) {
             var subScope = this.scopeHelper
@@ -27,10 +29,10 @@ export class PropertyParser {
             var matchCandidate = scope.prefix + subScope;
             var matches = this.regexHelper.getMatches(
                 matchCandidate,
-                /(\w+)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+                /\s*(.+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
             for (var match of matches) {
-                var property = new CSharpProperty(match[1]);
-                property.type = new CSharpType(match[0]);
+				var property = new CSharpProperty(match[1]);
+				property.type = this.typeParser.parseType(match[0]);
 
                 properties.push(property);
             }

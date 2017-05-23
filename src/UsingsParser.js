@@ -9,7 +9,7 @@ var UsingsParser = (function () {
     }
     UsingsParser.prototype.parseUsings = function (content) {
         var usings = new Array();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         var scope = scopes[0];
         if (!scope)
             return usings;

@@ -1,6 +1,7 @@
 export declare class CSharpType {
     name: string;
     namespace: CSharpNamespace;
+    genericParameters: CSharpType[];
     constructor(name: string);
     readonly fullName: string;
 }

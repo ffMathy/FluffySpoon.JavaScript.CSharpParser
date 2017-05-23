@@ -11,7 +11,7 @@ var EnumParser = (function () {
     }
     EnumParser.prototype.parseEnums = function (content) {
         var enums = new Array();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
             var matches = this.regexHelper.getMatches(scope.prefix, /enum\s+(\w+?)\s*{/g);

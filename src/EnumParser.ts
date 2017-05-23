@@ -18,7 +18,7 @@ export class EnumParser {
 
     public parseEnums(content: string) {
         var enums = new Array<CSharpEnum>();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,

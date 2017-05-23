@@ -15,7 +15,7 @@ var ClassParser = (function () {
     }
     ClassParser.prototype.parseClasses = function (content) {
         var classes = new Array();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
             var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);

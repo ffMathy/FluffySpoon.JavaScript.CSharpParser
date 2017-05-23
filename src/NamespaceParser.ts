@@ -21,7 +21,7 @@ export class NamespaceParser {
 
     public parseNamespaces(content: string) {
         var namespaces = new Array<CSharpNamespace>();
-        var scopes = this.scopeHelper.getScopes(content);
+        var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix, 
