@@ -65,6 +65,7 @@ export declare class CSharpClass implements CSharpTypeDeclarationScope {
     classes: CSharpClass[];
     enums: CSharpEnum[];
     properties: CSharpProperty[];
+    inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;

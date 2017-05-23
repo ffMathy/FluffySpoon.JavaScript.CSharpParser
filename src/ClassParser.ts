@@ -1,6 +1,7 @@
 ﻿import {
     CSharpNamespace,
-    CSharpClass
+	CSharpClass,
+    CSharpType
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
@@ -26,10 +27,14 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /class\s+(\w+?)\s*{/g);
+                /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
             for (var match of matches) {
                 var classObject = new CSharpClass(match[0]);
-                classObject.innerScopeText = scope.content;
+				classObject.innerScopeText = scope.content;
+
+				if (match[1]) {
+					classObject.inheritsFrom = new CSharpType(match[1]);
+				}
 
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var property of properties) {

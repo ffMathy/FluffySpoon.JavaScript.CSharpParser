@@ -119,8 +119,9 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
-    properties: CSharpProperty[];
+	properties: CSharpProperty[];
 
+	inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;

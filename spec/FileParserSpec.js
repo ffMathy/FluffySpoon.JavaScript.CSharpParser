@@ -107,6 +107,12 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
             expect(file.namespaces[0].classes[0].properties[0].name).toEqual("Name");
         }));
+        it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', function (parser) {
+            var file = parser.parseFile();
+            expect(file.classes.length).toEqual(1);
+            expect(file.classes[0].inheritsFrom).not.toBeUndefined();
+            expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface");
+        }));
     });
 });
 //# sourceMappingURL=FileParserSpec.js.map

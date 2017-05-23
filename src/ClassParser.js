@@ -18,11 +18,14 @@ var ClassParser = (function () {
         var scopes = this.scopeHelper.getScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var classObject = new Models_1.CSharpClass(match[0]);
                 classObject.innerScopeText = scope.content;
+                if (match[1]) {
+                    classObject.inheritsFrom = new Models_1.CSharpType(match[1]);
+                }
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var _b = 0, properties_1 = properties; _b < properties_1.length; _b++) {
                     var property = properties_1[_b];
