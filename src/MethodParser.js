@@ -50,19 +50,21 @@ var MethodParser = (function () {
     MethodParser.prototype.parseMethodParameter = function (match) {
         var valueInput = match[2];
         var defaultValue = null;
-        if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
-            defaultValue = valueInput.substr(1, valueInput.length - 2);
-        }
-        else if (!isNaN(parseFloat(valueInput))) {
-            defaultValue = parseFloat(valueInput);
-        }
-        else if (valueInput === "false" || valueInput === "true") {
-            defaultValue = valueInput === "true";
-        }
-        else {
-            defaultValue = {
-                name: valueInput
-            };
+        if (valueInput) {
+            if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
+                defaultValue = valueInput.substr(1, valueInput.length - 2);
+            }
+            else if (!isNaN(parseFloat(valueInput))) {
+                defaultValue = parseFloat(valueInput);
+            }
+            else if (valueInput === "false" || valueInput === "true") {
+                defaultValue = valueInput === "true";
+            }
+            else {
+                defaultValue = {
+                    name: valueInput
+                };
+            }
         }
         return {
             type: this.typeParser.parseType(match[0]),

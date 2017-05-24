@@ -70,16 +70,18 @@ export class MethodParser {
 		var valueInput = match[2];
 
 		var defaultValue = <CSharpToken>null;
-		if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
-			defaultValue = valueInput.substr(1, valueInput.length - 2);
-		} else if (!isNaN(parseFloat(valueInput))) {
-			defaultValue = parseFloat(valueInput);
-		} else if (valueInput === "false" || valueInput === "true") {
-			defaultValue = valueInput === "true";
-		} else {
-			defaultValue = <CSharpNamedToken>{
-				name: valueInput
-			};
+		if (valueInput) {
+			if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
+				defaultValue = valueInput.substr(1, valueInput.length - 2);
+			} else if (!isNaN(parseFloat(valueInput))) {
+				defaultValue = parseFloat(valueInput);
+			} else if (valueInput === "false" || valueInput === "true") {
+				defaultValue = valueInput === "true";
+			} else {
+				defaultValue = <CSharpNamedToken>{
+					name: valueInput
+				};
+			}
 		}
 
 		return <CSharpMethodParameter>{
