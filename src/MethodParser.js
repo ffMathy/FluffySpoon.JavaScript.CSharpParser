@@ -43,13 +43,32 @@ var MethodParser = (function () {
         var matches = this.regexHelper.getMatches(content, /((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
         for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
             var match = matches_2[_i];
-            result.push({
-                type: this.typeParser.parseType(match[0]),
-                name: match[1],
-                defaultValue: match[2]
-            });
+            result.push(this.parseMethodParameter(match));
         }
         return result;
+    };
+    MethodParser.prototype.parseMethodParameter = function (match) {
+        var valueInput = match[2];
+        var defaultValue = null;
+        if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
+            defaultValue = valueInput.substr(1, valueInput.length - 2);
+        }
+        else if (!isNaN(parseFloat(valueInput))) {
+            defaultValue = parseFloat(valueInput);
+        }
+        else if (valueInput === "false" || valueInput === "true") {
+            defaultValue = valueInput === "true";
+        }
+        else {
+            defaultValue = {
+                name: valueInput
+            };
+        }
+        return {
+            type: this.typeParser.parseType(match[0]),
+            name: match[1],
+            defaultValue: defaultValue
+        };
     };
     return MethodParser;
 }());

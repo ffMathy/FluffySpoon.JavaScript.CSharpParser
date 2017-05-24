@@ -6,4 +6,5 @@ export declare class MethodParser {
     constructor();
     parseMethods(content: string): CSharpMethod[];
     parseMethodParameters(content: string): CSharpMethodParameter[];
+    private parseMethodParameter(match);
 }

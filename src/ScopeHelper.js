@@ -9,12 +9,14 @@ var ScopeHelper = (function () {
         return this.getScopes(content, "<", ">");
     };
     ScopeHelper.prototype.getScopes = function (content, entry, exit) {
+        var scopes = new Array();
+        if (!content)
+            return scopes;
         var results = ['', '', ''];
         var scope = 0;
         var area = 0;
         var insideString = false;
         var insideStringEscapeCharacter = false;
-        var scopes = new Array();
         var pushScope = function () {
             return scopes.push({
                 prefix: results[0],
@@ -22,7 +24,9 @@ var ScopeHelper = (function () {
                 suffix: results[2]
             });
         };
-        var pushCharacter = function (character) { return results[area] += character; };
+        var pushCharacter = function (character) {
+            results[area] += character;
+        };
         for (var _i = 0, content_1 = content; _i < content_1.length; _i++) {
             var character = content_1[_i];
             if (insideString && character === '\\') {
@@ -48,7 +52,7 @@ var ScopeHelper = (function () {
                 scope++;
                 if (scope === 1 && area === 2) {
                     pushScope();
-                    results[0] = results[2];
+                    results[0] = results[2] || '';
                     results[1] = '';
                     results[2] = '';
                 }

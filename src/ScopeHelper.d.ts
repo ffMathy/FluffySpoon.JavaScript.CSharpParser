@@ -6,5 +6,5 @@ export interface Scope {
 export declare class ScopeHelper {
     getCurlyScopes(content: string): Scope[];
     getGenericTypeScopes(content: string): Scope[];
-    getScopes(content: string, entry: string, exit: string): Scope[];
+    private getScopes(content, entry, exit);
 }

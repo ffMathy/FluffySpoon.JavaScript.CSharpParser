@@ -1,7 +1,9 @@
 ﻿import {
 	CSharpMethod,
 	CSharpType,
-	CSharpMethodParameter
+	CSharpMethodParameter,
+	CSharpToken,
+	CSharpNamedToken
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
@@ -17,7 +19,7 @@ export class MethodParser {
 
 	}
 
-    parseMethods(content: string) {
+	parseMethods(content: string) {
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
 		for (var scope of scopes) {
@@ -25,7 +27,7 @@ export class MethodParser {
 				scope.prefix,
 				/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
 			for (var match of matches) {
-                var method = new CSharpMethod(match[1]);
+				var method = new CSharpMethod(match[1]);
 				method.innerScopeText = scope.content;
 
 				method.returnType = this.typeParser.parseType(match[0] || "void");
@@ -42,29 +44,48 @@ export class MethodParser {
 					method.methods.push(subMethod);
 				}
 
-                methods.push(method);
+				methods.push(method);
 
-                console.log("Detected method " + method.name);
+				console.log("Detected method " + method.name);
 			}
 		}
 
 		return methods;
 	}
 
-	public parseMethodParameters(content: string): CSharpMethodParameter[] {
+	parseMethodParameters(content: string): CSharpMethodParameter[] {
 		var result = new Array<CSharpMethodParameter>();
 
 		var matches = this.regexHelper.getMatches(
 			content,
 			/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
 		for (var match of matches) {
-			result.push({
-				type: this.typeParser.parseType(match[0]),
-				name: match[1],
-				defaultValue: match[2]
-			});
+			result.push(this.parseMethodParameter(match));
 		}
 
 		return result;
+	}
+
+	private parseMethodParameter(match: string[]) {
+		var valueInput = match[2];
+
+		var defaultValue = <CSharpToken>null;
+		if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
+			defaultValue = valueInput.substr(1, valueInput.length - 2);
+		} else if (!isNaN(parseFloat(valueInput))) {
+			defaultValue = parseFloat(valueInput);
+		} else if (valueInput === "false" || valueInput === "true") {
+			defaultValue = valueInput === "true";
+		} else {
+			defaultValue = <CSharpNamedToken>{
+				name: valueInput
+			};
+		}
+
+		return <CSharpMethodParameter>{
+			type: this.typeParser.parseType(match[0]),
+			name: match[1],
+			defaultValue
+		}
 	}
 }

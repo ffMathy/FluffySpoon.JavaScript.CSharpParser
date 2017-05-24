@@ -7,6 +7,8 @@ var TypeParser = (function () {
         this.regexHelper = new RegExHelper_1.RegExHelper();
     }
     TypeParser.prototype.getTypeNameFromGenericScopePrefix = function (prefix) {
+        if (!prefix)
+            return null;
         var result = prefix
             .substr(0, prefix.length - 1)
             .trim();

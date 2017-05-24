@@ -13,7 +13,11 @@ export class ScopeHelper {
 		return this.getScopes(content, "<", ">");
 	}
 
-    private getScopes(content: string, entry: string, exit: string): Scope[] {
+	private getScopes(content: string, entry: string, exit: string): Scope[] {
+		var scopes = new Array<Scope>();
+		if (!content)
+			return scopes;
+
         var results = ['', '', ''];
 
         var scope = 0;
@@ -21,8 +25,6 @@ export class ScopeHelper {
 
         var insideString = false;
         var insideStringEscapeCharacter = false;
-
-        var scopes = new Array<Scope>();
 
         var pushScope = () =>
             scopes.push({

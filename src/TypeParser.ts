@@ -13,7 +13,10 @@ export class TypeParser {
 
     }
 
-    private getTypeNameFromGenericScopePrefix(prefix: string) {
+	private getTypeNameFromGenericScopePrefix(prefix: string) {
+		if (!prefix)
+			return null;
+
         var result = prefix
             .substr(0, prefix.length - 1)
             .trim();
