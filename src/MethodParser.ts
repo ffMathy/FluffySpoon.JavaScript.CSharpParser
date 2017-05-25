@@ -58,7 +58,7 @@ export class MethodParser {
 
 		var matches = this.regexHelper.getMatches(
 			content,
-			/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+			/((?:\w+\s*<\s*.+\s*>)|(?:\w+))\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
 		for (var match of matches) {
 			result.push(this.parseMethodParameter(match));
 		}

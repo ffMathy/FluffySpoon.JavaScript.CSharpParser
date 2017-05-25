@@ -6,7 +6,8 @@ var ScopeHelper = (function () {
         return this.getScopes(content, "{", "}");
     };
     ScopeHelper.prototype.getGenericTypeScopes = function (content) {
-        return this.getScopes(content, "<", ">");
+        var scopes = this.getScopes(content, "<", ">");
+        return scopes;
     };
     ScopeHelper.prototype.getScopes = function (content, entry, exit) {
         var scopes = new Array();

@@ -10,7 +10,8 @@ export class ScopeHelper {
 	}
 
 	getGenericTypeScopes(content: string) {
-		return this.getScopes(content, "<", ">");
+		var scopes = this.getScopes(content, "<", ">");
+		return scopes;
 	}
 
 	private getScopes(content: string, entry: string, exit: string): Scope[] {

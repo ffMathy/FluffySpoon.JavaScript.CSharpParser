@@ -1,77 +1,95 @@
 ﻿import {
-    CSharpType
+	CSharpType
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 
 export class TypeParser {
-    private scopeHelper = new ScopeHelper();
-    private regexHelper = new RegExHelper();
+	private scopeHelper = new ScopeHelper();
+	private regexHelper = new RegExHelper();
 
-    constructor() {
+	constructor() {
 
-    }
+	}
 
 	private getTypeNameFromGenericScopePrefix(prefix: string) {
 		if (!prefix)
 			return null;
 
-        var result = prefix
-            .substr(0, prefix.length - 1)
-            .trim();
-        if (result.indexOf(",") == 0) {
-            result = result
-                .substr(1)
-                .trim();
-        }
+		var result = prefix;
+		if (result.lastIndexOf("<") > -1) {
+			result = result.substr(0, result.length - 1);
+		}
+	    result = result.trim();
+		if (result.indexOf(",") == 0) {
+			result = result
+				.substr(1)
+				.trim();
+		}
+        
+		return result;
+	}
 
-        return result;
-    }
+	private prepareTypeForGenericParameters(type: CSharpType, content: string) {
+		if (!content)
+			return;
 
-    private prepareTypeForGenericParameters(type: CSharpType, content: string) {
-        type.genericParameters = this.parseTypesFromGenericParameters(content);
-        if (type.genericParameters)
-            type.name += "<>";
-    }
+		type.genericParameters = this.parseTypesFromGenericParameters(content);
+		if (type.genericParameters) {
+			type.name += "<";
+			for (var i = 1; i < type.genericParameters.length; i++) {
+				type.name += ",";
+			}
+			type.name += ">";
+		}
+	}
 
-    parseTypesFromGenericParameters(content: string): CSharpType[] {
-        var result = new Array<CSharpType>();
+	parseTypesFromGenericParameters(content: string): CSharpType[] {
+		var result = new Array<CSharpType>();
+		if (!content)
+			return null;
 
-        var scopes = this.scopeHelper.getGenericTypeScopes(content);
-        for (var scope of scopes) {
-            var type = <CSharpType>{};
-            type.name = this.getTypeNameFromGenericScopePrefix(scope.prefix);
+		var scopes = this.scopeHelper.getGenericTypeScopes(content);
+		for (var scope of scopes) {
+			if (scope.prefix.trim() === ",")
+				continue;
 
-            if (!type.name)
-                continue;
+			var typeRegions = scope.prefix.split(",");
+			for (var typeRegion of typeRegions) {
+				var type = <CSharpType>{};
+				type.name = this.getTypeNameFromGenericScopePrefix(typeRegion);
 
-            this.prepareTypeForGenericParameters(
-                type,
-                scope.content);
+				if (!type.name)
+					continue;
 
-            result.push(type);
-        }
+				this.prepareTypeForGenericParameters(
+					type,
+					scope.content);
 
-        return result.length === 0 ? null : result;
-    }
+				result.push(type);
+			}
+		}
 
-    parseType(typeString: string): CSharpType {
-        var matches = this.regexHelper.getMatches(
-            typeString,
-            /(\w+)(?:\s*<\s*(.+)\s*>)?/g);
-        var match = matches[0];
-        if (!match)
-            return null;
+		return result.length === 0 ? null : result;
+	}
 
-        var type = <CSharpType>{
-            name: match[0]
-        };
+	parseType(typeString: string): CSharpType {
+		var matches = this.regexHelper.getMatches(
+			typeString,
+			/(\w+)(?:\s*<\s*(.+)\s*>)?/g);
+		var match = matches[0];
+		if (!match)
+			return null;
 
-        this.prepareTypeForGenericParameters(
-            type,
-            match[1]);
+		var type = <CSharpType>{
+			name: match[0]
+		};
 
-        return type;
-    }
+		this.prepareTypeForGenericParameters(
+			type,
+			match[1]);
+
+		return type;
+	}
 }
