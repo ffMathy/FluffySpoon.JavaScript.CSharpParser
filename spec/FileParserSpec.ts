@@ -142,7 +142,7 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].properties.length).toEqual(3);
+            expect(file.classes[0].properties.length).toEqual(4);
 
             expect(file.classes[0].properties[0].name).toEqual("MyProperty");
             expect(file.classes[0].properties[0].type.name).toEqual("string");
@@ -151,7 +151,10 @@ describe("FileParser", function () {
             expect(file.classes[0].properties[1].type.name).toEqual("string");
 
             expect(file.classes[0].properties[2].name).toEqual("GetSetProperty");
-            expect(file.classes[0].properties[2].type.name).toEqual("string");
+			expect(file.classes[0].properties[2].type.name).toEqual("string");
+
+			expect(file.classes[0].properties[3].name).toEqual("MyPublicProperty");
+			expect(file.classes[0].properties[3].type.name).toEqual("string");
 		}));
 
 		it("should be able to fetch classes inside namespaces", useCSharp('ClassInsideNamespace.cs', (parser) => {

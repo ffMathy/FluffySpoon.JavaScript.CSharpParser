@@ -26,4 +26,6 @@
     {
         Stuff
     }
+
+	public string MyPublicProperty { get; set; }
 }
