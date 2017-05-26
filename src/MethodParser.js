@@ -14,14 +14,15 @@ var MethodParser = (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                var method = new Models_1.CSharpMethod(match[1]);
+                var method = new Models_1.CSharpMethod(match[2]);
                 method.innerScopeText = scope.content;
-                method.returnType = this.typeParser.parseType(match[0] || "void");
-                method.isExplicitImplementation = method.name.indexOf('.') > -1;
-                var parameters = this.parseMethodParameters(match[2]);
+                method.returnType = this.typeParser.parseType(match[1] || "void");
+                var modifiers = match[0];
+                method.isVirtual = modifiers && modifiers.indexOf("virtual") > -1;
+                var parameters = this.parseMethodParameters(match[3]);
                 for (var _b = 0, parameters_1 = parameters; _b < parameters_1.length; _b++) {
                     var parameter = parameters_1[_b];
                     method.parameters.push(parameter);

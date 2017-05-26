@@ -88,7 +88,7 @@ export class CSharpMethod implements CSharpScope {
     innerScopeText: string;
 
     isConstructor: boolean;
-    isExplicitImplementation: boolean;
+	isVirtual: boolean;
 
     parent: CSharpClass | CSharpMethod;
     returnType: CSharpType;

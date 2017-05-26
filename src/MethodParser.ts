@@ -25,15 +25,17 @@ export class MethodParser {
 		for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
+				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
 			for (var match of matches) {
-				var method = new CSharpMethod(match[1]);
+				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;
 
-				method.returnType = this.typeParser.parseType(match[0] || "void");
-				method.isExplicitImplementation = method.name.indexOf('.') > -1;
+				method.returnType = this.typeParser.parseType(match[1] || "void");
 
-				var parameters = this.parseMethodParameters(match[2]);
+				var modifiers = match[0];
+				method.isVirtual = modifiers && modifiers.indexOf("virtual") > -1;
+
+				var parameters = this.parseMethodParameters(match[3]);
 				for (var parameter of parameters) {
 					method.parameters.push(parameter);
 				}
