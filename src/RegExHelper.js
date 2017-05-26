@@ -10,6 +10,9 @@ var RegExHelper = (function () {
         }
         return final;
     };
+    RegExHelper.prototype.escape = function (input) {
+        return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    };
     return RegExHelper;
 }());
 exports.RegExHelper = RegExHelper;
