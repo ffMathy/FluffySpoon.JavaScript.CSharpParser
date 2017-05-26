@@ -51,8 +51,10 @@ describe("FileParser", function () {
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
             expect(file.classes[0].methods[0].returnType.name).toEqual('string');
+            expect(file.classes[0].methods[0].isVirtual).toBe(true);
             expect(file.classes[0].methods[0].name).toEqual('MyFunction');
             expect(file.classes[0].methods[1].returnType.name).toEqual('void');
+            expect(file.classes[0].methods[1].isVirtual).toBe(false);
             expect(file.classes[0].methods[1].name).toEqual('SomeOtherFunction');
             expect(file.classes[0].methods[1].parameters[0].name).toEqual('parameter1');
             expect(file.classes[0].methods[1].parameters[0].type.name).toEqual('string');

@@ -20,8 +20,8 @@ var MethodParser = (function () {
                 var method = new Models_1.CSharpMethod(match[2]);
                 method.innerScopeText = scope.content;
                 method.returnType = this.typeParser.parseType(match[1] || "void");
-                var modifiers = match[0];
-                method.isVirtual = modifiers && modifiers.indexOf("virtual") > -1;
+                var modifiers = match[0] || "";
+                method.isVirtual = modifiers.indexOf("virtual") > -1;
                 var parameters = this.parseMethodParameters(match[3]);
                 for (var _b = 0, parameters_1 = parameters; _b < parameters_1.length; _b++) {
                     var parameter = parameters_1[_b];

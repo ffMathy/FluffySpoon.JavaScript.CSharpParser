@@ -3,7 +3,7 @@
     string myField;
     bool SomeOtherStuff { get; set; }
 
-	string MyFunction()
+	virtual string MyFunction()
     {
 
     }
