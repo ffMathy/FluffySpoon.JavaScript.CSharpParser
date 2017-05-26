@@ -9,8 +9,4 @@
 
 		return final;
 	}
-
-	public escape(input: string) {
-		return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-	}
 }
