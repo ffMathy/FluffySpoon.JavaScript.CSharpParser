@@ -27,5 +27,5 @@
         Stuff
     }
 
-	public string MyPublicProperty { get; set; }
+	public virtual string MyPublicVirtualProperty { get; set; }
 }

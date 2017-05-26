@@ -19,11 +19,13 @@ var PropertyParser = (function () {
                 .map(function (x) { return x.prefix; })
                 .join('');
             var matchCandidate = scope.prefix + subScope;
-            var matches = this.regexHelper.getMatches(matchCandidate, /([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+            var matches = this.regexHelper.getMatches(matchCandidate, /((?:\w+\s)*)([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                var property = new Models_1.CSharpProperty(match[1]);
-                property.type = this.typeParser.parseType(match[0]);
+                var property = new Models_1.CSharpProperty(match[2]);
+                property.type = this.typeParser.parseType(match[1]);
+                var modifiers = match[0] || "";
+                property.isVirtual = modifiers.indexOf("virtual") > -1;
                 properties.push(property);
             }
         }

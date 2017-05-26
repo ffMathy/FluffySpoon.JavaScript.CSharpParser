@@ -173,7 +173,9 @@ export class CSharpProperty {
     name: string;
 
     type: CSharpType;
-    parent: CSharpClass;
+	parent: CSharpClass;
+
+	isVirtual: boolean;
 
     constructor(name: string) {
         this.name = name;

@@ -29,10 +29,13 @@ export class PropertyParser {
             var matchCandidate = scope.prefix + subScope;
             var matches = this.regexHelper.getMatches(
                 matchCandidate,
-                /([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+                /((?:\w+\s)*)([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
             for (var match of matches) {
-				var property = new CSharpProperty(match[1]);
-				property.type = this.typeParser.parseType(match[0]);
+				var property = new CSharpProperty(match[2]);
+				property.type = this.typeParser.parseType(match[1]);
+
+				var modifiers = match[0] || "";
+				property.isVirtual = modifiers.indexOf("virtual") > -1;
 
                 properties.push(property);
             }

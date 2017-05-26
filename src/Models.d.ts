@@ -85,6 +85,7 @@ export declare class CSharpProperty {
     name: string;
     type: CSharpType;
     parent: CSharpClass;
+    isVirtual: boolean;
     constructor(name: string);
 }
 export declare class CSharpAttribute {
