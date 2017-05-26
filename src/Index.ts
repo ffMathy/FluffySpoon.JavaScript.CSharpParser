@@ -1,6 +1,7 @@
 ﻿export { ClassParser } from './ClassParser';
 export { EnumParser } from './EnumParser';
 export { FileParser } from './FileParser';
+export { TypeParser } from './TypeParser';
 export { MethodParser } from './MethodParser';
 export { NamespaceParser } from './NamespaceParser';
 export { RegExHelper } from './RegExHelper';
@@ -9,7 +10,7 @@ export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
 
 export {
-    CSharpType,
+	CSharpType,
     CSharpUsing,
     CSharpTypeDeclarationScope,
     CSharpScope,
