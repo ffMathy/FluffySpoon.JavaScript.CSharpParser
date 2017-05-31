@@ -6,6 +6,7 @@ export { MethodParser } from './MethodParser';
 export { NamespaceParser } from './NamespaceParser';
 export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
+export { FieldParser } from './FieldParser';
 
 export {
 	CSharpType,
@@ -22,5 +23,6 @@ export {
     CSharpEnum,
     CSharpEnumOption,
     CSharpAttribute,
-    CSharpProperty
+	CSharpProperty,
+	CSharpField
 } from './Models';
