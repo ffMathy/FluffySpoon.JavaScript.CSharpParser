@@ -144,13 +144,19 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].properties.length).toEqual(4);
+			expect(file.classes[0].properties.length).toEqual(4);
+			expect(file.classes[0].properties[0].components.length).toEqual(2);
+			expect(file.classes[0].properties[1].components.length).toEqual(1);
+			expect(file.classes[0].properties[2].components.length).toEqual(2);
+			expect(file.classes[0].properties[3].components.length).toEqual(2);
 
 			expect(file.classes[0].properties[0].name).toEqual("MyProperty");
 			expect(file.classes[0].properties[0].isVirtual).toBe(false);
             expect(file.classes[0].properties[0].type.name).toEqual("string");
 
-            expect(file.classes[0].properties[1].name).toEqual("ReadOnlyProperty");
+			expect(file.classes[0].properties[1].name).toEqual("ReadOnlyProperty");
+			expect(file.classes[0].properties[1].isReadOnly).toBe(true);
+			expect(file.classes[0].properties[1].components[0].type).toEqual("get");
             expect(file.classes[0].properties[1].type.name).toEqual("string");
 
 			expect(file.classes[0].properties[2].name).toEqual("GetSetProperty");

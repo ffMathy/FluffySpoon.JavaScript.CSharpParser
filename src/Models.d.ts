@@ -87,15 +87,21 @@ export declare class CSharpField {
     type: CSharpType;
     parent: CSharpClass;
     isPublic: boolean;
+    isReadOnly: boolean;
     constructor(name: string);
+}
+export declare class CSharpPropertyComponent {
+    type: 'set' | 'get';
 }
 export declare class CSharpProperty {
     name: string;
     type: CSharpType;
     parent: CSharpClass;
+    components: CSharpPropertyComponent[];
     isVirtual: boolean;
     isPublic: boolean;
     constructor(name: string);
+    readonly isReadOnly: boolean;
 }
 export declare class CSharpAttribute {
     name: string;

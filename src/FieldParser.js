@@ -21,6 +21,7 @@ var FieldParser = (function () {
                 field.type = this.typeParser.parseType(match[1]);
                 var modifiers = match[0] || "";
                 field.isPublic = modifiers.indexOf("public") > -1;
+                field.isReadOnly = modifiers.indexOf("readonly") > -1;
                 fields.push(field);
                 console.log("Detected field", field);
             }

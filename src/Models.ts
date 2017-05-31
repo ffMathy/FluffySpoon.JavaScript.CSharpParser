@@ -178,10 +178,15 @@ export class CSharpField {
 	parent: CSharpClass;
 
 	isPublic: boolean;
+	isReadOnly: boolean;
 
 	constructor(name: string) {
 		this.name = name;
 	}
+}
+
+export class CSharpPropertyComponent {
+	type: 'set' | 'get';
 }
 
 export class CSharpProperty {
@@ -190,12 +195,20 @@ export class CSharpProperty {
     type: CSharpType;
 	parent: CSharpClass;
 
+	components: CSharpPropertyComponent[];
+
 	isVirtual: boolean;
 	isPublic: boolean;
 
     constructor(name: string) {
-        this.name = name;
-    }
+		this.name = name;
+
+		this.components = [];
+	}
+
+	get isReadOnly() {
+		return !this.components.filter(c => c.type === 'set')[0];
+	}
 }
 
 export class CSharpAttribute {

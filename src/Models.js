@@ -119,10 +119,24 @@ var CSharpField = (function () {
     return CSharpField;
 }());
 exports.CSharpField = CSharpField;
+var CSharpPropertyComponent = (function () {
+    function CSharpPropertyComponent() {
+    }
+    return CSharpPropertyComponent;
+}());
+exports.CSharpPropertyComponent = CSharpPropertyComponent;
 var CSharpProperty = (function () {
     function CSharpProperty(name) {
         this.name = name;
+        this.components = [];
     }
+    Object.defineProperty(CSharpProperty.prototype, "isReadOnly", {
+        get: function () {
+            return !this.components.filter(function (c) { return c.type === 'set'; })[0];
+        },
+        enumerable: true,
+        configurable: true
+    });
     return CSharpProperty;
 }());
 exports.CSharpProperty = CSharpProperty;

@@ -29,5 +29,6 @@ exports.CSharpEnum = Models_1.CSharpEnum;
 exports.CSharpEnumOption = Models_1.CSharpEnumOption;
 exports.CSharpAttribute = Models_1.CSharpAttribute;
 exports.CSharpProperty = Models_1.CSharpProperty;
+exports.CSharpPropertyComponent = Models_1.CSharpPropertyComponent;
 exports.CSharpField = Models_1.CSharpField;
 //# sourceMappingURL=Index.js.map

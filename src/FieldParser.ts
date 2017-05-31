@@ -30,6 +30,7 @@ export class FieldParser {
 
 				var modifiers = match[0] || "";
 				field.isPublic = modifiers.indexOf("public") > -1;
+				field.isReadOnly = modifiers.indexOf("readonly") > -1;
                 
 				fields.push(field);
 
