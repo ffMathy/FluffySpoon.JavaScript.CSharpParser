@@ -24,6 +24,7 @@ var ClassParser = (function () {
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var classObject = new Models_1.CSharpClass(match[0]);
+                classObject.innerScopeText = scope.content;
                 if (match[1]) {
                     classObject.inheritsFrom = new Models_1.CSharpType(match[1]);
                 }

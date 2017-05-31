@@ -31,7 +31,8 @@ export class ClassParser {
                 scope.prefix,
                 /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
             for (var match of matches) {
-                var classObject = new CSharpClass(match[0]);
+				var classObject = new CSharpClass(match[0]);
+				classObject.innerScopeText = scope.content;
 
 				if (match[1]) {
 					classObject.inheritsFrom = new CSharpType(match[1]);

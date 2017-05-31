@@ -126,7 +126,8 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
 
 	inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
-    
+
+    innerScopeText: string;
     name: string;
 
     constructor(name: string) {
