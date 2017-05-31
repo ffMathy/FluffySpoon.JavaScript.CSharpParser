@@ -48,7 +48,7 @@ export class MethodParser {
 
 				methods.push(method);
 
-				console.log("Detected method " + method.name);
+				console.log("Detected method", method);
 			}
 		}
 

@@ -9,6 +9,7 @@ import { RegExHelper } from './RegExHelper';
 import { MethodParser } from './MethodParser';
 import { EnumParser } from './EnumParser';
 import { PropertyParser } from './PropertyParser';
+import { FieldParser } from './FieldParser';
 
 export class ClassParser {
     private scopeHelper = new ScopeHelper();
@@ -16,6 +17,7 @@ export class ClassParser {
     private methodParser = new MethodParser();
     private enumParser = new EnumParser();
     private propertyParser = new PropertyParser();
+	private fieldParser = new FieldParser();
 
     constructor() {
 
@@ -30,10 +32,15 @@ export class ClassParser {
                 /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
             for (var match of matches) {
                 var classObject = new CSharpClass(match[0]);
-				classObject.innerScopeText = scope.content;
 
 				if (match[1]) {
 					classObject.inheritsFrom = new CSharpType(match[1]);
+				}
+
+				var fields = this.fieldParser.parseFields(scope.content);
+				for (var field of fields) {
+					field.parent = classObject;
+					classObject.fields.push(field);
 				}
 
                 var properties = this.propertyParser.parseProperties(scope.content);
@@ -62,7 +69,7 @@ export class ClassParser {
 
 				classes.push(classObject);
 
-				console.log("Detected class", classObject.name);
+				console.log("Detected class", classObject);
             }
         }
 

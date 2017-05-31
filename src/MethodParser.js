@@ -34,7 +34,7 @@ var MethodParser = (function () {
                     method.methods.push(subMethod);
                 }
                 methods.push(method);
-                console.log("Detected method " + method.name);
+                console.log("Detected method", method);
             }
         }
         return methods;

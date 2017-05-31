@@ -66,9 +66,9 @@ export declare class CSharpClass implements CSharpTypeDeclarationScope {
     classes: CSharpClass[];
     enums: CSharpEnum[];
     properties: CSharpProperty[];
+    fields: CSharpField[];
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
-    innerScopeText: string;
     name: string;
     constructor(name: string);
     readonly fullName: string;
@@ -81,11 +81,19 @@ export declare class CSharpEnum implements CSharpScope {
     constructor(name: string);
     readonly fullName: string;
 }
+export declare class CSharpField {
+    name: string;
+    type: CSharpType;
+    parent: CSharpClass;
+    isPublic: boolean;
+    constructor(name: string);
+}
 export declare class CSharpProperty {
     name: string;
     type: CSharpType;
     parent: CSharpClass;
     isVirtual: boolean;
+    isPublic: boolean;
     constructor(name: string);
 }
 export declare class CSharpAttribute {

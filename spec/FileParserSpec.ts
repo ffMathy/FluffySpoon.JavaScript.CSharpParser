@@ -167,9 +167,12 @@ describe("FileParser", function () {
 			expect(file.namespaces.length).toEqual(1);
 			expect(file.namespaces[0].classes.length).toEqual(1);
 			expect(file.namespaces[0].classes[0].properties.length).toEqual(1);
+			expect(file.namespaces[0].classes[0].fields.length).toEqual(1);
 
 			expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
 			expect(file.namespaces[0].classes[0].properties[0].name).toEqual("Name");
+			expect(file.namespaces[0].classes[0].fields[0].name).toEqual("someField");
+			expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true);
 		}));
 
 		it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', (parser) => {

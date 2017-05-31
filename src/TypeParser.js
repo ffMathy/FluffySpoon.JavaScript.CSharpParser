@@ -64,6 +64,7 @@ var TypeParser = (function () {
             name: match[0]
         };
         this.prepareTypeForGenericParameters(type, match[1]);
+        console.log("Detected type", type);
         return type;
     };
     return TypeParser;

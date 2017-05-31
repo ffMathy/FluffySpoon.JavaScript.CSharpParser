@@ -122,11 +122,11 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
     classes: CSharpClass[];
     enums: CSharpEnum[];
 	properties: CSharpProperty[];
+	fields: CSharpField[];
 
 	inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
-
-    innerScopeText: string;
+    
     name: string;
 
     constructor(name: string) {
@@ -136,7 +136,8 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
         this.methods = [];
         this.classes = [];
         this.enums = [];
-        this.properties = [];
+		this.properties = [];
+		this.fields = [];
     }
 
     get fullName() {
@@ -169,6 +170,19 @@ export class CSharpEnum implements CSharpScope {
     }
 }
 
+export class CSharpField {
+	name: string;
+
+	type: CSharpType;
+	parent: CSharpClass;
+
+	isPublic: boolean;
+
+	constructor(name: string) {
+		this.name = name;
+	}
+}
+
 export class CSharpProperty {
     name: string;
 
@@ -176,6 +190,7 @@ export class CSharpProperty {
 	parent: CSharpClass;
 
 	isVirtual: boolean;
+	isPublic: boolean;
 
     constructor(name: string) {
         this.name = name;

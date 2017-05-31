@@ -26,6 +26,7 @@ var PropertyParser = (function () {
                 property.type = this.typeParser.parseType(match[1]);
                 var modifiers = match[0] || "";
                 property.isVirtual = modifiers.indexOf("virtual") > -1;
+                property.isPublic = modifiers.indexOf("public") > -1;
                 properties.push(property);
             }
         }

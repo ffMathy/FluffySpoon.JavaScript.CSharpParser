@@ -36,6 +36,7 @@ export class PropertyParser {
 
 				var modifiers = match[0] || "";
 				property.isVirtual = modifiers.indexOf("virtual") > -1;
+				property.isPublic = modifiers.indexOf("public") > -1;
 
                 properties.push(property);
             }

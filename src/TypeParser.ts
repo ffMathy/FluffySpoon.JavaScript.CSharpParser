@@ -90,6 +90,8 @@ export class TypeParser {
 			type,
 			match[1]);
 
+		console.log("Detected type", type);
+
 		return type;
 	}
 }
