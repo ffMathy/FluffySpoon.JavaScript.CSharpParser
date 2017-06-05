@@ -1,5 +1,6 @@
 ﻿import {
 	CSharpMethod,
+    CSharpClass,
 	CSharpType,
 	CSharpMethodParameter,
 	CSharpToken,
@@ -19,7 +20,7 @@ export class MethodParser {
 
 	}
 
-	parseMethods(content: string) {
+	parseMethods(content: string, parent: CSharpClass | CSharpMethod) {
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
 		for (var scope of scopes) {
@@ -29,18 +30,29 @@ export class MethodParser {
 			for (var match of matches) {
 				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;
+				method.parent = parent;
 
 				method.returnType = this.typeParser.parseType(match[1] || "void");
 
 				var modifiers = match[0] || "";
-				method.isVirtual = modifiers.indexOf("virtual") > -1;
+				if (parent instanceof CSharpClass && parent.name === method.name) {
+					method.isConstructor = true;
+					method.isVirtual = false;
+
+					modifiers = match[1];
+				} else {
+					method.isVirtual = modifiers.indexOf("virtual") > -1;
+					method.isConstructor = false;
+				}
+
+				method.isPublic = modifiers.indexOf("public") > -1;
 
 				var parameters = this.parseMethodParameters(match[3]);
 				for (var parameter of parameters) {
 					method.parameters.push(parameter);
 				}
 
-				var subMethods = this.parseMethods(scope.content);
+				var subMethods = this.parseMethods(scope.content, method);
 				for (var subMethod of subMethods) {
 					subMethod.parent = method;
 					method.methods.push(subMethod);

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
@@ -46,7 +47,7 @@ var ClassParser = (function () {
                     enumObject.parent = classObject;
                     classObject.enums.push(enumObject);
                 }
-                var methods = this.methodParser.parseMethods(scope.content);
+                var methods = this.methodParser.parseMethods(scope.content, classObject);
                 for (var _e = 0, methods_1 = methods; _e < methods_1.length; _e++) {
                     var method = methods_1[_e];
                     method.parent = classObject;

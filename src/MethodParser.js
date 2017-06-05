@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
@@ -9,7 +10,7 @@ var MethodParser = (function () {
         this.regexHelper = new RegExHelper_1.RegExHelper();
         this.typeParser = new TypeParser_1.TypeParser();
     }
-    MethodParser.prototype.parseMethods = function (content) {
+    MethodParser.prototype.parseMethods = function (content, parent) {
         var methods = new Array();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
@@ -19,15 +20,25 @@ var MethodParser = (function () {
                 var match = matches_1[_a];
                 var method = new Models_1.CSharpMethod(match[2]);
                 method.innerScopeText = scope.content;
+                method.parent = parent;
                 method.returnType = this.typeParser.parseType(match[1] || "void");
                 var modifiers = match[0] || "";
-                method.isVirtual = modifiers.indexOf("virtual") > -1;
+                if (parent instanceof Models_1.CSharpClass && parent.name === method.name) {
+                    method.isConstructor = true;
+                    method.isVirtual = false;
+                    modifiers = match[1];
+                }
+                else {
+                    method.isVirtual = modifiers.indexOf("virtual") > -1;
+                    method.isConstructor = false;
+                }
+                method.isPublic = modifiers.indexOf("public") > -1;
                 var parameters = this.parseMethodParameters(match[3]);
                 for (var _b = 0, parameters_1 = parameters; _b < parameters_1.length; _b++) {
                     var parameter = parameters_1[_b];
                     method.parameters.push(parameter);
                 }
-                var subMethods = this.parseMethods(scope.content);
+                var subMethods = this.parseMethods(scope.content, method);
                 for (var _c = 0, subMethods_1 = subMethods; _c < subMethods_1.length; _c++) {
                     var subMethod = subMethods_1[_c];
                     subMethod.parent = method;

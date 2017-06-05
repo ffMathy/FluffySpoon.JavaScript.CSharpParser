@@ -56,7 +56,7 @@ export class ClassParser {
                     classObject.enums.push(enumObject);
                 }
 
-                var methods = this.methodParser.parseMethods(scope.content);
+                var methods = this.methodParser.parseMethods(scope.content, classObject);
                 for (var method of methods) {
                     method.parent = classObject;
                     classObject.methods.push(method);

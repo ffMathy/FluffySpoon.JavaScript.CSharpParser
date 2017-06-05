@@ -45,6 +45,7 @@ export declare class CSharpMethod implements CSharpScope {
     innerScopeText: string;
     isConstructor: boolean;
     isVirtual: boolean;
+    isPublic: boolean;
     parent: CSharpClass | CSharpMethod;
     returnType: CSharpType;
     parameters: CSharpMethodParameter[];

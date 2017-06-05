@@ -89,6 +89,7 @@ export class CSharpMethod implements CSharpScope {
 
     isConstructor: boolean;
 	isVirtual: boolean;
+	isPublic: boolean;
 
     parent: CSharpClass | CSharpMethod;
     returnType: CSharpType;
@@ -101,7 +102,7 @@ export class CSharpMethod implements CSharpScope {
 
         this.parameters = [];
         this.methods = [];
-    }
+	}
 }
 
 export type CSharpToken = boolean | number | string | CSharpNamedToken;
