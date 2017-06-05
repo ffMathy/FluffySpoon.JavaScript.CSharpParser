@@ -7,13 +7,15 @@ import { RegExHelper } from './RegExHelper';
 import { UsingsParser } from './UsingsParser';
 import { ClassParser } from './ClassParser';
 import { EnumParser } from './EnumParser';
+import { StructParser } from './StructParser';
 
 export class NamespaceParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
     private usingsParser = new UsingsParser();
     private classParser = new ClassParser();
-    private enumParser = new EnumParser();
+	private enumParser = new EnumParser();
+	private structParser = new StructParser();
 
     constructor() {
         
@@ -40,7 +42,13 @@ export class NamespaceParser {
                 for (var classObject of classes) {
                     classObject.parent = namespace;
                     namespace.classes.push(classObject);
-                }
+				}
+
+				var structs = this.structParser.parseStructs(scope.content);
+				for (var struct of structs) {
+					struct.parent = namespace;
+					namespace.structs.push(struct);
+				}
 
                 var usings = this.usingsParser.parseUsings(scope.content);
                 for (var using of usings) {

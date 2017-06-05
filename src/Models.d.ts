@@ -23,6 +23,7 @@ export declare class CSharpNamespace implements CSharpTypeDeclarationScope {
     innerScopeText: string;
     parent: CSharpNamespace;
     classes: CSharpClass[];
+    structs: CSharpStruct[];
     enums: CSharpEnum[];
     usings: CSharpUsing[];
     namespaces: CSharpNamespace[];
@@ -34,6 +35,7 @@ export declare class CSharpFile implements CSharpTypeDeclarationScope {
     name: string;
     fullName: string;
     classes: CSharpClass[];
+    structs: CSharpStruct[];
     enums: CSharpEnum[];
     usings: CSharpUsing[];
     namespaces: CSharpNamespace[];
@@ -46,7 +48,7 @@ export declare class CSharpMethod implements CSharpScope {
     isConstructor: boolean;
     isVirtual: boolean;
     isPublic: boolean;
-    parent: CSharpClass | CSharpMethod;
+    parent: CSharpClass | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
@@ -60,6 +62,16 @@ export declare class CSharpMethodParameter {
     name: string;
     type: CSharpType;
     defaultValue: CSharpToken;
+}
+export declare class CSharpStruct implements CSharpScope {
+    properties: CSharpProperty[];
+    methods: CSharpMethod[];
+    fields: CSharpField[];
+    parent: CSharpClass | CSharpNamespace | CSharpFile;
+    innerScopeText: string;
+    name: string;
+    constructor(name: string);
+    readonly fullName: string;
 }
 export declare class CSharpClass implements CSharpTypeDeclarationScope {
     constructors: CSharpMethod[];
@@ -86,7 +98,7 @@ export declare class CSharpEnum implements CSharpScope {
 export declare class CSharpField {
     name: string;
     type: CSharpType;
-    parent: CSharpClass;
+    parent: CSharpClass | CSharpStruct;
     isPublic: boolean;
     isReadOnly: boolean;
     constructor(name: string);
@@ -97,7 +109,7 @@ export declare class CSharpPropertyComponent {
 export declare class CSharpProperty {
     name: string;
     type: CSharpType;
-    parent: CSharpClass;
+    parent: CSharpClass | CSharpStruct;
     components: CSharpPropertyComponent[];
     isVirtual: boolean;
     isPublic: boolean;

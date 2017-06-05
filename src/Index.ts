@@ -7,6 +7,7 @@ export { NamespaceParser } from './NamespaceParser';
 export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
 export { FieldParser } from './FieldParser';
+export { StructParser } from './StructParser';
 
 export {
 	CSharpType,

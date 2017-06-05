@@ -6,6 +6,7 @@ var RegExHelper_1 = require("./RegExHelper");
 var UsingsParser_1 = require("./UsingsParser");
 var ClassParser_1 = require("./ClassParser");
 var EnumParser_1 = require("./EnumParser");
+var StructParser_1 = require("./StructParser");
 var NamespaceParser = (function () {
     function NamespaceParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
@@ -13,6 +14,7 @@ var NamespaceParser = (function () {
         this.usingsParser = new UsingsParser_1.UsingsParser();
         this.classParser = new ClassParser_1.ClassParser();
         this.enumParser = new EnumParser_1.EnumParser();
+        this.structParser = new StructParser_1.StructParser();
     }
     NamespaceParser.prototype.parseNamespaces = function (content) {
         var namespaces = new Array();
@@ -36,15 +38,21 @@ var NamespaceParser = (function () {
                     classObject.parent = namespace;
                     namespace.classes.push(classObject);
                 }
+                var structs = this.structParser.parseStructs(scope.content);
+                for (var _d = 0, structs_1 = structs; _d < structs_1.length; _d++) {
+                    var struct = structs_1[_d];
+                    struct.parent = namespace;
+                    namespace.structs.push(struct);
+                }
                 var usings = this.usingsParser.parseUsings(scope.content);
-                for (var _d = 0, usings_1 = usings; _d < usings_1.length; _d++) {
-                    var using = usings_1[_d];
+                for (var _e = 0, usings_1 = usings; _e < usings_1.length; _e++) {
+                    var using = usings_1[_e];
                     using.parent = namespace;
                     namespace.usings.push(using);
                 }
                 var subNamespaces = this.parseNamespaces(scope.content);
-                for (var _e = 0, subNamespaces_1 = subNamespaces; _e < subNamespaces_1.length; _e++) {
-                    var subNamespace = subNamespaces_1[_e];
+                for (var _f = 0, subNamespaces_1 = subNamespaces; _f < subNamespaces_1.length; _f++) {
+                    var subNamespace = subNamespaces_1[_f];
                     subNamespace.parent = namespace;
                     namespace.namespaces.push(subNamespace);
                 }

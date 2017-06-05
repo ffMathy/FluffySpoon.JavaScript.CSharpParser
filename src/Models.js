@@ -25,6 +25,7 @@ var CSharpNamespace = (function () {
         this.enums = [];
         this.usings = [];
         this.namespaces = [];
+        this.structs = [];
     }
     Object.defineProperty(CSharpNamespace.prototype, "fullName", {
         get: function () {
@@ -46,6 +47,7 @@ var CSharpFile = (function () {
         this.namespaces = [];
         this.classes = [];
         this.enums = [];
+        this.structs = [];
     }
     return CSharpFile;
 }());
@@ -71,6 +73,27 @@ var CSharpMethodParameter = (function () {
     return CSharpMethodParameter;
 }());
 exports.CSharpMethodParameter = CSharpMethodParameter;
+var CSharpStruct = (function () {
+    function CSharpStruct(name) {
+        this.name = name;
+        this.methods = [];
+        this.properties = [];
+        this.fields = [];
+    }
+    Object.defineProperty(CSharpStruct.prototype, "fullName", {
+        get: function () {
+            var name = this.name;
+            if (this.parent && this.parent.fullName) {
+                name = this.parent.fullName + "." + name;
+            }
+            return name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return CSharpStruct;
+}());
+exports.CSharpStruct = CSharpStruct;
 var CSharpClass = (function () {
     function CSharpClass(name) {
         this.name = name;

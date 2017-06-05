@@ -141,5 +141,12 @@ describe("FileParser", function () {
             expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface");
         }));
     });
+    describe("structs", function () {
+        it("should be able to detect structs", useCSharp('Struct.cs', function (parser) {
+            var file = parser.parseFile();
+            expect(file.structs.length).toEqual(1);
+            expect(file.structs[0].name).toEqual("MyStruct");
+        }));
+    });
 });
 //# sourceMappingURL=FileParserSpec.js.map

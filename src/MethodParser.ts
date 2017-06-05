@@ -4,7 +4,8 @@
 	CSharpType,
 	CSharpMethodParameter,
 	CSharpToken,
-	CSharpNamedToken
+	CSharpNamedToken,
+    CSharpStruct
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
@@ -20,7 +21,7 @@ export class MethodParser {
 
 	}
 
-	parseMethods(content: string, parent: CSharpClass | CSharpMethod) {
+	parseMethods(content: string, parent: CSharpClass | CSharpMethod | CSharpStruct) {
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
 		for (var scope of scopes) {

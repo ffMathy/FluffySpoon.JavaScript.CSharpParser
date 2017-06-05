@@ -136,14 +136,14 @@ describe("FileParser", function () {
             expect(file.enums[0].options[4].value).toEqual(7);
         }));
 
-    });
+	});
 
-    describe("classes", function () {
+	describe("classes", function () {
 
-        it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
-            var file = parser.parseFile();
+		it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
+			var file = parser.parseFile();
 
-            expect(file.classes.length).toEqual(1);
+			expect(file.classes.length).toEqual(1);
 			expect(file.classes[0].properties.length).toEqual(4);
 			expect(file.classes[0].properties[0].components.length).toEqual(2);
 			expect(file.classes[0].properties[1].components.length).toEqual(1);
@@ -152,12 +152,12 @@ describe("FileParser", function () {
 
 			expect(file.classes[0].properties[0].name).toEqual("MyProperty");
 			expect(file.classes[0].properties[0].isVirtual).toBe(false);
-            expect(file.classes[0].properties[0].type.name).toEqual("string");
+			expect(file.classes[0].properties[0].type.name).toEqual("string");
 
 			expect(file.classes[0].properties[1].name).toEqual("ReadOnlyProperty");
 			expect(file.classes[0].properties[1].isReadOnly).toBe(true);
 			expect(file.classes[0].properties[1].components[0].type).toEqual("get");
-            expect(file.classes[0].properties[1].type.name).toEqual("string");
+			expect(file.classes[0].properties[1].type.name).toEqual("string");
 
 			expect(file.classes[0].properties[2].name).toEqual("GetSetProperty");
 			expect(file.classes[0].properties[2].type.name).toEqual("string");
@@ -194,6 +194,18 @@ describe("FileParser", function () {
 
 			expect(file.classes[0].inheritsFrom).not.toBeUndefined();
 			expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface");
+		}));
+
+	});
+
+    describe("structs", function () {
+
+        it("should be able to detect structs", useCSharp('Struct.cs', (parser) => {
+            var file = parser.parseFile();
+
+			expect(file.structs.length).toEqual(1);
+
+			expect(file.structs[0].name).toEqual("MyStruct");
 		}));
 
     });

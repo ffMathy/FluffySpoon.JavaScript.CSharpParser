@@ -5,6 +5,7 @@ export declare class NamespaceParser {
     private usingsParser;
     private classParser;
     private enumParser;
+    private structParser;
     constructor();
     parseNamespaces(content: string): CSharpNamespace[];
 }

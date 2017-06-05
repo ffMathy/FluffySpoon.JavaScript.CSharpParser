@@ -39,7 +39,8 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
 
     parent: CSharpNamespace;
     
-    classes: CSharpClass[];
+	classes: CSharpClass[];
+	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
     usings: CSharpUsing[];
@@ -51,7 +52,8 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
         this.classes = [];
         this.enums = [];
         this.usings = [];
-        this.namespaces = [];
+		this.namespaces = [];
+		this.structs = [];
     }
     
     get fullName() {
@@ -68,7 +70,8 @@ export class CSharpFile implements CSharpTypeDeclarationScope {
     name: string;
     fullName: string;
 
-    classes: CSharpClass[];
+	classes: CSharpClass[];
+	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
     usings: CSharpUsing[];
@@ -79,7 +82,8 @@ export class CSharpFile implements CSharpTypeDeclarationScope {
         this.usings = [];
         this.namespaces = [];
         this.classes = [];
-        this.enums = [];
+		this.enums = [];
+		this.structs = [];
     }
 }
 
@@ -91,7 +95,7 @@ export class CSharpMethod implements CSharpScope {
 	isVirtual: boolean;
 	isPublic: boolean;
 
-    parent: CSharpClass | CSharpMethod;
+    parent: CSharpClass | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
 
     parameters: CSharpMethodParameter[];
@@ -115,6 +119,33 @@ export class CSharpMethodParameter {
     name: string;
     type: CSharpType;
     defaultValue: CSharpToken;
+}
+
+export class CSharpStruct implements CSharpScope {
+	properties: CSharpProperty[];
+	methods: CSharpMethod[];
+	fields: CSharpField[];
+
+	parent: CSharpClass | CSharpNamespace | CSharpFile;
+
+	innerScopeText: string;
+	name: string;
+
+	constructor(name: string) {
+		this.name = name;
+        
+		this.methods = [];
+		this.properties = [];
+		this.fields = [];
+	}
+
+	get fullName() {
+		var name = this.name;
+		if (this.parent && this.parent.fullName) {
+			name = this.parent.fullName + "." + name;
+		}
+		return name;
+	}
 }
 
 export class CSharpClass implements CSharpTypeDeclarationScope {
@@ -176,7 +207,7 @@ export class CSharpField {
 	name: string;
 
 	type: CSharpType;
-	parent: CSharpClass;
+	parent: CSharpClass | CSharpStruct;
 
 	isPublic: boolean;
 	isReadOnly: boolean;
@@ -194,7 +225,7 @@ export class CSharpProperty {
     name: string;
 
     type: CSharpType;
-	parent: CSharpClass;
+	parent: CSharpClass | CSharpStruct;
 
 	components: CSharpPropertyComponent[];
 
