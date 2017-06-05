@@ -26,5 +26,6 @@ export {
     CSharpAttribute,
 	CSharpProperty,
 	CSharpPropertyComponent,
-	CSharpField
+	CSharpField,
+	CSharpStruct
 } from './Models';

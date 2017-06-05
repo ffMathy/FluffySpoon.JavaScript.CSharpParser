@@ -34,4 +34,5 @@ exports.CSharpAttribute = Models_1.CSharpAttribute;
 exports.CSharpProperty = Models_1.CSharpProperty;
 exports.CSharpPropertyComponent = Models_1.CSharpPropertyComponent;
 exports.CSharpField = Models_1.CSharpField;
+exports.CSharpStruct = Models_1.CSharpStruct;
 //# sourceMappingURL=Index.js.map
