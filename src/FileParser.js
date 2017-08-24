@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var NamespaceParser_1 = require("./NamespaceParser");
+var ScopeHelper_1 = require("./ScopeHelper");
 var UsingsParser_1 = require("./UsingsParser");
 var ClassParser_1 = require("./ClassParser");
 var EnumParser_1 = require("./EnumParser");
@@ -14,6 +15,7 @@ var FileParser = (function () {
         this.classParser = new ClassParser_1.ClassParser();
         this.enumParser = new EnumParser_1.EnumParser();
         this.structParser = new StructParser_1.StructParser();
+        this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.contents = contents.replace(/\r\n/g, '\n');
     }
     FileParser.prototype.parseFile = function () {
