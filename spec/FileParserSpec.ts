@@ -219,6 +219,12 @@ describe("FileParser", function () {
             expect(file.classes[0].fields.length).toEqual(1);
             expect(file.classes[0].properties.length).toEqual(1);
             expect(file.classes[0].methods.length).toEqual(3);
+
+            expect(file.classes[0].methods[0].returnType.name).toEqual("void");
+
+            expect(file.classes[0].methods[1].parameters[0].defaultValue).toEqual(false);
+            expect(file.classes[0].methods[1].parameters[0].type.name).toEqual("bool");
+            expect(file.classes[0].methods[1].parameters[0].name).toEqual("parameter2");
         }));
 
     });

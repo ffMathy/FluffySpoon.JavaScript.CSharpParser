@@ -21,10 +21,12 @@ export class MethodParser {
 
 	}
 
-	parseMethods(content: string, parent: CSharpClass | CSharpMethod | CSharpStruct) {
+    parseMethods(content: string, parent: CSharpClass | CSharpMethod | CSharpStruct) {
+        console.log(content);
+
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
-		for (var scope of scopes) {
+        for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
 				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);

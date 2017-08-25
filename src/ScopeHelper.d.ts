@@ -8,8 +8,7 @@ export interface Scope {
 export declare class ScopeHelper {
     getCurlyScopes(content: string): Scope[];
     getGenericTypeScopes(content: string): Scope[];
-    getScopes(content: string, entry: string, exit: string): Scope[];
-    private getCommentScopes(content);
-    private removeComments(scope);
+    enumerateRelevantCodeCharacterRegions(content: string, enumerator?: (stringSoFar: string, character: string) => void): string;
+    private getScopes(content, entry, exit);
     private stringEndsWith(content, search);
 }

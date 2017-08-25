@@ -16,7 +16,7 @@ var FileParser = (function () {
         this.enumParser = new EnumParser_1.EnumParser();
         this.structParser = new StructParser_1.StructParser();
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
-        this.contents = contents.replace(/\r\n/g, '\n');
+        this.contents = contents.replace(/\r\n/gi, '\n').replace(/\r/gi, '\n');
     }
     FileParser.prototype.parseFile = function () {
         var file = new Models_1.CSharpFile();

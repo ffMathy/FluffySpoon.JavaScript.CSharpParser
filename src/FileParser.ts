@@ -18,7 +18,7 @@ export class FileParser {
     private scopeHelper = new ScopeHelper();
 
     constructor(private contents: string) {
-        this.contents = contents.replace(/\r\n/g, '\n');
+        this.contents = contents.replace(/\r\n/gi, '\n').replace(/\r/gi, '\n');
     }
 
     parseFile(): CSharpFile {
