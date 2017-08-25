@@ -4,6 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
+    "lib": [ "es2015", "es2017", "dom" ],
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
