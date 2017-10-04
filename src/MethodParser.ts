@@ -29,7 +29,7 @@ export class MethodParser {
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
+				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*{/g);
 			for (var match of matches) {
 				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;
