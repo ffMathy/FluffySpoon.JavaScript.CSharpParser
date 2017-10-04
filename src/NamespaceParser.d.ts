@@ -4,6 +4,7 @@ export declare class NamespaceParser {
     private regexHelper;
     private usingsParser;
     private classParser;
+    private interfaceParser;
     private enumParser;
     private structParser;
     constructor();

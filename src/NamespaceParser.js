@@ -4,6 +4,7 @@ var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
 var UsingsParser_1 = require("./UsingsParser");
 var ClassParser_1 = require("./ClassParser");
+var InterfaceParser_1 = require("./InterfaceParser");
 var EnumParser_1 = require("./EnumParser");
 var StructParser_1 = require("./StructParser");
 var NamespaceParser = (function () {
@@ -12,6 +13,7 @@ var NamespaceParser = (function () {
         this.regexHelper = new RegExHelper_1.RegExHelper();
         this.usingsParser = new UsingsParser_1.UsingsParser();
         this.classParser = new ClassParser_1.ClassParser();
+        this.interfaceParser = new InterfaceParser_1.InterfaceParser();
         this.enumParser = new EnumParser_1.EnumParser();
         this.structParser = new StructParser_1.StructParser();
     }
@@ -54,6 +56,11 @@ var NamespaceParser = (function () {
                     var subNamespace = subNamespaces_1[_f];
                     subNamespace.parent = namespace;
                     namespace.namespaces.push(subNamespace);
+                }
+                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                for (var _g = 0, interfaces_1 = interfaces; _g < interfaces_1.length; _g++) {
+                    var interfaceObject = interfaces_1[_g];
+                    namespace.interfaces.push(interfaceObject);
                 }
                 namespaces.push(namespace);
             }

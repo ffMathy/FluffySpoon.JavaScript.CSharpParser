@@ -6,6 +6,7 @@ import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { UsingsParser } from './UsingsParser';
 import { ClassParser } from './ClassParser';
+import { InterfaceParser } from './InterfaceParser';
 import { EnumParser } from './EnumParser';
 import { StructParser } from './StructParser';
 
@@ -14,6 +15,7 @@ export class NamespaceParser {
     private regexHelper = new RegExHelper();
     private usingsParser = new UsingsParser();
     private classParser = new ClassParser();
+    private interfaceParser = new InterfaceParser();
 	private enumParser = new EnumParser();
 	private structParser = new StructParser();
 
@@ -60,6 +62,11 @@ export class NamespaceParser {
                 for (var subNamespace of subNamespaces) {
                     subNamespace.parent = namespace;
                     namespace.namespaces.push(subNamespace);
+                }
+
+                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                for (var interfaceObject of interfaces) {
+                    namespace.interfaces.push(interfaceObject);
                 }
 
                 namespaces.push(namespace);

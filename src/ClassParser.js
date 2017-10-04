@@ -6,6 +6,7 @@ var MethodParser_1 = require("./MethodParser");
 var EnumParser_1 = require("./EnumParser");
 var PropertyParser_1 = require("./PropertyParser");
 var FieldParser_1 = require("./FieldParser");
+var InterfaceParser_1 = require("./InterfaceParser");
 var ClassParser = (function () {
     function ClassParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
@@ -14,6 +15,7 @@ var ClassParser = (function () {
         this.enumParser = new EnumParser_1.EnumParser();
         this.propertyParser = new PropertyParser_1.PropertyParser();
         this.fieldParser = new FieldParser_1.FieldParser();
+        this.interfaceParser = new InterfaceParser_1.InterfaceParser();
     }
     ClassParser.prototype.parseClasses = function (content) {
         var classes = new Array();
@@ -57,6 +59,11 @@ var ClassParser = (function () {
                     var subClass = subClasses_1[_f];
                     subClass.parent = classObject;
                     classObject.classes.push(subClass);
+                }
+                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                for (var _g = 0, interfaces_1 = interfaces; _g < interfaces_1.length; _g++) {
+                    var interfaceObject = interfaces_1[_g];
+                    classObject.interfaces.push(interfaceObject);
                 }
                 classes.push(classObject);
                 console.log("Detected class", classObject);

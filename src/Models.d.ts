@@ -11,19 +11,26 @@ export interface CSharpUsing {
     namespace: CSharpNamespace;
     parent?: CSharpNamespace | CSharpFile;
 }
-export interface CSharpTypeDeclarationScope extends CSharpScope {
+export interface CSharpInterfaceTypeDeclarationScope extends CSharpScope {
     name: string;
+    properties: CSharpProperty[];
+    methods: CSharpMethod[];
+}
+export interface CSharpImplementationTypeDeclarationScope extends CSharpScope {
     classes: CSharpClass[];
+    interfaces: CSharpInterface[];
     enums: CSharpEnum[];
+    name: string;
 }
 export interface CSharpScope {
     innerScopeText: string;
 }
-export declare class CSharpNamespace implements CSharpTypeDeclarationScope {
+export declare class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
     name: string;
     innerScopeText: string;
     parent: CSharpNamespace;
     classes: CSharpClass[];
+    interfaces: CSharpInterface[];
     structs: CSharpStruct[];
     enums: CSharpEnum[];
     usings: CSharpUsing[];
@@ -31,11 +38,12 @@ export declare class CSharpNamespace implements CSharpTypeDeclarationScope {
     constructor(name: string);
     readonly fullName: string;
 }
-export declare class CSharpFile implements CSharpTypeDeclarationScope {
+export declare class CSharpFile implements CSharpImplementationTypeDeclarationScope {
     innerScopeText: string;
     name: string;
     fullName: string;
     classes: CSharpClass[];
+    interfaces: CSharpInterface[];
     structs: CSharpStruct[];
     enums: CSharpEnum[];
     usings: CSharpUsing[];
@@ -48,12 +56,14 @@ export declare class CSharpMethod implements CSharpScope {
     innerScopeText: string;
     isConstructor: boolean;
     isVirtual: boolean;
-    isPublic: boolean;
-    parent: CSharpClass | CSharpMethod | CSharpStruct;
+    isBodyless: boolean;
+    parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
+    private _isPublic;
     constructor(name: string);
+    isPublic: boolean;
 }
 export declare type CSharpToken = boolean | number | string | CSharpNamedToken;
 export declare class CSharpNamedToken {
@@ -74,8 +84,19 @@ export declare class CSharpStruct implements CSharpScope {
     constructor(name: string);
     readonly fullName: string;
 }
-export declare class CSharpClass implements CSharpTypeDeclarationScope {
+export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope {
+    methods: CSharpMethod[];
+    properties: CSharpProperty[];
+    inheritsFrom?: CSharpType;
+    parent: CSharpClass | CSharpNamespace | CSharpFile;
+    innerScopeText: string;
+    name: string;
+    constructor(name: string);
+    readonly fullName: string;
+}
+export declare class CSharpClass implements CSharpImplementationTypeDeclarationScope {
     constructors: CSharpMethod[];
+    interfaces: CSharpInterface[];
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
@@ -110,7 +131,7 @@ export declare class CSharpPropertyComponent {
 export declare class CSharpProperty {
     name: string;
     type: CSharpType;
-    parent: CSharpClass | CSharpStruct;
+    parent: CSharpClass | CSharpStruct | CSharpInterface;
     components: CSharpPropertyComponent[];
     isVirtual: boolean;
     isPublic: boolean;

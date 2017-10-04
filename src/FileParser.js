@@ -4,6 +4,7 @@ var NamespaceParser_1 = require("./NamespaceParser");
 var ScopeHelper_1 = require("./ScopeHelper");
 var UsingsParser_1 = require("./UsingsParser");
 var ClassParser_1 = require("./ClassParser");
+var InterfaceParser_1 = require("./InterfaceParser");
 var EnumParser_1 = require("./EnumParser");
 var StructParser_1 = require("./StructParser");
 var FileParser = (function () {
@@ -12,6 +13,7 @@ var FileParser = (function () {
         this.namespaceParser = new NamespaceParser_1.NamespaceParser();
         this.usingsParser = new UsingsParser_1.UsingsParser();
         this.classParser = new ClassParser_1.ClassParser();
+        this.interfaceParser = new InterfaceParser_1.InterfaceParser();
         this.enumParser = new EnumParser_1.EnumParser();
         this.structParser = new StructParser_1.StructParser();
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
@@ -25,6 +27,7 @@ var FileParser = (function () {
         file.classes = this.classParser.parseClasses(file.innerScopeText);
         file.enums = this.enumParser.parseEnums(file.innerScopeText);
         file.structs = this.structParser.parseStructs(file.innerScopeText);
+        file.interfaces = this.interfaceParser.parseInterfaces(file.innerScopeText);
         return file;
     };
     return FileParser;

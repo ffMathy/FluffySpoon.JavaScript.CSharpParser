@@ -6,6 +6,7 @@ import { NamespaceParser } from './NamespaceParser';
 import { ScopeHelper } from './ScopeHelper';
 import { UsingsParser } from './UsingsParser';
 import { ClassParser } from './ClassParser';
+import { InterfaceParser } from './InterfaceParser';
 import { EnumParser } from './EnumParser';
 import { StructParser } from './StructParser';
 
@@ -13,6 +14,7 @@ export class FileParser {
     private namespaceParser = new NamespaceParser();
     private usingsParser = new UsingsParser();
     private classParser = new ClassParser();
+    private interfaceParser = new InterfaceParser();
     private enumParser = new EnumParser();
     private structParser = new StructParser();
     private scopeHelper = new ScopeHelper();
@@ -31,6 +33,7 @@ export class FileParser {
         file.classes = this.classParser.parseClasses(file.innerScopeText);
 		file.enums = this.enumParser.parseEnums(file.innerScopeText);
         file.structs = this.structParser.parseStructs(file.innerScopeText);
+        file.interfaces = this.interfaceParser.parseInterfaces(file.innerScopeText);
         
         return file;
     }

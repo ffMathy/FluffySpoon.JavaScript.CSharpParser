@@ -13,7 +13,7 @@ function useCSharp(file: string, callback: (parser: FileParser) => void) {
 
 describe("FileParser", function () {
 
-    describe("usings", function () {
+    describe("usings:", function () {
         
         it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', (parser) => {
             var file = parser.parseFile();
@@ -43,7 +43,7 @@ describe("FileParser", function () {
 
     });
 
-    describe("namespaces", function () {
+    describe("namespaces:", function () {
 
         it("should be able to fetch file containing scoped namespaces", useCSharp('NamespacesNested.cs', (parser) => {
             var file = parser.parseFile();
@@ -61,7 +61,7 @@ describe("FileParser", function () {
 
     });
 
-    describe("methods", function () {
+    describe("methods:", function () {
 
         it("should be able to fetch methods inside classes and their parameters", useCSharp('MethodInsideClass.cs', (parser) => {
             var file = parser.parseFile();
@@ -99,7 +99,7 @@ describe("FileParser", function () {
 
     });
 
-    describe("enums", function () {
+    describe("enums:", function () {
 
         it("should be able to fetch enums and the appropriate values", useCSharp('Enum.cs', (parser) => {
             var file = parser.parseFile();
@@ -138,7 +138,28 @@ describe("FileParser", function () {
 
 	});
 
-	describe("classes", function () {
+    describe("interfaces:", function() {
+
+		it("should be able to fetch interfaces inside namespaces", useCSharp('InterfaceInsideNamespace.cs', (parser) => {
+			var file = parser.parseFile();
+
+			expect(file.namespaces.length).toEqual(1);
+			expect(file.namespaces[0].interfaces.length).toEqual(1);
+			expect(file.namespaces[0].interfaces[0].properties.length).toEqual(1);
+			expect(file.namespaces[0].interfaces[0].methods.length).toEqual(1);
+
+			expect(file.namespaces[0].interfaces[0].name).toEqual("MyPoco");
+
+			expect(file.namespaces[0].interfaces[0].properties[0].name).toEqual("Name");
+			expect(file.namespaces[0].interfaces[0].properties[0].type.name).toEqual("Array<>");
+			expect(file.namespaces[0].interfaces[0].properties[0].type.genericParameters[0].name).toEqual("string");
+
+			expect(file.namespaces[0].interfaces[0].methods[0].name).toEqual("SomeMethod");
+		}));
+
+    });
+
+	describe("classes:", function () {
 
 		it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
 			var file = parser.parseFile();
@@ -202,7 +223,7 @@ describe("FileParser", function () {
 
 	});
 
-    describe("structs", function () {
+    describe("structs:", function () {
 
         it("should be able to detect structs", useCSharp('Struct.cs', (parser) => {
             var file = parser.parseFile();
@@ -214,7 +235,7 @@ describe("FileParser", function () {
 
     });
 
-    describe("comments", function () {
+    describe("comments:", function () {
 
         it("should be able to remove comments from output", useCSharp('Comments.cs', (parser) => {
             var file = parser.parseFile();

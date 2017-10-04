@@ -5,7 +5,8 @@
 	CSharpMethodParameter,
 	CSharpToken,
 	CSharpNamedToken,
-    CSharpStruct
+    CSharpStruct,
+	CSharpInterface
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
@@ -21,7 +22,7 @@ export class MethodParser {
 
 	}
 
-    parseMethods(content: string, parent: CSharpClass | CSharpMethod | CSharpStruct) {
+    parseMethods(content: string, parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct) {
         console.log(content);
 
 		var methods = new Array<CSharpMethod>();
@@ -29,7 +30,7 @@ export class MethodParser {
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*{/g);
+				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
 			for (var match of matches) {
 				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;
@@ -49,6 +50,7 @@ export class MethodParser {
 				}
 
 				method.isPublic = modifiers.indexOf("public") > -1;
+				method.isBodyless = match[4] === ";";
 
 				var parameters = this.parseMethodParameters(match[3]);
 				for (var parameter of parameters) {

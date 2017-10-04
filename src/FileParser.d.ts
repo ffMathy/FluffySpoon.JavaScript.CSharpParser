@@ -4,6 +4,7 @@ export declare class FileParser {
     private namespaceParser;
     private usingsParser;
     private classParser;
+    private interfaceParser;
     private enumParser;
     private structParser;
     private scopeHelper;

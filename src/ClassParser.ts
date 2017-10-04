@@ -10,6 +10,7 @@ import { MethodParser } from './MethodParser';
 import { EnumParser } from './EnumParser';
 import { PropertyParser } from './PropertyParser';
 import { FieldParser } from './FieldParser';
+import { InterfaceParser } from './InterfaceParser';
 
 export class ClassParser {
     private scopeHelper = new ScopeHelper();
@@ -18,6 +19,7 @@ export class ClassParser {
     private enumParser = new EnumParser();
     private propertyParser = new PropertyParser();
 	private fieldParser = new FieldParser();
+	private interfaceParser = new InterfaceParser();
 
     constructor() {
 
@@ -66,6 +68,11 @@ export class ClassParser {
                 for (var subClass of subClasses) {
                     subClass.parent = classObject;
                     classObject.classes.push(subClass);
+                }
+
+                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                for (var interfaceObject of interfaces) {
+                    classObject.interfaces.push(interfaceObject);
                 }
 
 				classes.push(classObject);

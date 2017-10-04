@@ -25,6 +25,7 @@ var CSharpNamespace = (function () {
         this.usings = [];
         this.namespaces = [];
         this.structs = [];
+        this.interfaces = [];
     }
     Object.defineProperty(CSharpNamespace.prototype, "fullName", {
         get: function () {
@@ -47,6 +48,7 @@ var CSharpFile = (function () {
         this.classes = [];
         this.enums = [];
         this.structs = [];
+        this.interfaces = [];
     }
     return CSharpFile;
 }());
@@ -57,6 +59,16 @@ var CSharpMethod = (function () {
         this.parameters = [];
         this.methods = [];
     }
+    Object.defineProperty(CSharpMethod.prototype, "isPublic", {
+        get: function () {
+            return this._isPublic || this.parent instanceof CSharpInterface;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return CSharpMethod;
 }());
 exports.CSharpMethod = CSharpMethod;
@@ -93,6 +105,26 @@ var CSharpStruct = (function () {
     return CSharpStruct;
 }());
 exports.CSharpStruct = CSharpStruct;
+var CSharpInterface = (function () {
+    function CSharpInterface(name) {
+        this.name = name;
+        this.methods = [];
+        this.properties = [];
+    }
+    Object.defineProperty(CSharpInterface.prototype, "fullName", {
+        get: function () {
+            var name = this.name;
+            if (this.parent && this.parent.fullName) {
+                name = this.parent.fullName + "." + name;
+            }
+            return name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return CSharpInterface;
+}());
+exports.CSharpInterface = CSharpInterface;
 var CSharpClass = (function () {
     function CSharpClass(name) {
         this.name = name;
@@ -102,6 +134,7 @@ var CSharpClass = (function () {
         this.enums = [];
         this.properties = [];
         this.fields = [];
+        this.interfaces = [];
     }
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {

@@ -6,6 +6,7 @@ export declare class ClassParser {
     private enumParser;
     private propertyParser;
     private fieldParser;
+    private interfaceParser;
     constructor();
     parseClasses(content: string): CSharpClass[];
 }

@@ -24,23 +24,31 @@ export interface CSharpUsing {
     parent?: CSharpNamespace|CSharpFile;
 }
 
-export interface CSharpTypeDeclarationScope extends CSharpScope {
+export interface CSharpInterfaceTypeDeclarationScope extends CSharpScope {
     name: string;
+    properties: CSharpProperty[];
+    methods: CSharpMethod[];
+}
+
+export interface CSharpImplementationTypeDeclarationScope extends CSharpScope {
     classes: CSharpClass[];
+    interfaces: CSharpInterface[];
     enums: CSharpEnum[];
+    name: string;
 }
 
 export interface CSharpScope {
     innerScopeText: string;
 }
 
-export class CSharpNamespace implements CSharpTypeDeclarationScope {
+export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
     name: string;
     innerScopeText: string;
 
     parent: CSharpNamespace;
     
 	classes: CSharpClass[];
+    interfaces: CSharpInterface[];
 	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
@@ -55,6 +63,7 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
         this.usings = [];
 		this.namespaces = [];
 		this.structs = [];
+        this.interfaces = [];
     }
     
     get fullName() {
@@ -66,12 +75,13 @@ export class CSharpNamespace implements CSharpTypeDeclarationScope {
     }
 }
 
-export class CSharpFile implements CSharpTypeDeclarationScope {
+export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
     innerScopeText: string;
     name: string;
     fullName: string;
 
 	classes: CSharpClass[];
+    interfaces: CSharpInterface[];
 	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
@@ -85,6 +95,7 @@ export class CSharpFile implements CSharpTypeDeclarationScope {
         this.classes = [];
 		this.enums = [];
 		this.structs = [];
+        this.interfaces = [];
     }
 }
 
@@ -94,13 +105,15 @@ export class CSharpMethod implements CSharpScope {
 
     isConstructor: boolean;
 	isVirtual: boolean;
-	isPublic: boolean;
+    isBodyless: boolean;
 
-    parent: CSharpClass | CSharpMethod | CSharpStruct;
+    parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
 
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
+
+	private _isPublic: boolean;
 
     constructor(name: string) {
         this.name = name;
@@ -108,6 +121,14 @@ export class CSharpMethod implements CSharpScope {
         this.parameters = [];
         this.methods = [];
 	}
+
+    public get isPublic() {
+        return this._isPublic || this.parent instanceof CSharpInterface;
+    }
+
+    public set isPublic(isPublic: boolean) {
+        this._isPublic = isPublic;
+    }
 }
 
 export type CSharpToken = boolean | number | string | CSharpNamedToken;
@@ -149,8 +170,35 @@ export class CSharpStruct implements CSharpScope {
 	}
 }
 
-export class CSharpClass implements CSharpTypeDeclarationScope {
+export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope {
+    methods: CSharpMethod[];
+	properties: CSharpProperty[];
+
+	inheritsFrom?: CSharpType;
+    parent: CSharpClass | CSharpNamespace | CSharpFile;
+
+    innerScopeText: string;
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+
+        this.methods = [];
+		this.properties = [];
+    }
+
+    get fullName() {
+        var name = this.name;
+        if (this.parent && this.parent.fullName) {
+            name = this.parent.fullName + "." + name;
+        }
+        return name;
+    }
+}
+
+export class CSharpClass implements CSharpImplementationTypeDeclarationScope {
     constructors: CSharpMethod[];
+    interfaces: CSharpInterface[];
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
@@ -172,6 +220,7 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
         this.enums = [];
 		this.properties = [];
 		this.fields = [];
+        this.interfaces = [];
     }
 
     get fullName() {
@@ -226,7 +275,7 @@ export class CSharpProperty {
     name: string;
 
     type: CSharpType;
-	parent: CSharpClass | CSharpStruct;
+	parent: CSharpClass | CSharpStruct | CSharpInterface;
 
 	components: CSharpPropertyComponent[];
 
