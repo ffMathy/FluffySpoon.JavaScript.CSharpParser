@@ -84,8 +84,8 @@ export class TypeParser {
 
 		var isOptional = !!match[2];
 		var type = <CSharpType>{
-			name: match[0] + (isOptional ? "?" : ""),
-			isOptional
+			name: match[0],
+			isNullable: isOptional
 		};
 
 		this.prepareTypeForGenericParameters(

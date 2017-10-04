@@ -1,15 +1,12 @@
 ﻿export class CSharpType {
     name: string;
 	namespace: CSharpNamespace;
+    isNullable: boolean;
 
 	genericParameters: CSharpType[];
 
     constructor(name: string) {
         this.name = name;
-    }
-
-    get isOptional() {
-        return this.name.substr(this.name.length-1) === "?";
     }
 
     get fullName() {

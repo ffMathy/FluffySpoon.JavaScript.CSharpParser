@@ -1,9 +1,9 @@
 export declare class CSharpType {
     name: string;
     namespace: CSharpNamespace;
+    isNullable: boolean;
     genericParameters: CSharpType[];
     constructor(name: string);
-    readonly isOptional: boolean;
     readonly fullName: string;
 }
 export interface CSharpUsing {

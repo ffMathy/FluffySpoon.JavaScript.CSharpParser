@@ -3,13 +3,6 @@ var CSharpType = (function () {
     function CSharpType(name) {
         this.name = name;
     }
-    Object.defineProperty(CSharpType.prototype, "isOptional", {
-        get: function () {
-            return this.name.substr(this.name.length - 1) === "?";
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(CSharpType.prototype, "fullName", {
         get: function () {
             var name = this.name;

@@ -62,8 +62,8 @@ var TypeParser = (function () {
             return null;
         var isOptional = !!match[2];
         var type = {
-            name: match[0] + (isOptional ? "?" : ""),
-            isOptional: isOptional
+            name: match[0],
+            isNullable: isOptional
         };
         this.prepareTypeForGenericParameters(type, match[1]);
         console.log("Detected type", type);
