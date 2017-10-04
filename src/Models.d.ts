@@ -3,6 +3,7 @@ export declare class CSharpType {
     namespace: CSharpNamespace;
     genericParameters: CSharpType[];
     constructor(name: string);
+    readonly isOptional: boolean;
     readonly fullName: string;
 }
 export interface CSharpUsing {

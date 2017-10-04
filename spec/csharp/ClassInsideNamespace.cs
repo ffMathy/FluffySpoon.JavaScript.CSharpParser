@@ -6,7 +6,7 @@ namespace MyNamespace.Domain
 	{
 		public string Name { get; set; }
 
-		public string someField;
+		public int? someField;
 
         public MyPoco()
 		{

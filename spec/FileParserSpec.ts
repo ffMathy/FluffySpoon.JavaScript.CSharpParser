@@ -182,6 +182,8 @@ describe("FileParser", function () {
 
 			expect(file.namespaces[0].classes[0].fields[0].name).toEqual("someField");
 			expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true);
+			expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int?");
+			expect(file.namespaces[0].classes[0].fields[0].type.isOptional).toBe(true);
 
 			expect(file.namespaces[0].classes[0].methods[0].name).toEqual("MyPoco");
 			expect(file.namespaces[0].classes[0].methods[0].isConstructor).toBe(true);

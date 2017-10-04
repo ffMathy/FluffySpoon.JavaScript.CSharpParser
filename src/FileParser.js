@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var NamespaceParser_1 = require("./NamespaceParser");
 var ScopeHelper_1 = require("./ScopeHelper");

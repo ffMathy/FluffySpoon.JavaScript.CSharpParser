@@ -77,13 +77,15 @@ export class TypeParser {
 	parseType(typeString: string): CSharpType {
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			/(\w+)(?:\s*<\s*(.+)\s*>)?/g);
+			/(\w+)(?:\s*<\s*(.+)\s*>)?(\?)?/g);
 		var match = matches[0];
 		if (!match)
 			return null;
 
+		var isOptional = !!match[2];
 		var type = <CSharpType>{
-			name: match[0]
+			name: match[0] + (isOptional ? "?" : ""),
+			isOptional
 		};
 
 		this.prepareTypeForGenericParameters(

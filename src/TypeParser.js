@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
 var TypeParser = (function () {
@@ -57,12 +56,14 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
-        var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?/g);
+        var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?)?/g);
         var match = matches[0];
         if (!match)
             return null;
+        var isOptional = !!match[2];
         var type = {
-            name: match[0]
+            name: match[0] + (isOptional ? "?" : ""),
+            isOptional: isOptional
         };
         this.prepareTypeForGenericParameters(type, match[1]);
         console.log("Detected type", type);

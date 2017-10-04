@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var ClassParser_1 = require("./ClassParser");
 exports.ClassParser = ClassParser_1.ClassParser;
 var EnumParser_1 = require("./EnumParser");

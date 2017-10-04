@@ -8,6 +8,10 @@
         this.name = name;
     }
 
+    get isOptional() {
+        return this.name.substr(this.name.length-1) === "?";
+    }
+
     get fullName() {
         var name = this.name;
         if (this.namespace && this.namespace.fullName) {
