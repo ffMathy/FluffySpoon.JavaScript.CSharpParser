@@ -128,6 +128,8 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].methods.length).toEqual(1);
             expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
             expect(file.namespaces[0].classes[0].properties[0].name).toEqual("Name");
+            expect(file.namespaces[0].classes[0].properties[0].type.name).toEqual("Array<>");
+            expect(file.namespaces[0].classes[0].properties[0].type.genericParameters[0].name).toEqual("string");
             expect(file.namespaces[0].classes[0].fields[0].name).toEqual("someField");
             expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true);
             expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int");

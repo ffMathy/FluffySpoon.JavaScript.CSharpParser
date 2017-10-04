@@ -77,20 +77,30 @@ export class TypeParser {
 	parseType(typeString: string): CSharpType {
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			/(\w+)(?:\s*<\s*(.+)\s*>)?(\?)?/g);
+			/(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
 		var match = matches[0];
 		if (!match)
 			return null;
 
-		var isOptional = !!match[2];
+		var isNullable = match[2] === "?";
+		var isArray = match[2] === "[]";
+
+		var genericParameters = match[1];
+
+		var name = match[0];
+		if(isArray) {
+			genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
+			name = "Array";
+		}
+
 		var type = <CSharpType>{
-			name: match[0],
-			isNullable: isOptional
+			name,
+			isNullable
 		};
 
 		this.prepareTypeForGenericParameters(
 			type,
-			match[1]);
+			genericParameters);
 
 		console.log("Detected type", type);
 

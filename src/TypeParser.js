@@ -56,16 +56,23 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
-        var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?)?/g);
+        var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
         var match = matches[0];
         if (!match)
             return null;
-        var isOptional = !!match[2];
+        var isNullable = match[2] === "?";
+        var isArray = match[2] === "[]";
+        var genericParameters = match[1];
+        var name = match[0];
+        if (isArray) {
+            genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
+            name = "Array";
+        }
         var type = {
-            name: match[0],
-            isNullable: isOptional
+            name: name,
+            isNullable: isNullable
         };
-        this.prepareTypeForGenericParameters(type, match[1]);
+        this.prepareTypeForGenericParameters(type, genericParameters);
         console.log("Detected type", type);
         return type;
     };
