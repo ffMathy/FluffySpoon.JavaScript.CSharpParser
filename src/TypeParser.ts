@@ -17,10 +17,11 @@ export class TypeParser {
 		if (!prefix)
 			return null;
 
-		var result = prefix;
+		var result = prefix.trim();
 		if (result.lastIndexOf("<") > -1) {
 			result = result.substr(0, result.length - 1);
 		}
+
 	    result = result.trim();
 		if (result.indexOf(",") == 0) {
 			result = result
@@ -49,18 +50,22 @@ export class TypeParser {
 		var result = new Array<CSharpType>();
 		if (!content)
 			return null;
-
+			
 		var scopes = this.scopeHelper.getGenericTypeScopes(content);
 		for (var scope of scopes) {
-			if (scope.prefix.trim() === ",")
+			var trimmedPrefix = scope.prefix.trim();
+			if (trimmedPrefix === ",")
 				continue;
 
-			var typeRegions = scope.prefix.split(",");
+			var typeRegions = trimmedPrefix.split(",");
 			for (var typeRegion of typeRegions) {
 				var type = <CSharpType>{};
 				type.name = this.getTypeNameFromGenericScopePrefix(typeRegion);
 
-				if (!type.name)
+				var arrowTrimmedName = type.name
+					.replace(/</g, "")
+					.replace(/>/g, "");
+				if (!arrowTrimmedName)
 					continue;
 
 				this.prepareTypeForGenericParameters(

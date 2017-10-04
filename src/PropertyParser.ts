@@ -31,7 +31,7 @@ export class PropertyParser {
 			var matchCandidate = scope.prefix + subScopeContent;
 			var matches = this.regexHelper.getMatches(
 				matchCandidate,
-				/((?:\w+\s)*)([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+				/((?:\w+\s)*)([^\s]+?(?:<.+>)?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
 			for (var match of matches) {
 				var property = new CSharpProperty(match[2]);
 				property.type = this.typeParser.parseType(match[1]);

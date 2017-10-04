@@ -9,7 +9,7 @@ var TypeParser = (function () {
     TypeParser.prototype.getTypeNameFromGenericScopePrefix = function (prefix) {
         if (!prefix)
             return null;
-        var result = prefix;
+        var result = prefix.trim();
         if (result.lastIndexOf("<") > -1) {
             result = result.substr(0, result.length - 1);
         }
@@ -37,17 +37,23 @@ var TypeParser = (function () {
         var result = new Array();
         if (!content)
             return null;
+        console.log("Parsing generic arguments", content);
         var scopes = this.scopeHelper.getGenericTypeScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            if (scope.prefix.trim() === ",")
+            var trimmedPrefix = scope.prefix.trim();
+            if (trimmedPrefix === ",")
                 continue;
-            var typeRegions = scope.prefix.split(",");
+            var typeRegions = trimmedPrefix.split(",");
             for (var _a = 0, typeRegions_1 = typeRegions; _a < typeRegions_1.length; _a++) {
                 var typeRegion = typeRegions_1[_a];
                 var type = {};
                 type.name = this.getTypeNameFromGenericScopePrefix(typeRegion);
-                if (!type.name)
+                var arrowTrimmedName = type.name
+                    .replace(/</g, "")
+                    .replace(/>/g, "");
+                console.log("arrow trimmed name", arrowTrimmedName);
+                if (!arrowTrimmedName)
                     continue;
                 this.prepareTypeForGenericParameters(type, scope.content);
                 result.push(type);
@@ -56,6 +62,7 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
+        console.log("Type scanning", typeString);
         var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
         var match = matches[0];
         if (!match)

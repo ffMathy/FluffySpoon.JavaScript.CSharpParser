@@ -43,6 +43,27 @@ describe("FileParser", function () {
 
     });
 
+    describe("generics:", function () {
+
+        it("should be able to handle generics", useCSharp('Generics.cs', (parser) => {
+            var file = parser.parseFile();
+
+            expect(file.classes.length).toEqual(1);
+            expect(file.classes[0].properties.length).toEqual(2);
+
+            expect(file.classes[0].properties[0].name).toEqual('Name');
+            expect(file.classes[0].properties[0].type.name).toEqual('SomeFoo<,>');
+            expect(file.classes[0].properties[0].type.genericParameters[0].name).toEqual('SomeBar');
+            expect(file.classes[0].properties[0].type.genericParameters[1].name).toEqual('SomeThing');
+
+            expect(file.classes[0].properties[1].name).toEqual('Foo');
+            expect(file.classes[0].properties[1].type.name).toEqual('SomeFoo<,>');
+            expect(file.classes[0].properties[1].type.genericParameters[0].name).toEqual('SomeBar<>');
+            expect(file.classes[0].properties[1].type.genericParameters[1].name).toEqual('SomeThing<>');
+        }));
+
+    });
+
     describe("namespaces:", function () {
 
         it("should be able to fetch file containing scoped namespaces", useCSharp('NamespacesNested.cs', (parser) => {
