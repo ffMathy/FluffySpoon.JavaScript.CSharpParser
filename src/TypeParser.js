@@ -37,7 +37,6 @@ var TypeParser = (function () {
         var result = new Array();
         if (!content)
             return null;
-        console.log("Parsing generic arguments", content);
         var scopes = this.scopeHelper.getGenericTypeScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
@@ -52,7 +51,6 @@ var TypeParser = (function () {
                 var arrowTrimmedName = type.name
                     .replace(/</g, "")
                     .replace(/>/g, "");
-                console.log("arrow trimmed name", arrowTrimmedName);
                 if (!arrowTrimmedName)
                     continue;
                 this.prepareTypeForGenericParameters(type, scope.content);
@@ -62,7 +60,6 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
-        console.log("Type scanning", typeString);
         var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
         var match = matches[0];
         if (!match)

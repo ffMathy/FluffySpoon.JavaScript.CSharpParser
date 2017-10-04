@@ -7,6 +7,7 @@ var EnumParser_1 = require("./EnumParser");
 var PropertyParser_1 = require("./PropertyParser");
 var FieldParser_1 = require("./FieldParser");
 var InterfaceParser_1 = require("./InterfaceParser");
+var TypeParser_1 = require("./TypeParser");
 var ClassParser = (function () {
     function ClassParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
@@ -16,19 +17,21 @@ var ClassParser = (function () {
         this.propertyParser = new PropertyParser_1.PropertyParser();
         this.fieldParser = new FieldParser_1.FieldParser();
         this.interfaceParser = new InterfaceParser_1.InterfaceParser();
+        this.typeParser = new TypeParser_1.TypeParser();
     }
     ClassParser.prototype.parseClasses = function (content) {
         var classes = new Array();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?(?:\:\s*(\w+?)\s*)?\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var classObject = new Models_1.CSharpClass(match[0]);
                 classObject.innerScopeText = scope.content;
-                if (match[1]) {
-                    classObject.inheritsFrom = new Models_1.CSharpType(match[1]);
+                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
+                if (match[2]) {
+                    classObject.inheritsFrom = new Models_1.CSharpType(match[2]);
                 }
                 var fields = this.fieldParser.parseFields(scope.content);
                 for (var _b = 0, fields_1 = fields; _b < fields_1.length; _b++) {

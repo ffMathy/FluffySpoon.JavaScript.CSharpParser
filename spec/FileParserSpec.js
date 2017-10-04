@@ -155,7 +155,9 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].properties.length).toEqual(1);
             expect(file.namespaces[0].classes[0].fields.length).toEqual(1);
             expect(file.namespaces[0].classes[0].methods.length).toEqual(1);
+            expect(file.namespaces[0].classes[0].genericParameters.length).toEqual(1);
             expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
+            expect(file.namespaces[0].classes[0].genericParameters[0].name).toEqual("WithGenerics");
             expect(file.namespaces[0].classes[0].properties[0].name).toEqual("Name");
             expect(file.namespaces[0].classes[0].properties[0].type.name).toEqual("Array<>");
             expect(file.namespaces[0].classes[0].properties[0].type.genericParameters[0].name).toEqual("string");

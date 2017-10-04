@@ -25,6 +25,9 @@ export interface CSharpImplementationTypeDeclarationScope extends CSharpScope {
 export interface CSharpScope {
     innerScopeText: string;
 }
+export interface CSharpGenericParameterContainer {
+    genericParameters: CSharpType[];
+}
 export declare class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
     name: string;
     innerScopeText: string;
@@ -84,17 +87,18 @@ export declare class CSharpStruct implements CSharpScope {
     constructor(name: string);
     readonly fullName: string;
 }
-export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope {
+export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSharpGenericParameterContainer {
     methods: CSharpMethod[];
     properties: CSharpProperty[];
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
+    genericParameters: CSharpType[];
     constructor(name: string);
     readonly fullName: string;
 }
-export declare class CSharpClass implements CSharpImplementationTypeDeclarationScope {
+export declare class CSharpClass implements CSharpImplementationTypeDeclarationScope, CSharpGenericParameterContainer {
     constructors: CSharpMethod[];
     interfaces: CSharpInterface[];
     methods: CSharpMethod[];
@@ -106,6 +110,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
+    genericParameters: CSharpType[];
     constructor(name: string);
     readonly fullName: string;
 }

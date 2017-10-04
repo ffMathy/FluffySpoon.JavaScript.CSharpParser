@@ -2,7 +2,7 @@
 
 namespace MyNamespace.Domain
 {
-    public abstract class MyPoco
+    public abstract class MyPoco<WithGenerics>
 	{
 		public string[] Name { get; set; }
 

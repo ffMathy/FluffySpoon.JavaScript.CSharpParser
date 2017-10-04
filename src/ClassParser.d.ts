@@ -7,6 +7,7 @@ export declare class ClassParser {
     private propertyParser;
     private fieldParser;
     private interfaceParser;
+    private typeParser;
     constructor();
     parseClasses(content: string): CSharpClass[];
 }

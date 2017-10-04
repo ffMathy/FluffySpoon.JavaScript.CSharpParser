@@ -4,6 +4,7 @@ export declare class InterfaceParser {
     private regexHelper;
     private methodParser;
     private propertyParser;
+    private typeParser;
     constructor();
     parseInterfaces(content: string): CSharpInterface[];
 }
