@@ -134,9 +134,10 @@ export declare class CSharpProperty {
     parent: CSharpClass | CSharpStruct | CSharpInterface;
     components: CSharpPropertyComponent[];
     isVirtual: boolean;
-    isPublic: boolean;
+    private _isPublic;
     constructor(name: string);
     readonly isReadOnly: boolean;
+    isPublic: boolean;
 }
 export declare class CSharpAttribute {
     name: string;

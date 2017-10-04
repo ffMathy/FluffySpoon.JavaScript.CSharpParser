@@ -193,6 +193,16 @@ var CSharpProperty = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(CSharpProperty.prototype, "isPublic", {
+        get: function () {
+            return this._isPublic || this.parent instanceof CSharpInterface;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return CSharpProperty;
 }());
 exports.CSharpProperty = CSharpProperty;

@@ -280,7 +280,8 @@ export class CSharpProperty {
 	components: CSharpPropertyComponent[];
 
 	isVirtual: boolean;
-	isPublic: boolean;
+    
+	private _isPublic: boolean;
 
     constructor(name: string) {
 		this.name = name;
@@ -291,6 +292,14 @@ export class CSharpProperty {
 	get isReadOnly() {
 		return !this.components.filter(c => c.type === 'set')[0];
 	}
+
+    public get isPublic() {
+        return this._isPublic || this.parent instanceof CSharpInterface;
+    }
+
+    public set isPublic(isPublic: boolean) {
+        this._isPublic = isPublic;
+    }
 }
 
 export class CSharpAttribute {
