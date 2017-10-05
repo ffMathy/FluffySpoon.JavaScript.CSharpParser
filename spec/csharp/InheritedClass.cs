@@ -1,4 +1,4 @@
-﻿class MyClass : IMyInterface
+﻿class MyClass : IMyInterface<Foo>
 {
 	void Bar()
 	{

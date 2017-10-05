@@ -26,14 +26,14 @@ export class InterfaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /interface\s+(\w+?)\s*(?:<\s*(.+)\s*>)?(?:\:\s*(\w+?)\s*)?\s*{/g);
+                /interface\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
             for (var match of matches) {
 				var interfaceObject = new CSharpInterface(match[0]);
 				interfaceObject.innerScopeText = scope.content;
                 interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
 
 				if (match[2]) {
-					interfaceObject.inheritsFrom = new CSharpType(match[2]);
+					interfaceObject.inheritsFrom = this.typeParser.parseType(match[2]);
 				}
 
                 var properties = this.propertyParser.parseProperties(scope.content);

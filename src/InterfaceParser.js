@@ -18,14 +18,14 @@ var InterfaceParser = (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /interface\s+(\w+?)\s*(?:<\s*(.+)\s*>)?(?:\:\s*(\w+?)\s*)?\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /interface\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var interfaceObject = new Models_1.CSharpInterface(match[0]);
                 interfaceObject.innerScopeText = scope.content;
                 interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
                 if (match[2]) {
-                    interfaceObject.inheritsFrom = new Models_1.CSharpType(match[2]);
+                    interfaceObject.inheritsFrom = this.typeParser.parseType(match[2]);
                 }
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var _b = 0, properties_1 = properties; _b < properties_1.length; _b++) {

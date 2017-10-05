@@ -24,14 +24,14 @@ var ClassParser = (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?(?:\:\s*(\w+?)\s*)?\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var classObject = new Models_1.CSharpClass(match[0]);
                 classObject.innerScopeText = scope.content;
                 classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
                 if (match[2]) {
-                    classObject.inheritsFrom = new Models_1.CSharpType(match[2]);
+                    classObject.inheritsFrom = this.typeParser.parseType(match[2]);
                 }
                 var fields = this.fieldParser.parseFields(scope.content);
                 for (var _b = 0, fields_1 = fields; _b < fields_1.length; _b++) {

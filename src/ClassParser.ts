@@ -33,14 +33,14 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?(?:\:\s*(\w+?)\s*)?\s*{/g);
+                /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
             for (var match of matches) {
 				var classObject = new CSharpClass(match[0]);
 				classObject.innerScopeText = scope.content;
                 classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
 
 				if (match[2]) {
-					classObject.inheritsFrom = new CSharpType(match[2]);
+					classObject.inheritsFrom = this.typeParser.parseType(match[2]);
 				}
 
 				var fields = this.fieldParser.parseFields(scope.content);

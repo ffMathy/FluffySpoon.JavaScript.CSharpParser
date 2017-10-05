@@ -179,7 +179,7 @@ describe("FileParser", function () {
             var file = parser.parseFile();
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].inheritsFrom).not.toBeUndefined();
-            expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface");
+            expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface<>");
         }));
     });
     describe("structs:", function () {
