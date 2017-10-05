@@ -62,7 +62,7 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
-        var matches = this.regexHelper.getMatches(typeString, /([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
+        var matches = this.regexHelper.getMatches(typeString, /([\w.]+)(?:\s*<\s*([<>.\w]+)\s*>)?(\?|(?:\[\]))?/g);
         var match = matches[0];
         if (!match)
             return null;
