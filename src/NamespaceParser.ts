@@ -31,8 +31,38 @@ export class NamespaceParser {
                 scope.prefix, 
                 /namespace\s+([\.\w]+?)\s*{/g);
             for (var match of matches) {
-                var namespace = new CSharpNamespace(match[0]);
+                var name = match[0];
+
+                var previousNamespace: CSharpNamespace = null;
+                if(name.indexOf(".") > -1) {
+                    var subNames = name.split(".");
+                    console.log("Sub-namespaces found", subNames);
+
+                    for(var i=0;i<subNames.length-1;i++) {
+                        var subName = subNames[i];
+
+                        let subNamespace = new CSharpNamespace(subName);
+                        if(previousNamespace) {
+                            subNamespace.parent = previousNamespace;
+                            previousNamespace.namespaces.push(subNamespace);
+                        }
+
+                        console.log("Handling sub-namespace", subNamespace);
+                        previousNamespace = subNamespace;
+                    }
+
+                    name = subNames[subNames.length-1];
+                }
+
+                var namespace = new CSharpNamespace(name);
                 namespace.innerScopeText = scope.content;
+
+                if(previousNamespace) {
+                    previousNamespace.namespaces.push(namespace);
+                    namespace.parent = previousNamespace;
+
+                    console.log("Attaching namespace to sub-namespace", namespace);
+                }
 
                 var enums = this.enumParser.parseEnums(scope.content);
                 for (var enumObject of enums) {
@@ -59,7 +89,7 @@ export class NamespaceParser {
                 }
                 
                 var subNamespaces = this.parseNamespaces(scope.content);
-                for (var subNamespace of subNamespaces) {
+                for (let subNamespace of subNamespaces) {
                     subNamespace.parent = namespace;
                     namespace.namespaces.push(subNamespace);
                 }
@@ -69,7 +99,10 @@ export class NamespaceParser {
                     namespace.interfaces.push(interfaceObject);
                 }
 
-                namespaces.push(namespace);
+                var final = previousNamespace || namespace;
+                console.log("Detected namespace", final);
+
+                namespaces.push(final);
             }
         }
 

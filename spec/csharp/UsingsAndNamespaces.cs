@@ -3,3 +3,7 @@ using blah;
 namespace mynamespace {
     using blah.lol.omg;
 }
+
+namespace blah.foo {
+    
+}

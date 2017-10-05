@@ -23,8 +23,6 @@ export class MethodParser {
 	}
 
     parseMethods(content: string, parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct) {
-        console.log(content);
-
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyNamespace.Domain
+namespace MyNamespace
 {
     public interface MyPoco
 	{

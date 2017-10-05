@@ -10,7 +10,6 @@ var MethodParser = (function () {
         this.typeParser = new TypeParser_1.TypeParser();
     }
     MethodParser.prototype.parseMethods = function (content, parent) {
-        console.log(content);
         var methods = new Array();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
