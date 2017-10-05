@@ -2,19 +2,18 @@
 var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
-var TypeParser_1 = require("./TypeParser");
 var MethodParser = (function () {
-    function MethodParser() {
+    function MethodParser(typeParser) {
+        this.typeParser = typeParser;
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
-        this.typeParser = new TypeParser_1.TypeParser();
     }
     MethodParser.prototype.parseMethods = function (content, parent) {
         var methods = new Array();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /((?:\w+\s)*)((?:[\w.]+\s*<\s*.+\s*>)|[\w.]+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var method = new Models_1.CSharpMethod(match[2]);

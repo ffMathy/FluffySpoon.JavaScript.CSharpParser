@@ -10,9 +10,9 @@ import { TypeParser } from './TypeParser';
 export class FieldParser {
     private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-	private typeParser = new TypeParser();
 
-    constructor() {
+    constructor(
+        private typeParser: TypeParser) {
 
     }
 

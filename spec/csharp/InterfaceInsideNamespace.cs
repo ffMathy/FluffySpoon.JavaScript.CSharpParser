@@ -6,6 +6,6 @@ namespace MyNamespace
 	{
 		string[] Name { get; set; }
 
-		int SomeMethod();
+		System.Int32 SomeMethod();
 	}
 }

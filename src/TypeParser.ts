@@ -4,11 +4,12 @@
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
+import { NamespaceParser } from './NamespaceParser';
 
 export class TypeParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-
+	
 	constructor() {
 
 	}
@@ -82,7 +83,7 @@ export class TypeParser {
 	parseType(typeString: string): CSharpType {
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			/(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
+			/([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
 		var match = matches[0];
 		if (!match)
 			return null;
@@ -98,10 +99,13 @@ export class TypeParser {
 			name = "Array";
 		}
 
-		var type = <CSharpType>{
-			name,
-			isNullable
-		};
+		var subNames = name.split(".");
+
+		var type = new CSharpType(subNames[subNames.length-1]);
+		type.isNullable = isNullable;
+		type.namespace = NamespaceParser.parseNamespaceFromName(subNames
+			.slice(0, subNames.length-1)
+			.join("."));
 
 		this.prepareTypeForGenericParameters(
 			type,

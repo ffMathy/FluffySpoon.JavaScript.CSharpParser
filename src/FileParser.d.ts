@@ -7,6 +7,7 @@ export declare class FileParser {
     private interfaceParser;
     private enumParser;
     private structParser;
+    private fieldParser;
     private scopeHelper;
     constructor(contents: string);
     parseFile(): CSharpFile;

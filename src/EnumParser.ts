@@ -6,13 +6,15 @@
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { AttributeParser } from './AttributeParser';
+import { TypeParser } from './TypeParser';
 
 export class EnumParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
     private attributeParser = new AttributeParser();
 
-    constructor() {
+    constructor(
+        private typeParser: TypeParser) {
 
     }
 
@@ -22,10 +24,13 @@ export class EnumParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /enum\s+(\w+?)\s*{/g);
+                /enum\s+(\w+?)(?:\s*:\s*([\.\w]+?))?\s*{/g);
             for (var match of matches) {
                 var enumObject = new CSharpEnum(match[0]);
                 enumObject.options = this.parseEnumValues(scope.content);
+
+                if(match[1])
+                    enumObject.inheritsFrom = this.typeParser.parseType(match[1]);
 
                 enums.push(enumObject);
             }

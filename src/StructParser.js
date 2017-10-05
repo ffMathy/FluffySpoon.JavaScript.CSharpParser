@@ -6,12 +6,13 @@ var MethodParser_1 = require("./MethodParser");
 var PropertyParser_1 = require("./PropertyParser");
 var FieldParser_1 = require("./FieldParser");
 var StructParser = (function () {
-    function StructParser() {
+    function StructParser(typeParser) {
+        this.typeParser = typeParser;
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
-        this.methodParser = new MethodParser_1.MethodParser();
         this.propertyParser = new PropertyParser_1.PropertyParser();
-        this.fieldParser = new FieldParser_1.FieldParser();
+        this.methodParser = new MethodParser_1.MethodParser(typeParser);
+        this.fieldParser = new FieldParser_1.FieldParser(typeParser);
     }
     StructParser.prototype.parseStructs = function (content) {
         var structs = new Array();

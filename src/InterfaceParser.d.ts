@@ -1,10 +1,11 @@
 import { CSharpInterface } from './Models';
+import { TypeParser } from './TypeParser';
 export declare class InterfaceParser {
+    private typeParser;
     private scopeHelper;
     private regexHelper;
-    private methodParser;
     private propertyParser;
-    private typeParser;
-    constructor();
+    private methodParser;
+    constructor(typeParser: TypeParser);
     parseInterfaces(content: string): CSharpInterface[];
 }

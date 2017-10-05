@@ -131,6 +131,8 @@ describe("FileParser", function () {
             expect(file.namespaces[0].interfaces[0].properties[0].type.name).toEqual("Array<>");
             expect(file.namespaces[0].interfaces[0].properties[0].type.genericParameters[0].name).toEqual("string");
             expect(file.namespaces[0].interfaces[0].methods[0].name).toEqual("SomeMethod");
+            expect(file.namespaces[0].interfaces[0].methods[0].returnType.name).toEqual("Int32");
+            expect(file.namespaces[0].interfaces[0].methods[0].returnType.fullName).toEqual("System.Int32");
         }));
     });
     describe("classes:", function () {

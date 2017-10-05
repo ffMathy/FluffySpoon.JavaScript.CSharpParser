@@ -16,9 +16,9 @@ import { TypeParser } from './TypeParser';
 export class MethodParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-	private typeParser = new TypeParser();
 
-	constructor() {
+	constructor(
+		private typeParser: TypeParser) {
 
 	}
 
@@ -28,7 +28,7 @@ export class MethodParser {
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
+				/((?:\w+\s)*)((?:[\w.]+\s*<\s*.+\s*>)|[\w.]+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
 			for (var match of matches) {
 				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;

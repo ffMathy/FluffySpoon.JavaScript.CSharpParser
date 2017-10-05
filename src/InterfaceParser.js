@@ -4,14 +4,13 @@ var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
 var MethodParser_1 = require("./MethodParser");
 var PropertyParser_1 = require("./PropertyParser");
-var TypeParser_1 = require("./TypeParser");
 var InterfaceParser = (function () {
-    function InterfaceParser() {
+    function InterfaceParser(typeParser) {
+        this.typeParser = typeParser;
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
-        this.methodParser = new MethodParser_1.MethodParser();
         this.propertyParser = new PropertyParser_1.PropertyParser();
-        this.typeParser = new TypeParser_1.TypeParser();
+        this.methodParser = new MethodParser_1.MethodParser(typeParser);
     }
     InterfaceParser.prototype.parseInterfaces = function (content) {
         var interfaces = new Array();

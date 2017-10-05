@@ -11,16 +11,21 @@ import { MethodParser } from './MethodParser';
 import { EnumParser } from './EnumParser';
 import { PropertyParser } from './PropertyParser';
 import { FieldParser } from './FieldParser';
+import { TypeParser } from './TypeParser';
 
 export class StructParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
-    private methodParser = new MethodParser();
     private propertyParser = new PropertyParser();
-	private fieldParser = new FieldParser();
 
-    constructor() {
+    private methodParser: MethodParser;
+	private fieldParser: FieldParser;
 
+    constructor(
+        private typeParser: TypeParser) {
+
+        this.methodParser = new MethodParser(typeParser);
+        this.fieldParser = new FieldParser(typeParser);
     }
 
     parseStructs(content: string) {

@@ -1,6 +1,8 @@
 "use strict";
+var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
+var NamespaceParser_1 = require("./NamespaceParser");
 var TypeParser = (function () {
     function TypeParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
@@ -60,7 +62,7 @@ var TypeParser = (function () {
         return result.length === 0 ? null : result;
     };
     TypeParser.prototype.parseType = function (typeString) {
-        var matches = this.regexHelper.getMatches(typeString, /(\w+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
+        var matches = this.regexHelper.getMatches(typeString, /([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
         var match = matches[0];
         if (!match)
             return null;
@@ -72,10 +74,12 @@ var TypeParser = (function () {
             genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
             name = "Array";
         }
-        var type = {
-            name: name,
-            isNullable: isNullable
-        };
+        var subNames = name.split(".");
+        var type = new Models_1.CSharpType(subNames[subNames.length - 1]);
+        type.isNullable = isNullable;
+        type.namespace = NamespaceParser_1.NamespaceParser.parseNamespaceFromName(subNames
+            .slice(0, subNames.length - 1)
+            .join("."));
         this.prepareTypeForGenericParameters(type, genericParameters);
         console.log("Detected type", type);
         return type;

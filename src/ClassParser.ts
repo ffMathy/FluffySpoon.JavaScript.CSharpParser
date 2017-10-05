@@ -16,15 +16,18 @@ import { TypeParser } from './TypeParser';
 export class ClassParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
-    private methodParser = new MethodParser();
-    private enumParser = new EnumParser();
     private propertyParser = new PropertyParser();
-	private fieldParser = new FieldParser();
-	private interfaceParser = new InterfaceParser();
-    private typeParser = new TypeParser();
 
-    constructor() {
+    private methodParser: MethodParser;
+	private interfaceParser: InterfaceParser;
 
+    constructor(
+        private typeParser: TypeParser,
+        private enumParser: EnumParser,
+        private fieldParser: FieldParser) {
+
+        this.interfaceParser = new InterfaceParser(typeParser);
+        this.methodParser = new MethodParser(typeParser);
     }
 
     parseClasses(content: string) {

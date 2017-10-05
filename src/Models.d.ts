@@ -117,6 +117,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
 export declare class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];
     parent: CSharpNamespace | CSharpFile | CSharpClass;
+    inheritsFrom?: CSharpType;
     name: string;
     innerScopeText: string;
     constructor(name: string);

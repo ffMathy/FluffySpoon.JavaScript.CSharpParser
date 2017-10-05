@@ -3,21 +3,18 @@ var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
 var MethodParser_1 = require("./MethodParser");
-var EnumParser_1 = require("./EnumParser");
 var PropertyParser_1 = require("./PropertyParser");
-var FieldParser_1 = require("./FieldParser");
 var InterfaceParser_1 = require("./InterfaceParser");
-var TypeParser_1 = require("./TypeParser");
 var ClassParser = (function () {
-    function ClassParser() {
+    function ClassParser(typeParser, enumParser, fieldParser) {
+        this.typeParser = typeParser;
+        this.enumParser = enumParser;
+        this.fieldParser = fieldParser;
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
-        this.methodParser = new MethodParser_1.MethodParser();
-        this.enumParser = new EnumParser_1.EnumParser();
         this.propertyParser = new PropertyParser_1.PropertyParser();
-        this.fieldParser = new FieldParser_1.FieldParser();
-        this.interfaceParser = new InterfaceParser_1.InterfaceParser();
-        this.typeParser = new TypeParser_1.TypeParser();
+        this.interfaceParser = new InterfaceParser_1.InterfaceParser(typeParser);
+        this.methodParser = new MethodParser_1.MethodParser(typeParser);
     }
     ClassParser.prototype.parseClasses = function (content) {
         var classes = new Array();

@@ -12,12 +12,14 @@ import { TypeParser } from './TypeParser';
 export class InterfaceParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
-    private methodParser = new MethodParser();
     private propertyParser = new PropertyParser();
-    private typeParser = new TypeParser();
+    
+    private methodParser: MethodParser;
 
-    constructor() {
+    constructor(
+        private typeParser: TypeParser) {
 
+        this.methodParser = new MethodParser(typeParser);
     }
 
     parseInterfaces(content: string) {

@@ -245,6 +245,8 @@ export class CSharpEnum implements CSharpScope {
 
     parent: CSharpNamespace | CSharpFile | CSharpClass;
 
+	inheritsFrom?: CSharpType;
+
     name: string;
     innerScopeText: string;
 

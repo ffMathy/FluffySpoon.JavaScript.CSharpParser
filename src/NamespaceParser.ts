@@ -14,16 +14,16 @@ export class NamespaceParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
     private usingsParser = new UsingsParser();
-    private classParser = new ClassParser();
-    private interfaceParser = new InterfaceParser();
-	private enumParser = new EnumParser();
-	private structParser = new StructParser();
 
-    constructor() {
+    constructor(
+		private classParser: ClassParser,
+		private interfaceParser: InterfaceParser,
+		private enumParser: EnumParser,
+        private structParser: StructParser) {
         
     }
 
-    public parseNamespaces(content: string) {
+    parseNamespacesFromCode(content: string) {
         var namespaces = new Array<CSharpNamespace>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
@@ -32,37 +32,10 @@ export class NamespaceParser {
                 /namespace\s+([\.\w]+?)\s*{/g);
             for (var match of matches) {
                 var name = match[0];
+                var namespacesFromName = NamespaceParser.parseNamespacesFromName(name);
 
-                var previousNamespace: CSharpNamespace = null;
-                if(name.indexOf(".") > -1) {
-                    var subNames = name.split(".");
-                    console.log("Sub-namespaces found", subNames);
-
-                    for(var i=0;i<subNames.length-1;i++) {
-                        var subName = subNames[i];
-
-                        let subNamespace = new CSharpNamespace(subName);
-                        if(previousNamespace) {
-                            subNamespace.parent = previousNamespace;
-                            previousNamespace.namespaces.push(subNamespace);
-                        }
-
-                        console.log("Handling sub-namespace", subNamespace);
-                        previousNamespace = subNamespace;
-                    }
-
-                    name = subNames[subNames.length-1];
-                }
-
-                var namespace = new CSharpNamespace(name);
+                var namespace = namespacesFromName[namespacesFromName.length-1];
                 namespace.innerScopeText = scope.content;
-
-                if(previousNamespace) {
-                    previousNamespace.namespaces.push(namespace);
-                    namespace.parent = previousNamespace;
-
-                    console.log("Attaching namespace to sub-namespace", namespace);
-                }
 
                 var enums = this.enumParser.parseEnums(scope.content);
                 for (var enumObject of enums) {
@@ -74,13 +47,13 @@ export class NamespaceParser {
                 for (var classObject of classes) {
                     classObject.parent = namespace;
                     namespace.classes.push(classObject);
-				}
+                }
 
-				var structs = this.structParser.parseStructs(scope.content);
-				for (var struct of structs) {
-					struct.parent = namespace;
-					namespace.structs.push(struct);
-				}
+                var structs = this.structParser.parseStructs(scope.content);
+                for (var struct of structs) {
+                    struct.parent = namespace;
+                    namespace.structs.push(struct);
+                }
 
                 var usings = this.usingsParser.parseUsings(scope.content);
                 for (var using of usings) {
@@ -88,7 +61,7 @@ export class NamespaceParser {
                     namespace.usings.push(using);
                 }
                 
-                var subNamespaces = this.parseNamespaces(scope.content);
+                var subNamespaces = this.parseNamespacesFromCode(scope.content);
                 for (let subNamespace of subNamespaces) {
                     subNamespace.parent = namespace;
                     namespace.namespaces.push(subNamespace);
@@ -99,11 +72,45 @@ export class NamespaceParser {
                     namespace.interfaces.push(interfaceObject);
                 }
 
-                var final = previousNamespace || namespace;
-                console.log("Detected namespace", final);
-
-                namespaces.push(final);
+                namespaces.push(namespacesFromName[0]);
             }
+        }
+
+        return namespaces;
+    }
+
+    static parseNamespaceFromName(name: string) {
+        return this.parseNamespacesFromName(name)[0];
+    }
+
+    static parseNamespacesFromName(name: string) {
+        var namespaces = new Array<CSharpNamespace>();
+
+        var previousNamespace: CSharpNamespace = null;
+        var subNames = name.split(".");
+
+        for(var i=0;i<subNames.length-1;i++) {
+            var subName = subNames[i];
+
+            let subNamespace = new CSharpNamespace(subName);
+            namespaces.push(subNamespace);
+
+            if(previousNamespace) {
+                subNamespace.parent = previousNamespace;
+                previousNamespace.namespaces.push(subNamespace);
+            }
+
+            previousNamespace = subNamespace;
+        }
+
+        name = subNames[subNames.length-1];
+
+        var namespace = new CSharpNamespace(name);
+        namespaces.push(namespace);
+
+        if(previousNamespace) {
+            previousNamespace.namespaces.push(namespace);
+            namespace.parent = previousNamespace;
         }
 
         return namespaces;
