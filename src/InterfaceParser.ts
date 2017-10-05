@@ -28,7 +28,7 @@ export class InterfaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /interface\s+(\w+?)(?:\s*<\s*([<>.\w]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?\s*{/g);
+                /interface\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
             for (var match of matches) {
 				var interfaceObject = new CSharpInterface(match[0]);
 				interfaceObject.innerScopeText = scope.content;
