@@ -36,7 +36,7 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /class\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
+                /class\s+(\w+?)(?:\s*<\s*([<>.\w]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?\s*{/g);
             for (var match of matches) {
 				var classObject = new CSharpClass(match[0]);
 				classObject.innerScopeText = scope.content;

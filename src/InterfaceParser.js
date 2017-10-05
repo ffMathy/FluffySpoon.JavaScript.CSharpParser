@@ -17,7 +17,7 @@ var InterfaceParser = (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /interface\s+(\w+?)\s*(?:<\s*(.+)\s*>)?\s*(?:\:\s*(\w+?\s*(?:<\s*(.+)\s*>)?))?\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /interface\s+(\w+?)(?:\s*<\s*([<>.\w]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w]+)+)\s*>)?))?\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var interfaceObject = new Models_1.CSharpInterface(match[0]);

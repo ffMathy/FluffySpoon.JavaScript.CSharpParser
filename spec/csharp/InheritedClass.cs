@@ -1,4 +1,4 @@
-﻿class MyClass : IMyInterface<Foo>
+﻿class MyClass : IMyInterface<Foo> where Foo : class
 {
 	void Bar()
 	{

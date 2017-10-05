@@ -2,7 +2,7 @@
 
 namespace MyNamespace
 {
-    public abstract class MyPoco<WithGenerics>
+    public abstract class MyPoco<WithGenerics> where WithGenerics : new()
 	{
 		public string[] Name { get; set; }
 
