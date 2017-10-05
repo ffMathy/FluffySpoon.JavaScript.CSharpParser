@@ -45,11 +45,28 @@ export class FileParser {
         file.innerScopeText = this.contents;
 
         file.usings = this.usingsParser.parseUsings(file.innerScopeText);
+        for(var using of file.usings)
+            using.parent = file;
+
         file.namespaces = this.namespaceParser.parseNamespacesFromCode(file.innerScopeText);
+        for(var namespace of file.namespaces)
+            namespace.parent = file;
+        
         file.classes = this.classParser.parseClasses(file.innerScopeText);
+        for(var classObject of file.classes)
+            classObject.parent = file;
+        
 		file.enums = this.enumParser.parseEnums(file.innerScopeText);
+        for(var enumObject of file.enums)
+            enumObject.parent = file;
+        
         file.structs = this.structParser.parseStructs(file.innerScopeText);
+        for(var struct of file.structs)
+            struct.parent = file;
+        
         file.interfaces = this.interfaceParser.parseInterfaces(file.innerScopeText);
+        for(var interfaceObject of file.interfaces)
+            interfaceObject.parent = file;
         
         return file;
     }

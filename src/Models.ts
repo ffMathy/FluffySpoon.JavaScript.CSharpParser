@@ -49,7 +49,7 @@ export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope
     name: string;
     innerScopeText: string;
 
-    parent: CSharpNamespace;
+    parent: CSharpNamespace | CSharpFile;
     
 	classes: CSharpClass[];
     interfaces: CSharpInterface[];

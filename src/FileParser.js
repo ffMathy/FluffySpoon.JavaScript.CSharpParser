@@ -27,11 +27,35 @@ var FileParser = (function () {
         var file = new Models_1.CSharpFile();
         file.innerScopeText = this.contents;
         file.usings = this.usingsParser.parseUsings(file.innerScopeText);
+        for (var _i = 0, _a = file.usings; _i < _a.length; _i++) {
+            var using = _a[_i];
+            using.parent = file;
+        }
         file.namespaces = this.namespaceParser.parseNamespacesFromCode(file.innerScopeText);
+        for (var _b = 0, _c = file.namespaces; _b < _c.length; _b++) {
+            var namespace = _c[_b];
+            namespace.parent = file;
+        }
         file.classes = this.classParser.parseClasses(file.innerScopeText);
+        for (var _d = 0, _e = file.classes; _d < _e.length; _d++) {
+            var classObject = _e[_d];
+            classObject.parent = file;
+        }
         file.enums = this.enumParser.parseEnums(file.innerScopeText);
+        for (var _f = 0, _g = file.enums; _f < _g.length; _f++) {
+            var enumObject = _g[_f];
+            enumObject.parent = file;
+        }
         file.structs = this.structParser.parseStructs(file.innerScopeText);
+        for (var _h = 0, _j = file.structs; _h < _j.length; _h++) {
+            var struct = _j[_h];
+            struct.parent = file;
+        }
         file.interfaces = this.interfaceParser.parseInterfaces(file.innerScopeText);
+        for (var _k = 0, _l = file.interfaces; _k < _l.length; _k++) {
+            var interfaceObject = _l[_k];
+            interfaceObject.parent = file;
+        }
         return file;
     };
     return FileParser;
