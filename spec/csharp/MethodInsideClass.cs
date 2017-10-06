@@ -1,4 +1,4 @@
-﻿public class Foobar
+﻿class Foobar
 {
     string myField;
     bool SomeOtherStuff { get; set; }

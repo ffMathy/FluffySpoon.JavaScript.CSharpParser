@@ -88,7 +88,9 @@ export declare class CSharpStruct implements CSharpScope {
     innerScopeText: string;
     name: string;
     attributes: CSharpAttribute[];
+    private _isPublic;
     constructor(name: string);
+    isPublic: boolean;
     readonly fullName: string;
 }
 export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSharpGenericParameterContainer {
@@ -96,12 +98,13 @@ export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationSc
     properties: CSharpProperty[];
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
-    isPublic: boolean;
     innerScopeText: string;
     name: string;
     genericParameters: CSharpType[];
     attributes: CSharpAttribute[];
+    private _isPublic;
     constructor(name: string);
+    isPublic: boolean;
     readonly fullName: string;
 }
 export declare class CSharpClass implements CSharpImplementationTypeDeclarationScope, CSharpGenericParameterContainer {
@@ -112,25 +115,27 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     enums: CSharpEnum[];
     properties: CSharpProperty[];
     fields: CSharpField[];
-    isPublic: boolean;
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
     genericParameters: CSharpType[];
     attributes: CSharpAttribute[];
+    private _isPublic;
     constructor(name: string);
+    isPublic: boolean;
     readonly fullName: string;
 }
 export declare class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];
     parent: CSharpNamespace | CSharpFile | CSharpClass;
     inheritsFrom?: CSharpType;
-    isPublic: boolean;
     name: string;
     innerScopeText: string;
     attributes: CSharpAttribute[];
+    private _isPublic;
     constructor(name: string);
+    isPublic: boolean;
     readonly fullName: string;
 }
 export declare class CSharpField {

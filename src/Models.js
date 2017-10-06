@@ -95,6 +95,19 @@ var CSharpStruct = (function () {
         this.fields = [];
         this.attributes = [];
     }
+    Object.defineProperty(CSharpStruct.prototype, "isPublic", {
+        get: function () {
+            if (this.parent instanceof CSharpClass) {
+                return this._isPublic && this.parent.isPublic;
+            }
+            return true;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(CSharpStruct.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -116,6 +129,19 @@ var CSharpInterface = (function () {
         this.properties = [];
         this.attributes = [];
     }
+    Object.defineProperty(CSharpInterface.prototype, "isPublic", {
+        get: function () {
+            if (this.parent instanceof CSharpClass) {
+                return this._isPublic && this.parent.isPublic;
+            }
+            return true;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(CSharpInterface.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -142,6 +168,19 @@ var CSharpClass = (function () {
         this.interfaces = [];
         this.attributes = [];
     }
+    Object.defineProperty(CSharpClass.prototype, "isPublic", {
+        get: function () {
+            if (this.parent instanceof CSharpClass) {
+                return this._isPublic && this.parent.isPublic;
+            }
+            return true;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -161,6 +200,19 @@ var CSharpEnum = (function () {
         this.name = name;
         this.attributes = [];
     }
+    Object.defineProperty(CSharpEnum.prototype, "isPublic", {
+        get: function () {
+            if (this.parent instanceof CSharpClass) {
+                return this._isPublic && this.parent.isPublic;
+            }
+            return true;
+        },
+        set: function (isPublic) {
+            this._isPublic = isPublic;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(CSharpEnum.prototype, "fullName", {
         get: function () {
             var name = this.name;

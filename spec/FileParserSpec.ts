@@ -272,7 +272,9 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
 			expect(file.structs.length).toEqual(1);
+			expect(file.structs[0].attributes.length).toEqual(1);
 
+			expect(file.structs[0].isPublic).toEqual(true);
 			expect(file.structs[0].name).toEqual("MyStruct");
 		}));
 

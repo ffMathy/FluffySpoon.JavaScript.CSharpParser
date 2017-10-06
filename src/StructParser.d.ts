@@ -5,6 +5,7 @@ export declare class StructParser {
     private scopeHelper;
     private regexHelper;
     private propertyParser;
+    private attributeParser;
     private methodParser;
     private fieldParser;
     constructor(typeParser: TypeParser);
