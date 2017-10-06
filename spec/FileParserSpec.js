@@ -68,7 +68,9 @@ describe("FileParser", function () {
             var file = parser.parseFile();
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].methods.length).toEqual(3);
+            expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
+            expect(file.classes[0].methods[1].attributes.length).toEqual(1);
             expect(file.classes[0].methods[1].parameters.length).toEqual(3);
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
@@ -96,6 +98,7 @@ describe("FileParser", function () {
             var file = parser.parseFile();
             expect(file.enums.length).toEqual(1);
             expect(file.enums[0].options.length).toEqual(5);
+            expect(file.enums[0].attributes.length).toEqual(1);
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].enums.length).toEqual(2);
             expect(file.enums[0].options[1].attributes.length).toEqual(2);
@@ -126,6 +129,7 @@ describe("FileParser", function () {
             expect(file.namespaces[0].interfaces.length).toEqual(1);
             expect(file.namespaces[0].interfaces[0].properties.length).toEqual(1);
             expect(file.namespaces[0].interfaces[0].methods.length).toEqual(1);
+            expect(file.namespaces[0].interfaces[0].attributes.length).toEqual(1);
             expect(file.namespaces[0].interfaces[0].name).toEqual("MyPoco");
             expect(file.namespaces[0].interfaces[0].properties[0].name).toEqual("Name");
             expect(file.namespaces[0].interfaces[0].properties[0].type.name).toEqual("Array<>");
@@ -142,7 +146,9 @@ describe("FileParser", function () {
             expect(file.classes[0].properties.length).toEqual(4);
             expect(file.classes[0].properties[0].components.length).toEqual(2);
             expect(file.classes[0].properties[1].components.length).toEqual(1);
+            expect(file.classes[0].properties[1].attributes.length).toEqual(0);
             expect(file.classes[0].properties[2].components.length).toEqual(2);
+            expect(file.classes[0].properties[2].attributes.length).toEqual(1);
             expect(file.classes[0].properties[3].components.length).toEqual(2);
             expect(file.classes[0].properties[0].name).toEqual("MyProperty");
             expect(file.classes[0].properties[0].isVirtual).toBe(false);
@@ -162,6 +168,7 @@ describe("FileParser", function () {
             expect(file.namespaces.length).toEqual(1);
             expect(file.namespaces[0].classes.length).toEqual(1);
             expect(file.namespaces[0].classes[0].properties.length).toEqual(1);
+            expect(file.namespaces[0].classes[0].attributes.length).toEqual(1);
             expect(file.namespaces[0].classes[0].fields.length).toEqual(1);
             expect(file.namespaces[0].classes[0].methods.length).toEqual(1);
             expect(file.namespaces[0].classes[0].genericParameters.length).toEqual(1);

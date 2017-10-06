@@ -3,11 +3,13 @@ var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
 var TypeParser_1 = require("./TypeParser");
+var AttributeParser_1 = require("./AttributeParser");
 var PropertyParser = (function () {
     function PropertyParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
         this.typeParser = new TypeParser_1.TypeParser();
+        this.attributeParser = new AttributeParser_1.AttributeParser();
     }
     PropertyParser.prototype.parseProperties = function (content) {
         var properties = new Array();
@@ -20,12 +22,13 @@ var PropertyParser = (function () {
                 .map(function (x) { return x.prefix; })
                 .join('');
             var matchCandidate = scope.prefix + subScopeContent;
-            var matches = this.regexHelper.getMatches(matchCandidate, /((?:\w+\s)*)([^\s]+?(?:<.+>)?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+            var matches = this.regexHelper.getMatches(matchCandidate, /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)([^\s]+?(?:<.+>)?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                var property = new Models_1.CSharpProperty(match[2]);
-                property.type = this.typeParser.parseType(match[1]);
-                var modifiers = match[0] || "";
+                var property = new Models_1.CSharpProperty(match[3]);
+                property.attributes = this.attributeParser.parseAttributes(match[0]);
+                property.type = this.typeParser.parseType(match[2]);
+                var modifiers = match[1] || "";
                 property.isVirtual = modifiers.indexOf("virtual") > -1;
                 property.isPublic = modifiers.indexOf("public") > -1;
                 for (var _b = 0, subScopes_1 = subScopes; _b < subScopes_1.length; _b++) {

@@ -8,11 +8,14 @@ import { RegExHelper } from './RegExHelper';
 import { MethodParser } from './MethodParser';
 import { PropertyParser } from './PropertyParser';
 import { TypeParser } from './TypeParser';
+import { AttributeParser } from './AttributeParser';
 
 export class InterfaceParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
+
     private propertyParser = new PropertyParser();
+    private attributeParser = new AttributeParser();
     
     private methodParser: MethodParser;
 
@@ -28,14 +31,16 @@ export class InterfaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /interface\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
+                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)interface\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
             for (var match of matches) {
-				var interfaceObject = new CSharpInterface(match[0]);
+				var interfaceObject = new CSharpInterface(match[2]);
 				interfaceObject.innerScopeText = scope.content;
-                interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
+                interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
+				interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
+                interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
 
 				if (match[2]) {
-					interfaceObject.inheritsFrom = this.typeParser.parseType(match[2]);
+					interfaceObject.inheritsFrom = this.typeParser.parseType(match[4]);
 				}
 
                 var properties = this.propertyParser.parseProperties(scope.content);

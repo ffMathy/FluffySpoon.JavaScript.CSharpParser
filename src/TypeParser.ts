@@ -81,6 +81,9 @@ export class TypeParser {
 	}
 
 	parseType(typeString: string): CSharpType {
+		if(!typeString) 
+			return null;
+
 		var matches = this.regexHelper.getMatches(
 			typeString,
 			/([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);

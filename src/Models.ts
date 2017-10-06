@@ -116,6 +116,7 @@ export class CSharpMethod implements CSharpScope {
 
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
+    attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
 
@@ -124,6 +125,7 @@ export class CSharpMethod implements CSharpScope {
 
         this.parameters = [];
         this.methods = [];
+        this.attributes = [];
     }
 
     public get isPublic() {
@@ -145,6 +147,14 @@ export class CSharpMethodParameter {
     name: string;
     type: CSharpType;
     defaultValue: CSharpToken;
+
+    attributes: CSharpAttribute[];
+
+    constructor(name: string) {
+        this.name = name;
+
+        this.attributes = [];
+    }
 }
 
 export class CSharpStruct implements CSharpScope {
@@ -157,12 +167,15 @@ export class CSharpStruct implements CSharpScope {
     innerScopeText: string;
     name: string;
 
+    attributes: CSharpAttribute[];
+
     constructor(name: string) {
         this.name = name;
 
         this.methods = [];
         this.properties = [];
         this.fields = [];
+        this.attributes = [];
     }
 
     get fullName() {
@@ -181,16 +194,20 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
+    isPublic: boolean;
+
     innerScopeText: string;
     name: string;
 
     genericParameters: CSharpType[];
+    attributes: CSharpAttribute[];
 
     constructor(name: string) {
         this.name = name;
 
         this.methods = [];
         this.properties = [];
+        this.attributes = [];
     }
 
     get fullName() {
@@ -211,6 +228,8 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     properties: CSharpProperty[];
     fields: CSharpField[];
 
+    isPublic: boolean;
+
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
@@ -218,6 +237,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     name: string;
 
     genericParameters: CSharpType[];
+    attributes: CSharpAttribute[];
 
     constructor(name: string) {
         this.name = name;
@@ -229,6 +249,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.properties = [];
         this.fields = [];
         this.interfaces = [];
+        this.attributes = [];
     }
 
     get fullName() {
@@ -247,11 +268,17 @@ export class CSharpEnum implements CSharpScope {
 
     inheritsFrom?: CSharpType;
 
+    isPublic: boolean;
+
     name: string;
     innerScopeText: string;
 
+    attributes: CSharpAttribute[];
+
     constructor(name: string) {
         this.name = name;
+
+        this.attributes = [];
     }
 
     get fullName() {
@@ -272,8 +299,12 @@ export class CSharpField {
     isPublic: boolean;
     isReadOnly: boolean;
 
+    attributes: CSharpAttribute[];
+
     constructor(name: string) {
         this.name = name;
+
+        this.attributes = [];
     }
 }
 
@@ -288,6 +319,7 @@ export class CSharpProperty {
     parent: CSharpClass | CSharpStruct | CSharpInterface;
 
     components: CSharpPropertyComponent[];
+    attributes: CSharpAttribute[];
 
     isVirtual: boolean;
 
@@ -297,6 +329,7 @@ export class CSharpProperty {
         this.name = name;
 
         this.components = [];
+        this.attributes = [];
     }
 
     get isReadOnly() {

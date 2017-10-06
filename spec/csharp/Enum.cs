@@ -1,4 +1,5 @@
-﻿enum MyEnum: int
+﻿[SomeAttribute]
+enum MyEnum: int
 {
     FirstValue,
     [SomeStuff]

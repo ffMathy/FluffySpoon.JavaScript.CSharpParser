@@ -15,13 +15,14 @@ var EnumParser = (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /enum\s+(\w+?)(?:\s*:\s*([\.\w]+?))?\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)enum\s+(\w+?)(?:\s*:\s*([\.\w]+?))?\s*{/g);
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                var enumObject = new Models_1.CSharpEnum(match[0]);
+                var enumObject = new Models_1.CSharpEnum(match[2]);
+                enumObject.isPublic = (match[1] || "").indexOf("public") > -1;
+                enumObject.attributes = this.attributeParser.parseAttributes(match[0]);
                 enumObject.options = this.parseEnumValues(scope.content);
-                if (match[1])
-                    enumObject.inheritsFrom = this.typeParser.parseType(match[1]);
+                enumObject.inheritsFrom = this.typeParser.parseType(match[3]);
                 enums.push(enumObject);
             }
         }
@@ -30,7 +31,7 @@ var EnumParser = (function () {
     EnumParser.prototype.parseEnumValues = function (content) {
         var result = new Array();
         var nextValue = 0;
-        var matches = this.regexHelper.getMatches(content, /((?:\s*\[.*\]\s*)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
+        var matches = this.regexHelper.getMatches(content, /\s*((?:\[.*\]\s*?)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
         for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
             var match = matches_2[_i];
             var option = new Models_1.CSharpEnumOption(match[1]);

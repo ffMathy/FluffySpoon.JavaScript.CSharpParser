@@ -2,6 +2,7 @@
 
 namespace MyNamespace
 {
+	[SomeAttribute]
     public interface MyPoco
 	{
 		string[] Name { get; set; }

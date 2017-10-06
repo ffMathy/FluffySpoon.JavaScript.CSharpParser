@@ -12,11 +12,14 @@ import { PropertyParser } from './PropertyParser';
 import { FieldParser } from './FieldParser';
 import { InterfaceParser } from './InterfaceParser';
 import { TypeParser } from './TypeParser';
+import { AttributeParser } from './AttributeParser';
 
 export class ClassParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
+
     private propertyParser = new PropertyParser();
+    private attributeParser = new AttributeParser();
 
     private methodParser: MethodParser;
 	private interfaceParser: InterfaceParser;
@@ -36,15 +39,14 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /class\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
+                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)class\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
             for (var match of matches) {
-				var classObject = new CSharpClass(match[0]);
+				var classObject = new CSharpClass(match[2]);
+				classObject.isPublic = (match[1] || "").indexOf("public") > -1;
+                classObject.attributes = this.attributeParser.parseAttributes(match[0]);
 				classObject.innerScopeText = scope.content;
-                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[1]);
-
-				if (match[2]) {
-					classObject.inheritsFrom = this.typeParser.parseType(match[2]);
-				}
+                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
+                classObject.inheritsFrom = this.typeParser.parseType(match[4]);
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {

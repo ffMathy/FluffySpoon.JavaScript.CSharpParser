@@ -9,6 +9,7 @@ export declare class ClassParser {
     private scopeHelper;
     private regexHelper;
     private propertyParser;
+    private attributeParser;
     private methodParser;
     private interfaceParser;
     constructor(typeParser: TypeParser, enumParser: EnumParser, fieldParser: FieldParser);

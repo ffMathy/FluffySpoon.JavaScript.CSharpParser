@@ -7,11 +7,13 @@ var AttributeParser = (function () {
     }
     AttributeParser.prototype.parseAttributes = function (content) {
         var attributes = new Array();
-        var matches = this.regexHelper.getMatches(content, /(\w+)\s*(?:\((?:.|\s)+?\))?/g);
-        for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
-            var match = matches_1[_i];
-            var attribute = new Models_1.CSharpAttribute(match[0]);
-            attributes.push(attribute);
+        if (content) {
+            var matches = this.regexHelper.getMatches(content, /(\w+)\s*(?:\((?:.|\s)+?\))?/g);
+            for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
+                var match = matches_1[_i];
+                var attribute = new Models_1.CSharpAttribute(match[0]);
+                attributes.push(attribute);
+            }
         }
         return attributes;
     };

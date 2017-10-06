@@ -64,6 +64,7 @@ export declare class CSharpMethod implements CSharpScope {
     returnType: CSharpType;
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
+    attributes: CSharpAttribute[];
     private _isPublic;
     constructor(name: string);
     isPublic: boolean;
@@ -76,6 +77,8 @@ export declare class CSharpMethodParameter {
     name: string;
     type: CSharpType;
     defaultValue: CSharpToken;
+    attributes: CSharpAttribute[];
+    constructor(name: string);
 }
 export declare class CSharpStruct implements CSharpScope {
     properties: CSharpProperty[];
@@ -84,6 +87,7 @@ export declare class CSharpStruct implements CSharpScope {
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
+    attributes: CSharpAttribute[];
     constructor(name: string);
     readonly fullName: string;
 }
@@ -92,9 +96,11 @@ export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationSc
     properties: CSharpProperty[];
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
+    isPublic: boolean;
     innerScopeText: string;
     name: string;
     genericParameters: CSharpType[];
+    attributes: CSharpAttribute[];
     constructor(name: string);
     readonly fullName: string;
 }
@@ -106,11 +112,13 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     enums: CSharpEnum[];
     properties: CSharpProperty[];
     fields: CSharpField[];
+    isPublic: boolean;
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
     genericParameters: CSharpType[];
+    attributes: CSharpAttribute[];
     constructor(name: string);
     readonly fullName: string;
 }
@@ -118,8 +126,10 @@ export declare class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];
     parent: CSharpNamespace | CSharpFile | CSharpClass;
     inheritsFrom?: CSharpType;
+    isPublic: boolean;
     name: string;
     innerScopeText: string;
+    attributes: CSharpAttribute[];
     constructor(name: string);
     readonly fullName: string;
 }
@@ -129,6 +139,7 @@ export declare class CSharpField {
     parent: CSharpClass | CSharpStruct;
     isPublic: boolean;
     isReadOnly: boolean;
+    attributes: CSharpAttribute[];
     constructor(name: string);
 }
 export declare class CSharpPropertyComponent {
@@ -139,6 +150,7 @@ export declare class CSharpProperty {
     type: CSharpType;
     parent: CSharpClass | CSharpStruct | CSharpInterface;
     components: CSharpPropertyComponent[];
+    attributes: CSharpAttribute[];
     isVirtual: boolean;
     private _isPublic;
     constructor(name: string);

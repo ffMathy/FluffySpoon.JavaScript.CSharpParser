@@ -58,6 +58,7 @@ var CSharpMethod = (function () {
         this.name = name;
         this.parameters = [];
         this.methods = [];
+        this.attributes = [];
     }
     Object.defineProperty(CSharpMethod.prototype, "isPublic", {
         get: function () {
@@ -79,7 +80,9 @@ var CSharpNamedToken = (function () {
 }());
 exports.CSharpNamedToken = CSharpNamedToken;
 var CSharpMethodParameter = (function () {
-    function CSharpMethodParameter() {
+    function CSharpMethodParameter(name) {
+        this.name = name;
+        this.attributes = [];
     }
     return CSharpMethodParameter;
 }());
@@ -90,6 +93,7 @@ var CSharpStruct = (function () {
         this.methods = [];
         this.properties = [];
         this.fields = [];
+        this.attributes = [];
     }
     Object.defineProperty(CSharpStruct.prototype, "fullName", {
         get: function () {
@@ -110,6 +114,7 @@ var CSharpInterface = (function () {
         this.name = name;
         this.methods = [];
         this.properties = [];
+        this.attributes = [];
     }
     Object.defineProperty(CSharpInterface.prototype, "fullName", {
         get: function () {
@@ -135,6 +140,7 @@ var CSharpClass = (function () {
         this.properties = [];
         this.fields = [];
         this.interfaces = [];
+        this.attributes = [];
     }
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {
@@ -153,6 +159,7 @@ exports.CSharpClass = CSharpClass;
 var CSharpEnum = (function () {
     function CSharpEnum(name) {
         this.name = name;
+        this.attributes = [];
     }
     Object.defineProperty(CSharpEnum.prototype, "fullName", {
         get: function () {
@@ -171,6 +178,7 @@ exports.CSharpEnum = CSharpEnum;
 var CSharpField = (function () {
     function CSharpField(name) {
         this.name = name;
+        this.attributes = [];
     }
     return CSharpField;
 }());
@@ -185,6 +193,7 @@ var CSharpProperty = (function () {
     function CSharpProperty(name) {
         this.name = name;
         this.components = [];
+        this.attributes = [];
     }
     Object.defineProperty(CSharpProperty.prototype, "isReadOnly", {
         get: function () {

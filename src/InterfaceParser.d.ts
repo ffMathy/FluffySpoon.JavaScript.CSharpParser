@@ -5,6 +5,7 @@ export declare class InterfaceParser {
     private scopeHelper;
     private regexHelper;
     private propertyParser;
+    private attributeParser;
     private methodParser;
     constructor(typeParser: TypeParser);
     parseInterfaces(content: string): CSharpInterface[];
