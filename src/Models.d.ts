@@ -40,6 +40,7 @@ export declare class CSharpNamespace implements CSharpImplementationTypeDeclarat
     namespaces: CSharpNamespace[];
     constructor(name: string);
     readonly fullName: string;
+    getAllClassesRecursively(): CSharpClass[];
 }
 export declare class CSharpFile implements CSharpImplementationTypeDeclarationScope {
     innerScopeText: string;
@@ -53,6 +54,7 @@ export declare class CSharpFile implements CSharpImplementationTypeDeclarationSc
     namespaces: CSharpNamespace[];
     parent: CSharpNamespace;
     constructor();
+    getAllClassesRecursively(): CSharpClass[];
 }
 export declare class CSharpMethod implements CSharpScope {
     name: string;
@@ -125,6 +127,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     constructor(name: string);
     isPublic: boolean;
     readonly fullName: string;
+    getAllClassesRecursively(): CSharpClass[];
 }
 export declare class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];

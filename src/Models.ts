@@ -77,6 +77,18 @@ export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope
         }
         return name;
     }
+
+    getAllClassesRecursively() {
+        var classes = new Array<CSharpClass>();
+        for(var classObject of this.classes) {
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        for(var namespace of this.namespaces) {
+            classes = classes.concat(namespace.getAllClassesRecursively());
+        }
+        return classes;
+    }
 }
 
 export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
@@ -100,6 +112,18 @@ export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
         this.enums = [];
         this.structs = [];
         this.interfaces = [];
+    }
+
+    getAllClassesRecursively() {
+        var classes = new Array<CSharpClass>();
+        for(var classObject of this.classes) {
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        for(var namespace of this.namespaces) {
+            classes = classes.concat(namespace.getAllClassesRecursively());
+        }
+        return classes;
     }
 }
 
@@ -296,6 +320,15 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
             name = this.parent.fullName + "." + name;
         }
         return name;
+    }
+
+    getAllClassesRecursively() {
+        var classes = new Array<CSharpClass>();
+        for(var classObject of this.classes) {
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        return classes;
     }
 }
 

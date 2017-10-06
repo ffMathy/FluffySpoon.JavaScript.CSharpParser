@@ -38,6 +38,19 @@ var CSharpNamespace = (function () {
         enumerable: true,
         configurable: true
     });
+    CSharpNamespace.prototype.getAllClassesRecursively = function () {
+        var classes = new Array();
+        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
+            var classObject = _a[_i];
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        for (var _b = 0, _c = this.namespaces; _b < _c.length; _b++) {
+            var namespace = _c[_b];
+            classes = classes.concat(namespace.getAllClassesRecursively());
+        }
+        return classes;
+    };
     return CSharpNamespace;
 }());
 exports.CSharpNamespace = CSharpNamespace;
@@ -50,6 +63,19 @@ var CSharpFile = (function () {
         this.structs = [];
         this.interfaces = [];
     }
+    CSharpFile.prototype.getAllClassesRecursively = function () {
+        var classes = new Array();
+        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
+            var classObject = _a[_i];
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        for (var _b = 0, _c = this.namespaces; _b < _c.length; _b++) {
+            var namespace = _c[_b];
+            classes = classes.concat(namespace.getAllClassesRecursively());
+        }
+        return classes;
+    };
     return CSharpFile;
 }());
 exports.CSharpFile = CSharpFile;
@@ -192,6 +218,15 @@ var CSharpClass = (function () {
         enumerable: true,
         configurable: true
     });
+    CSharpClass.prototype.getAllClassesRecursively = function () {
+        var classes = new Array();
+        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
+            var classObject = _a[_i];
+            classes.push(classObject);
+            classes = classes.concat(classObject.getAllClassesRecursively());
+        }
+        return classes;
+    };
     return CSharpClass;
 }());
 exports.CSharpClass = CSharpClass;
