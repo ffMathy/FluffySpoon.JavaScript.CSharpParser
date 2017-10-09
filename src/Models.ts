@@ -1,9 +1,8 @@
 ﻿export class CSharpType {
     name: string;
-    namespace: CSharpNamespace;
-    isNullable: boolean;
+	namespace: CSharpNamespace;
 
-    genericParameters: CSharpType[];
+	genericParameters: CSharpType[];
 
     constructor(name: string) {
         this.name = name;
@@ -21,39 +20,27 @@
 export interface CSharpUsing {
     alias: string;
     namespace: CSharpNamespace;
-    parent?: CSharpNamespace | CSharpFile;
+    parent?: CSharpNamespace|CSharpFile;
 }
 
-export interface CSharpInterfaceTypeDeclarationScope extends CSharpScope {
+export interface CSharpTypeDeclarationScope extends CSharpScope {
     name: string;
-    properties: CSharpProperty[];
-    methods: CSharpMethod[];
-}
-
-export interface CSharpImplementationTypeDeclarationScope extends CSharpScope {
     classes: CSharpClass[];
-    interfaces: CSharpInterface[];
     enums: CSharpEnum[];
-    name: string;
 }
 
 export interface CSharpScope {
     innerScopeText: string;
 }
 
-export interface CSharpGenericParameterContainer {
-    genericParameters: CSharpType[];
-}
-
-export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
+export class CSharpNamespace implements CSharpTypeDeclarationScope {
     name: string;
     innerScopeText: string;
 
-    parent: CSharpNamespace | CSharpFile;
-
-    classes: CSharpClass[];
-    interfaces: CSharpInterface[];
-    structs: CSharpStruct[];
+    parent: CSharpNamespace;
+    
+	classes: CSharpClass[];
+	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
     usings: CSharpUsing[];
@@ -65,11 +52,10 @@ export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope
         this.classes = [];
         this.enums = [];
         this.usings = [];
-        this.namespaces = [];
-        this.structs = [];
-        this.interfaces = [];
+		this.namespaces = [];
+		this.structs = [];
     }
-
+    
     get fullName() {
         var name = this.name;
         if (this.parent && this.parent.fullName) {
@@ -77,28 +63,15 @@ export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope
         }
         return name;
     }
-
-    getAllClassesRecursively() {
-        var classes = new Array<CSharpClass>();
-        for(var classObject of this.classes) {
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        for(var namespace of this.namespaces) {
-            classes = classes.concat(namespace.getAllClassesRecursively());
-        }
-        return classes;
-    }
 }
 
-export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
+export class CSharpFile implements CSharpTypeDeclarationScope {
     innerScopeText: string;
     name: string;
     fullName: string;
 
-    classes: CSharpClass[];
-    interfaces: CSharpInterface[];
-    structs: CSharpStruct[];
+	classes: CSharpClass[];
+	structs: CSharpStruct[];
     enums: CSharpEnum[];
 
     usings: CSharpUsing[];
@@ -109,21 +82,8 @@ export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
         this.usings = [];
         this.namespaces = [];
         this.classes = [];
-        this.enums = [];
-        this.structs = [];
-        this.interfaces = [];
-    }
-
-    getAllClassesRecursively() {
-        var classes = new Array<CSharpClass>();
-        for(var classObject of this.classes) {
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        for(var namespace of this.namespaces) {
-            classes = classes.concat(namespace.getAllClassesRecursively());
-        }
-        return classes;
+		this.enums = [];
+		this.structs = [];
     }
 }
 
@@ -132,33 +92,21 @@ export class CSharpMethod implements CSharpScope {
     innerScopeText: string;
 
     isConstructor: boolean;
-    isVirtual: boolean;
-    isBodyless: boolean;
+	isVirtual: boolean;
+	isPublic: boolean;
 
-    parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct;
+    parent: CSharpClass | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
 
     parameters: CSharpMethodParameter[];
     methods: CSharpMethod[];
-    attributes: CSharpAttribute[];
-
-    private _isPublic: boolean;
 
     constructor(name: string) {
         this.name = name;
 
         this.parameters = [];
         this.methods = [];
-        this.attributes = [];
-    }
-
-    public get isPublic() {
-        return this._isPublic || this.parent instanceof CSharpInterface;
-    }
-
-    public set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
-    }
+	}
 }
 
 export type CSharpToken = boolean | number | string | CSharpNamedToken;
@@ -171,129 +119,49 @@ export class CSharpMethodParameter {
     name: string;
     type: CSharpType;
     defaultValue: CSharpToken;
-
-    attributes: CSharpAttribute[];
-
-    constructor(name: string) {
-        this.name = name;
-
-        this.attributes = [];
-    }
 }
 
 export class CSharpStruct implements CSharpScope {
-    properties: CSharpProperty[];
-    methods: CSharpMethod[];
-    fields: CSharpField[];
+	properties: CSharpProperty[];
+	methods: CSharpMethod[];
+	fields: CSharpField[];
 
-    parent: CSharpClass | CSharpNamespace | CSharpFile;
+	parent: CSharpClass | CSharpNamespace | CSharpFile;
 
-    innerScopeText: string;
-    name: string;
+	innerScopeText: string;
+	name: string;
 
-    attributes: CSharpAttribute[];
-    
-    private _isPublic: boolean;
-
-    constructor(name: string) {
-        this.name = name;
-
-        this.methods = [];
-        this.properties = [];
-        this.fields = [];
-        this.attributes = [];
-    }
-
-    get isPublic() {
-        if(this.parent instanceof CSharpClass) {
-            return this._isPublic && this.parent.isPublic;
-        }
+	constructor(name: string) {
+		this.name = name;
         
-        return true;
-    }
+		this.methods = [];
+		this.properties = [];
+		this.fields = [];
+	}
 
-    set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
-    }
-
-    get fullName() {
-        var name = this.name;
-        if (this.parent && this.parent.fullName) {
-            name = this.parent.fullName + "." + name;
-        }
-        return name;
-    }
+	get fullName() {
+		var name = this.name;
+		if (this.parent && this.parent.fullName) {
+			name = this.parent.fullName + "." + name;
+		}
+		return name;
+	}
 }
 
-export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSharpGenericParameterContainer {
-    methods: CSharpMethod[];
-    properties: CSharpProperty[];
-
-    inheritsFrom?: CSharpType;
-    parent: CSharpClass | CSharpNamespace | CSharpFile;
-
-    innerScopeText: string;
-    name: string;
-
-    genericParameters: CSharpType[];
-    attributes: CSharpAttribute[];
-
-    private _isPublic: boolean;
-
-    constructor(name: string) {
-        this.name = name;
-
-        this.methods = [];
-        this.properties = [];
-        this.attributes = [];
-    }
-
-    get isPublic() {
-        if(this.parent instanceof CSharpClass) {
-            return this._isPublic && this.parent.isPublic;
-        }
-        
-        return true;
-    }
-
-    set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
-    }
-
-    get fullName() {
-        var name = this.name;
-        if (this.parent && this.parent.fullName) {
-            name = this.parent.fullName + "." + name;
-        }
-        return name;
-    }
-}
-
-export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CSharpGenericParameterContainer {
+export class CSharpClass implements CSharpTypeDeclarationScope {
     constructors: CSharpMethod[];
-    interfaces: CSharpInterface[];
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
-<<<<<<< HEAD
 	properties: CSharpProperty[];
     fields: CSharpField[];
     structs: CSharpStruct[];
-=======
-    properties: CSharpProperty[];
-    fields: CSharpField[];
->>>>>>> f94aa5924bcd6848518a8e2900ce878b9746a328
 
-    inheritsFrom?: CSharpType;
+	inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;
     name: string;
-
-    genericParameters: CSharpType[];
-    attributes: CSharpAttribute[];
-
-    private _isPublic: boolean;
 
     constructor(name: string) {
         this.name = name;
@@ -302,28 +170,9 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.methods = [];
         this.classes = [];
         this.enums = [];
-<<<<<<< HEAD
 		this.properties = [];
         this.fields = [];
         this.structs = [];
-=======
-        this.properties = [];
-        this.fields = [];
-        this.interfaces = [];
-        this.attributes = [];
-    }
-
-    get isPublic() {
-        if(this.parent instanceof CSharpClass) {
-            return this._isPublic && this.parent.isPublic;
-        }
-        
-        return true;
-    }
-
-    set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
->>>>>>> f94aa5924bcd6848518a8e2900ce878b9746a328
     }
 
     get fullName() {
@@ -333,15 +182,6 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         }
         return name;
     }
-
-    getAllClassesRecursively() {
-        var classes = new Array<CSharpClass>();
-        for(var classObject of this.classes) {
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        return classes;
-    }
 }
 
 export class CSharpEnum implements CSharpScope {
@@ -349,31 +189,11 @@ export class CSharpEnum implements CSharpScope {
 
     parent: CSharpNamespace | CSharpFile | CSharpClass;
 
-    inheritsFrom?: CSharpType;
-
     name: string;
     innerScopeText: string;
 
-    attributes: CSharpAttribute[];
-
-    private _isPublic: boolean;
-
     constructor(name: string) {
         this.name = name;
-
-        this.attributes = [];
-    }
-
-    get isPublic() {
-        if(this.parent instanceof CSharpClass) {
-            return this._isPublic && this.parent.isPublic;
-        }
-        
-        return true;
-    }
-
-    set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
     }
 
     get fullName() {
@@ -386,58 +206,43 @@ export class CSharpEnum implements CSharpScope {
 }
 
 export class CSharpField {
-    name: string;
+	name: string;
 
-    type: CSharpType;
-    parent: CSharpClass | CSharpStruct;
+	type: CSharpType;
+	parent: CSharpClass | CSharpStruct;
 
-    isPublic: boolean;
-    isReadOnly: boolean;
+	isPublic: boolean;
+	isReadOnly: boolean;
 
-    attributes: CSharpAttribute[];
-
-    constructor(name: string) {
-        this.name = name;
-
-        this.attributes = [];
-    }
+	constructor(name: string) {
+		this.name = name;
+	}
 }
 
 export class CSharpPropertyComponent {
-    type: 'set' | 'get';
+	type: 'set' | 'get';
 }
 
 export class CSharpProperty {
     name: string;
 
     type: CSharpType;
-    parent: CSharpClass | CSharpStruct | CSharpInterface;
+	parent: CSharpClass | CSharpStruct;
 
-    components: CSharpPropertyComponent[];
-    attributes: CSharpAttribute[];
+	components: CSharpPropertyComponent[];
 
-    isVirtual: boolean;
-
-    private _isPublic: boolean;
+	isVirtual: boolean;
+	isPublic: boolean;
 
     constructor(name: string) {
-        this.name = name;
+		this.name = name;
 
-        this.components = [];
-        this.attributes = [];
-    }
+		this.components = [];
+	}
 
-    get isReadOnly() {
-        return !this.components.filter(c => c.type === 'set')[0];
-    }
-
-    public get isPublic() {
-        return this._isPublic || this.parent instanceof CSharpInterface;
-    }
-
-    public set isPublic(isPublic: boolean) {
-        this._isPublic = isPublic;
-    }
+	get isReadOnly() {
+		return !this.components.filter(c => c.type === 'set')[0];
+	}
 }
 
 export class CSharpAttribute {

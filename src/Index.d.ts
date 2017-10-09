@@ -8,5 +8,4 @@ export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
 export { FieldParser } from './FieldParser';
 export { StructParser } from './StructParser';
-export { InterfaceParser } from './InterfaceParser';
-export { CSharpType, CSharpUsing, CSharpImplementationTypeDeclarationScope, CSharpInterfaceTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpInterface, CSharpEnum, CSharpEnumOption, CSharpAttribute, CSharpProperty, CSharpPropertyComponent, CSharpField, CSharpStruct } from './Models';
+export { CSharpType, CSharpUsing, CSharpTypeDeclarationScope, CSharpScope, CSharpNamespace, CSharpFile, CSharpMethod, CSharpToken, CSharpNamedToken, CSharpMethodParameter, CSharpClass, CSharpEnum, CSharpEnumOption, CSharpAttribute, CSharpProperty, CSharpPropertyComponent, CSharpField, CSharpStruct } from './Models';

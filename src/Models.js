@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var CSharpType = (function () {
     function CSharpType(name) {
         this.name = name;
@@ -25,7 +26,6 @@ var CSharpNamespace = (function () {
         this.usings = [];
         this.namespaces = [];
         this.structs = [];
-        this.interfaces = [];
     }
     Object.defineProperty(CSharpNamespace.prototype, "fullName", {
         get: function () {
@@ -38,19 +38,6 @@ var CSharpNamespace = (function () {
         enumerable: true,
         configurable: true
     });
-    CSharpNamespace.prototype.getAllClassesRecursively = function () {
-        var classes = new Array();
-        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
-            var classObject = _a[_i];
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        for (var _b = 0, _c = this.namespaces; _b < _c.length; _b++) {
-            var namespace = _c[_b];
-            classes = classes.concat(namespace.getAllClassesRecursively());
-        }
-        return classes;
-    };
     return CSharpNamespace;
 }());
 exports.CSharpNamespace = CSharpNamespace;
@@ -61,21 +48,7 @@ var CSharpFile = (function () {
         this.classes = [];
         this.enums = [];
         this.structs = [];
-        this.interfaces = [];
     }
-    CSharpFile.prototype.getAllClassesRecursively = function () {
-        var classes = new Array();
-        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
-            var classObject = _a[_i];
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        for (var _b = 0, _c = this.namespaces; _b < _c.length; _b++) {
-            var namespace = _c[_b];
-            classes = classes.concat(namespace.getAllClassesRecursively());
-        }
-        return classes;
-    };
     return CSharpFile;
 }());
 exports.CSharpFile = CSharpFile;
@@ -84,18 +57,7 @@ var CSharpMethod = (function () {
         this.name = name;
         this.parameters = [];
         this.methods = [];
-        this.attributes = [];
     }
-    Object.defineProperty(CSharpMethod.prototype, "isPublic", {
-        get: function () {
-            return this._isPublic || this.parent instanceof CSharpInterface;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return CSharpMethod;
 }());
 exports.CSharpMethod = CSharpMethod;
@@ -106,9 +68,7 @@ var CSharpNamedToken = (function () {
 }());
 exports.CSharpNamedToken = CSharpNamedToken;
 var CSharpMethodParameter = (function () {
-    function CSharpMethodParameter(name) {
-        this.name = name;
-        this.attributes = [];
+    function CSharpMethodParameter() {
     }
     return CSharpMethodParameter;
 }());
@@ -119,21 +79,7 @@ var CSharpStruct = (function () {
         this.methods = [];
         this.properties = [];
         this.fields = [];
-        this.attributes = [];
     }
-    Object.defineProperty(CSharpStruct.prototype, "isPublic", {
-        get: function () {
-            if (this.parent instanceof CSharpClass) {
-                return this._isPublic && this.parent.isPublic;
-            }
-            return true;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(CSharpStruct.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -148,40 +94,6 @@ var CSharpStruct = (function () {
     return CSharpStruct;
 }());
 exports.CSharpStruct = CSharpStruct;
-var CSharpInterface = (function () {
-    function CSharpInterface(name) {
-        this.name = name;
-        this.methods = [];
-        this.properties = [];
-        this.attributes = [];
-    }
-    Object.defineProperty(CSharpInterface.prototype, "isPublic", {
-        get: function () {
-            if (this.parent instanceof CSharpClass) {
-                return this._isPublic && this.parent.isPublic;
-            }
-            return true;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CSharpInterface.prototype, "fullName", {
-        get: function () {
-            var name = this.name;
-            if (this.parent && this.parent.fullName) {
-                name = this.parent.fullName + "." + name;
-            }
-            return name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return CSharpInterface;
-}());
-exports.CSharpInterface = CSharpInterface;
 var CSharpClass = (function () {
     function CSharpClass(name) {
         this.name = name;
@@ -191,22 +103,7 @@ var CSharpClass = (function () {
         this.enums = [];
         this.properties = [];
         this.fields = [];
-        this.interfaces = [];
-        this.attributes = [];
     }
-    Object.defineProperty(CSharpClass.prototype, "isPublic", {
-        get: function () {
-            if (this.parent instanceof CSharpClass) {
-                return this._isPublic && this.parent.isPublic;
-            }
-            return true;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(CSharpClass.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -218,36 +115,13 @@ var CSharpClass = (function () {
         enumerable: true,
         configurable: true
     });
-    CSharpClass.prototype.getAllClassesRecursively = function () {
-        var classes = new Array();
-        for (var _i = 0, _a = this.classes; _i < _a.length; _i++) {
-            var classObject = _a[_i];
-            classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
-        }
-        return classes;
-    };
     return CSharpClass;
 }());
 exports.CSharpClass = CSharpClass;
 var CSharpEnum = (function () {
     function CSharpEnum(name) {
         this.name = name;
-        this.attributes = [];
     }
-    Object.defineProperty(CSharpEnum.prototype, "isPublic", {
-        get: function () {
-            if (this.parent instanceof CSharpClass) {
-                return this._isPublic && this.parent.isPublic;
-            }
-            return true;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(CSharpEnum.prototype, "fullName", {
         get: function () {
             var name = this.name;
@@ -265,7 +139,6 @@ exports.CSharpEnum = CSharpEnum;
 var CSharpField = (function () {
     function CSharpField(name) {
         this.name = name;
-        this.attributes = [];
     }
     return CSharpField;
 }());
@@ -280,21 +153,10 @@ var CSharpProperty = (function () {
     function CSharpProperty(name) {
         this.name = name;
         this.components = [];
-        this.attributes = [];
     }
     Object.defineProperty(CSharpProperty.prototype, "isReadOnly", {
         get: function () {
             return !this.components.filter(function (c) { return c.type === 'set'; })[0];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CSharpProperty.prototype, "isPublic", {
-        get: function () {
-            return this._isPublic || this.parent instanceof CSharpInterface;
-        },
-        set: function (isPublic) {
-            this._isPublic = isPublic;
         },
         enumerable: true,
         configurable: true

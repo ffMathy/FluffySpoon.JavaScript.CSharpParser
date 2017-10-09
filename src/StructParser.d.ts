@@ -1,13 +1,10 @@
 import { CSharpStruct } from './Models';
-import { TypeParser } from './TypeParser';
 export declare class StructParser {
-    private typeParser;
     private scopeHelper;
     private regexHelper;
-    private propertyParser;
-    private attributeParser;
     private methodParser;
+    private propertyParser;
     private fieldParser;
-    constructor(typeParser: TypeParser);
+    constructor();
     parseStructs(content: string): CSharpStruct[];
 }

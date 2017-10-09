@@ -5,56 +5,52 @@
 	CSharpMethodParameter,
 	CSharpToken,
 	CSharpNamedToken,
-    CSharpStruct,
-	CSharpInterface
+    CSharpStruct
 } from './Models';
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { TypeParser } from './TypeParser';
-import { AttributeParser } from './AttributeParser';
 
 export class MethodParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
+	private typeParser = new TypeParser();
 
-	private attributeParser = new AttributeParser();
-
-	constructor(
-		private typeParser: TypeParser) {
+	constructor() {
 
 	}
 
-    parseMethods(content: string, parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct) {
+    parseMethods(content: string, parent: CSharpClass | CSharpMethod | CSharpStruct) {
+        console.log(content);
+
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)((?:[\w.]+\s*<\s*.+\s*>)|[\w.]+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
+				/((?:\w+\s)*)((?:\w+\s*<\s*.+\s*>)|\w+)\s+(\w+?)\s*\((.*?)\)\s*{/g);
 			for (var match of matches) {
-				var method = new CSharpMethod(match[3]);
-            	method.attributes = this.attributeParser.parseAttributes(match[0]);
+				var method = new CSharpMethod(match[2]);
 				method.innerScopeText = scope.content;
 				method.parent = parent;
 
-				method.returnType = this.typeParser.parseType(match[2] || "void");
+				method.returnType = this.typeParser.parseType(match[1] || "void");
 
-				var modifiers = match[1] || "";
+				var modifiers = match[0] || "";
 				if (parent instanceof CSharpClass && parent.name === method.name) {
 					method.isConstructor = true;
 					method.isVirtual = false;
 
-					modifiers = match[2];
+					modifiers = match[1];
 				} else {
 					method.isVirtual = modifiers.indexOf("virtual") > -1;
 					method.isConstructor = false;
 				}
 
 				method.isPublic = modifiers.indexOf("public") > -1;
-				method.isBodyless = match[5] === ";";
 
-				var parameters = this.parseMethodParameters(match[4]);
+				var parameters = this.parseMethodParameters(match[3]);
 				for (var parameter of parameters) {
 					method.parameters.push(parameter);
 				}

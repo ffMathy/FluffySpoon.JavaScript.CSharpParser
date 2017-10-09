@@ -6,15 +6,13 @@
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { AttributeParser } from './AttributeParser';
-import { TypeParser } from './TypeParser';
 
 export class EnumParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
     private attributeParser = new AttributeParser();
 
-    constructor(
-        private typeParser: TypeParser) {
+    constructor() {
 
     }
 
@@ -24,13 +22,10 @@ export class EnumParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)enum\s+(\w+?)(?:\s*:\s*([\.\w]+?))?\s*{/g);
+                /enum\s+(\w+?)\s*{/g);
             for (var match of matches) {
-                var enumObject = new CSharpEnum(match[2]);
-				enumObject.isPublic = (match[1] || "").indexOf("public") > -1;
-                enumObject.attributes = this.attributeParser.parseAttributes(match[0]);
+                var enumObject = new CSharpEnum(match[0]);
                 enumObject.options = this.parseEnumValues(scope.content);
-                enumObject.inheritsFrom = this.typeParser.parseType(match[3]);
 
                 enums.push(enumObject);
             }
@@ -46,7 +41,7 @@ export class EnumParser {
 
         var matches = this.regexHelper.getMatches(
             content,
-            /\s*((?:\[.*\]\s*?)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
+            /((?:\s*\[.*\]\s*)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
         
         for (var match of matches) {
             var option = new CSharpEnumOption(match[1]);

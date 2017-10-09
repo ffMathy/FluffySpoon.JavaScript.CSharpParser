@@ -1,5 +1,4 @@
-﻿[SomeAttribute]
-struct MyStruct
+﻿struct MyStruct
 {
 
 }

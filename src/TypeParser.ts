@@ -4,12 +4,11 @@
 
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
-import { NamespaceParser } from './NamespaceParser';
 
 export class TypeParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-	
+
 	constructor() {
 
 	}
@@ -18,11 +17,10 @@ export class TypeParser {
 		if (!prefix)
 			return null;
 
-		var result = prefix.trim();
+		var result = prefix;
 		if (result.lastIndexOf("<") > -1) {
 			result = result.substr(0, result.length - 1);
 		}
-
 	    result = result.trim();
 		if (result.indexOf(",") == 0) {
 			result = result
@@ -51,22 +49,18 @@ export class TypeParser {
 		var result = new Array<CSharpType>();
 		if (!content)
 			return null;
-			
+
 		var scopes = this.scopeHelper.getGenericTypeScopes(content);
 		for (var scope of scopes) {
-			var trimmedPrefix = scope.prefix.trim();
-			if (trimmedPrefix === ",")
+			if (scope.prefix.trim() === ",")
 				continue;
 
-			var typeRegions = trimmedPrefix.split(",");
+			var typeRegions = scope.prefix.split(",");
 			for (var typeRegion of typeRegions) {
 				var type = <CSharpType>{};
 				type.name = this.getTypeNameFromGenericScopePrefix(typeRegion);
 
-				var arrowTrimmedName = type.name
-					.replace(/</g, "")
-					.replace(/>/g, "");
-				if (!arrowTrimmedName)
+				if (!type.name)
 					continue;
 
 				this.prepareTypeForGenericParameters(
@@ -81,38 +75,20 @@ export class TypeParser {
 	}
 
 	parseType(typeString: string): CSharpType {
-		if(!typeString) 
-			return null;
-
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			/([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
+			/(\w+)(?:\s*<\s*(.+)\s*>)?/g);
 		var match = matches[0];
 		if (!match)
 			return null;
 
-		var isNullable = match[2] === "?";
-		var isArray = match[2] === "[]";
-
-		var genericParameters = match[1];
-
-		var name = match[0];
-		if(isArray) {
-			genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
-			name = "Array";
-		}
-
-		var subNames = name.split(".");
-
-		var type = new CSharpType(subNames[subNames.length-1]);
-		type.isNullable = isNullable;
-		type.namespace = NamespaceParser.parseNamespaceFromName(subNames
-			.slice(0, subNames.length-1)
-			.join("."));
+		var type = <CSharpType>{
+			name: match[0]
+		};
 
 		this.prepareTypeForGenericParameters(
 			type,
-			genericParameters);
+			match[1]);
 
 		console.log("Detected type", type);
 

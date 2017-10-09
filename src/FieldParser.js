@@ -1,12 +1,14 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
+var TypeParser_1 = require("./TypeParser");
 var FieldParser = (function () {
-    function FieldParser(typeParser) {
-        this.typeParser = typeParser;
+    function FieldParser() {
         this.scopeHelper = new ScopeHelper_1.ScopeHelper();
         this.regexHelper = new RegExHelper_1.RegExHelper();
+        this.typeParser = new TypeParser_1.TypeParser();
     }
     FieldParser.prototype.parseFields = function (content) {
         var fields = new Array();

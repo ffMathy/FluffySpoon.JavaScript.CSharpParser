@@ -1,5 +1,4 @@
-﻿[SomeAttribute]
-enum MyEnum: int
+﻿enum MyEnum
 {
     FirstValue,
     [SomeStuff]
@@ -14,7 +13,7 @@ enum MyEnum: int
 
 class Foo
 {
-    enum StuffEnum : System.Int32
+    enum StuffEnum
     {
         Lol,
         Bar

@@ -7,14 +7,11 @@
 import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { TypeParser } from './TypeParser';
-import { AttributeParser } from './AttributeParser';
 
 export class PropertyParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-
 	private typeParser = new TypeParser();
-	private attributeParser = new AttributeParser();
 
 	constructor() {
 
@@ -34,13 +31,12 @@ export class PropertyParser {
 			var matchCandidate = scope.prefix + subScopeContent;
 			var matches = this.regexHelper.getMatches(
 				matchCandidate,
-				/\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)([^\s]+?(?:<.+>)?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
+				/((?:\w+\s)*)([^\s]+?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
 			for (var match of matches) {
-				var property = new CSharpProperty(match[3]);
-                property.attributes = this.attributeParser.parseAttributes(match[0]);
-				property.type = this.typeParser.parseType(match[2]);
+				var property = new CSharpProperty(match[2]);
+				property.type = this.typeParser.parseType(match[1]);
 
-				var modifiers = match[1] || "";
+				var modifiers = match[0] || "";
 				property.isVirtual = modifiers.indexOf("virtual") > -1;
 				property.isPublic = modifiers.indexOf("public") > -1;
 
