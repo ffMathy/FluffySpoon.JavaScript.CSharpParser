@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var ScopeHelper_1 = require("../src/ScopeHelper");
 describe("ScopeHelper", function () {
     var scopeHelper = new ScopeHelper_1.ScopeHelper();

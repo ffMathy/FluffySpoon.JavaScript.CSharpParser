@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace MyNamespace.Domain
+namespace MyNamespace
 {
-    public abstract class MyPoco
+	[SomeAttribute]
+    abstract class MyPoco<WithGenerics> where WithGenerics : new()
 	{
-		public string Name { get; set; }
+		public string[] Name { get; set; }
 
-		public string someField;
+		public int? someField;
 
         public MyPoco()
 		{

@@ -8,11 +8,13 @@ export { UsingsParser } from './UsingsParser';
 export { AttributeParser } from './AttributeParser';
 export { FieldParser } from './FieldParser';
 export { StructParser } from './StructParser';
+export { InterfaceParser } from './InterfaceParser';
 
 export {
 	CSharpType,
     CSharpUsing,
-    CSharpTypeDeclarationScope,
+    CSharpImplementationTypeDeclarationScope,
+    CSharpInterfaceTypeDeclarationScope,
     CSharpScope,
     CSharpNamespace,
     CSharpFile,
@@ -21,6 +23,7 @@ export {
     CSharpNamedToken,
     CSharpMethodParameter,
     CSharpClass,
+    CSharpInterface,
     CSharpEnum,
     CSharpEnumOption,
     CSharpAttribute,

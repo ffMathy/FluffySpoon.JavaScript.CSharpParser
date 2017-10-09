@@ -10,17 +10,27 @@ import { MethodParser } from './MethodParser';
 import { EnumParser } from './EnumParser';
 import { PropertyParser } from './PropertyParser';
 import { FieldParser } from './FieldParser';
+import { InterfaceParser } from './InterfaceParser';
+import { TypeParser } from './TypeParser';
+import { AttributeParser } from './AttributeParser';
 
 export class ClassParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
-    private methodParser = new MethodParser();
-    private enumParser = new EnumParser();
+
     private propertyParser = new PropertyParser();
-	private fieldParser = new FieldParser();
+    private attributeParser = new AttributeParser();
 
-    constructor() {
+    private methodParser: MethodParser;
+	private interfaceParser: InterfaceParser;
 
+    constructor(
+        private typeParser: TypeParser,
+        private enumParser: EnumParser,
+        private fieldParser: FieldParser) {
+
+        this.interfaceParser = new InterfaceParser(typeParser);
+        this.methodParser = new MethodParser(typeParser);
     }
 
     parseClasses(content: string) {
@@ -29,14 +39,14 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /class\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
+                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)class\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
             for (var match of matches) {
-				var classObject = new CSharpClass(match[0]);
+				var classObject = new CSharpClass(match[2]);
+				classObject.isPublic = (match[1] || "").indexOf("public") > -1;
+                classObject.attributes = this.attributeParser.parseAttributes(match[0]);
 				classObject.innerScopeText = scope.content;
-
-				if (match[1]) {
-					classObject.inheritsFrom = new CSharpType(match[1]);
-				}
+                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
+                classObject.inheritsFrom = this.typeParser.parseType(match[4]);
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {
@@ -66,6 +76,11 @@ export class ClassParser {
                 for (var subClass of subClasses) {
                     subClass.parent = classObject;
                     classObject.classes.push(subClass);
+                }
+
+                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                for (var interfaceObject of interfaces) {
+                    classObject.interfaces.push(interfaceObject);
                 }
 
 				classes.push(classObject);

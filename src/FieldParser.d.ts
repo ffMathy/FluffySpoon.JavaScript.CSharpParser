@@ -1,8 +1,9 @@
 import { CSharpField } from './Models';
+import { TypeParser } from './TypeParser';
 export declare class FieldParser {
+    private typeParser;
     private scopeHelper;
     private regexHelper;
-    private typeParser;
-    constructor();
+    constructor(typeParser: TypeParser);
     parseFields(content: string): CSharpField[];
 }

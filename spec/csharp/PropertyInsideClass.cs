@@ -10,6 +10,7 @@
         }
     }
 
+    [SomeAttribute]
 	string GetSetProperty
     {
 		get
