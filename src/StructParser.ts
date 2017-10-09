@@ -11,16 +11,24 @@ import { MethodParser } from './MethodParser';
 import { EnumParser } from './EnumParser';
 import { PropertyParser } from './PropertyParser';
 import { FieldParser } from './FieldParser';
+import { TypeParser } from './TypeParser';
+import { AttributeParser } from './AttributeParser';
 
 export class StructParser {
     private scopeHelper = new ScopeHelper();
     private regexHelper = new RegExHelper();
-    private methodParser = new MethodParser();
+
     private propertyParser = new PropertyParser();
-	private fieldParser = new FieldParser();
+    private attributeParser = new AttributeParser();
 
-    constructor() {
+    private methodParser: MethodParser;
+	private fieldParser: FieldParser;
 
+    constructor(
+        private typeParser: TypeParser) {
+
+        this.methodParser = new MethodParser(typeParser);
+        this.fieldParser = new FieldParser(typeParser);
     }
 
     parseStructs(content: string) {
@@ -29,10 +37,12 @@ export class StructParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /struct\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
+                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)struct\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
             for (var match of matches) {
-				var struct = new CSharpStruct(match[0]);
+				var struct = new CSharpStruct(match[2]);
+                struct.attributes = this.attributeParser.parseAttributes(match[0]);
 				struct.innerScopeText = scope.content;
+				struct.isPublic = (match[1] || "").indexOf("public") > -1;
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {
