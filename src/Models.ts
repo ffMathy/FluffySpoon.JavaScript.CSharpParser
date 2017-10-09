@@ -154,7 +154,8 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
     classes: CSharpClass[];
     enums: CSharpEnum[];
 	properties: CSharpProperty[];
-	fields: CSharpField[];
+    fields: CSharpField[];
+    structs: CSharpStruct[];
 
 	inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
@@ -170,7 +171,8 @@ export class CSharpClass implements CSharpTypeDeclarationScope {
         this.classes = [];
         this.enums = [];
 		this.properties = [];
-		this.fields = [];
+        this.fields = [];
+        this.structs = [];
     }
 
     get fullName() {
