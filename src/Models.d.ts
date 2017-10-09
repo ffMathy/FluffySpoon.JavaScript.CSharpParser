@@ -117,6 +117,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     enums: CSharpEnum[];
     properties: CSharpProperty[];
     fields: CSharpField[];
+    structs: CSharpStruct[];
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;

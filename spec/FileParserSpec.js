@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var FileParser_1 = require("../src/FileParser");
 var fs = require('fs');
 function useCSharp(file, callback) {

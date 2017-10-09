@@ -275,14 +275,9 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
-<<<<<<< HEAD
 	properties: CSharpProperty[];
     fields: CSharpField[];
     structs: CSharpStruct[];
-=======
-    properties: CSharpProperty[];
-    fields: CSharpField[];
->>>>>>> f94aa5924bcd6848518a8e2900ce878b9746a328
 
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
@@ -302,13 +297,9 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.methods = [];
         this.classes = [];
         this.enums = [];
-<<<<<<< HEAD
 		this.properties = [];
         this.fields = [];
         this.structs = [];
-=======
-        this.properties = [];
-        this.fields = [];
         this.interfaces = [];
         this.attributes = [];
     }
@@ -323,7 +314,6 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
 
     set isPublic(isPublic: boolean) {
         this._isPublic = isPublic;
->>>>>>> f94aa5924bcd6848518a8e2900ce878b9746a328
     }
 
     get fullName() {
