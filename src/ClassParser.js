@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var ScopeHelper_1 = require("./ScopeHelper");
 var RegExHelper_1 = require("./RegExHelper");
@@ -6,7 +7,7 @@ var MethodParser_1 = require("./MethodParser");
 var PropertyParser_1 = require("./PropertyParser");
 var InterfaceParser_1 = require("./InterfaceParser");
 var AttributeParser_1 = require("./AttributeParser");
-var ClassParser = (function () {
+var ClassParser = /** @class */ (function () {
     function ClassParser(typeParser, enumParser, fieldParser) {
         this.typeParser = typeParser;
         this.enumParser = enumParser;

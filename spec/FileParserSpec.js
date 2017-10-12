@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var FileParser_1 = require("../src/FileParser");
 var fs = require('fs');
 function useCSharp(file, callback) {
@@ -101,6 +102,7 @@ describe("FileParser", function () {
             expect(file.enums[0].attributes.length).toEqual(1);
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].enums.length).toEqual(2);
+            expect(file.namespaces[0].enums.length).toEqual(1);
             expect(file.enums[0].options[1].attributes.length).toEqual(2);
             expect(file.enums[0].options[2].attributes.length).toEqual(1);
             expect(file.enums[0].options[3].attributes.length).toEqual(3);

@@ -1,5 +1,6 @@
 "use strict";
-var CSharpType = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+var CSharpType = /** @class */ (function () {
     function CSharpType(name) {
         this.name = name;
     }
@@ -17,7 +18,7 @@ var CSharpType = (function () {
     return CSharpType;
 }());
 exports.CSharpType = CSharpType;
-var CSharpNamespace = (function () {
+var CSharpNamespace = /** @class */ (function () {
     function CSharpNamespace(name) {
         this.name = name;
         this.classes = [];
@@ -54,7 +55,7 @@ var CSharpNamespace = (function () {
     return CSharpNamespace;
 }());
 exports.CSharpNamespace = CSharpNamespace;
-var CSharpFile = (function () {
+var CSharpFile = /** @class */ (function () {
     function CSharpFile() {
         this.usings = [];
         this.namespaces = [];
@@ -79,7 +80,7 @@ var CSharpFile = (function () {
     return CSharpFile;
 }());
 exports.CSharpFile = CSharpFile;
-var CSharpMethod = (function () {
+var CSharpMethod = /** @class */ (function () {
     function CSharpMethod(name) {
         this.name = name;
         this.parameters = [];
@@ -99,13 +100,13 @@ var CSharpMethod = (function () {
     return CSharpMethod;
 }());
 exports.CSharpMethod = CSharpMethod;
-var CSharpNamedToken = (function () {
+var CSharpNamedToken = /** @class */ (function () {
     function CSharpNamedToken() {
     }
     return CSharpNamedToken;
 }());
 exports.CSharpNamedToken = CSharpNamedToken;
-var CSharpMethodParameter = (function () {
+var CSharpMethodParameter = /** @class */ (function () {
     function CSharpMethodParameter(name) {
         this.name = name;
         this.attributes = [];
@@ -113,7 +114,7 @@ var CSharpMethodParameter = (function () {
     return CSharpMethodParameter;
 }());
 exports.CSharpMethodParameter = CSharpMethodParameter;
-var CSharpStruct = (function () {
+var CSharpStruct = /** @class */ (function () {
     function CSharpStruct(name) {
         this.name = name;
         this.methods = [];
@@ -148,7 +149,7 @@ var CSharpStruct = (function () {
     return CSharpStruct;
 }());
 exports.CSharpStruct = CSharpStruct;
-var CSharpInterface = (function () {
+var CSharpInterface = /** @class */ (function () {
     function CSharpInterface(name) {
         this.name = name;
         this.methods = [];
@@ -182,7 +183,7 @@ var CSharpInterface = (function () {
     return CSharpInterface;
 }());
 exports.CSharpInterface = CSharpInterface;
-var CSharpClass = (function () {
+var CSharpClass = /** @class */ (function () {
     function CSharpClass(name) {
         this.name = name;
         this.constructors = [];
@@ -230,7 +231,7 @@ var CSharpClass = (function () {
     return CSharpClass;
 }());
 exports.CSharpClass = CSharpClass;
-var CSharpEnum = (function () {
+var CSharpEnum = /** @class */ (function () {
     function CSharpEnum(name) {
         this.name = name;
         this.attributes = [];
@@ -262,7 +263,7 @@ var CSharpEnum = (function () {
     return CSharpEnum;
 }());
 exports.CSharpEnum = CSharpEnum;
-var CSharpField = (function () {
+var CSharpField = /** @class */ (function () {
     function CSharpField(name) {
         this.name = name;
         this.attributes = [];
@@ -270,13 +271,13 @@ var CSharpField = (function () {
     return CSharpField;
 }());
 exports.CSharpField = CSharpField;
-var CSharpPropertyComponent = (function () {
+var CSharpPropertyComponent = /** @class */ (function () {
     function CSharpPropertyComponent() {
     }
     return CSharpPropertyComponent;
 }());
 exports.CSharpPropertyComponent = CSharpPropertyComponent;
-var CSharpProperty = (function () {
+var CSharpProperty = /** @class */ (function () {
     function CSharpProperty(name) {
         this.name = name;
         this.components = [];
@@ -302,14 +303,14 @@ var CSharpProperty = (function () {
     return CSharpProperty;
 }());
 exports.CSharpProperty = CSharpProperty;
-var CSharpAttribute = (function () {
+var CSharpAttribute = /** @class */ (function () {
     function CSharpAttribute(name) {
         this.name = name;
     }
     return CSharpAttribute;
 }());
 exports.CSharpAttribute = CSharpAttribute;
-var CSharpEnumOption = (function () {
+var CSharpEnumOption = /** @class */ (function () {
     function CSharpEnumOption(name) {
         this.name = name;
         this.attributes = [];

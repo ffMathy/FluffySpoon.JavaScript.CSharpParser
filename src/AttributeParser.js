@@ -1,7 +1,8 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var RegExHelper_1 = require("./RegExHelper");
-var AttributeParser = (function () {
+var AttributeParser = /** @class */ (function () {
     function AttributeParser() {
         this.regexHelper = new RegExHelper_1.RegExHelper();
     }

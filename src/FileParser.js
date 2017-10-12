@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Models_1 = require("./Models");
 var NamespaceParser_1 = require("./NamespaceParser");
 var ScopeHelper_1 = require("./ScopeHelper");
@@ -9,7 +10,7 @@ var EnumParser_1 = require("./EnumParser");
 var StructParser_1 = require("./StructParser");
 var TypeParser_1 = require("./TypeParser");
 var FieldParser_1 = require("./FieldParser");
-var FileParser = (function () {
+var FileParser = /** @class */ (function () {
     function FileParser(contents) {
         this.contents = contents;
         this.contents = contents.replace(/\r\n/gi, '\n').replace(/\r/gi, '\n');

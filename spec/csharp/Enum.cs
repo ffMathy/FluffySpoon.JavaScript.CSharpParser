@@ -12,6 +12,14 @@ enum MyEnum: int
     FifthValue
 }
 
+namespace Blah {
+    enum BlahEnum
+    {
+        Hello,
+        World
+    }
+}
+
 class Foo
 {
     enum StuffEnum : System.Int32
