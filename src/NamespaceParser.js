@@ -67,7 +67,7 @@ var NamespaceParser = /** @class */ (function () {
         return namespaces;
     };
     NamespaceParser.parseNamespaceFromName = function (name) {
-        return this.parseNamespacesFromName(name)[0];
+        return name ? this.parseNamespacesFromName(name)[0] : null;
     };
     NamespaceParser.parseNamespacesFromName = function (name) {
         var namespaces = new Array();

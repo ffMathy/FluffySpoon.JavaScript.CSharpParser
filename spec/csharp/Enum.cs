@@ -13,7 +13,7 @@ enum MyEnum: int
 }
 
 namespace Blah {
-    enum BlahEnum
+    public enum BlahEnum
     {
         Hello,
         World

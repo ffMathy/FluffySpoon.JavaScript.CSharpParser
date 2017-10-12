@@ -80,7 +80,7 @@ export class NamespaceParser {
     }
 
     static parseNamespaceFromName(name: string) {
-        return this.parseNamespacesFromName(name)[0];
+        return name ? this.parseNamespacesFromName(name)[0] : null;
     }
 
     static parseNamespacesFromName(name: string) {
