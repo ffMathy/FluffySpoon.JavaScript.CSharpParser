@@ -80,7 +80,8 @@ var TypeParser = /** @class */ (function () {
         var subNames = name.split(".");
         var type = new Models_1.CSharpType(subNames[subNames.length - 1]);
         type.isNullable = isNullable;
-        type.namespace = NamespaceParser_1.NamespaceParser.parseNamespaceFromName(subNames
+        type.namespace = NamespaceParser_1.NamespaceParser
+            .parseNamespaceFromName(subNames
             .slice(0, subNames.length - 1)
             .join("."));
         this.prepareTypeForGenericParameters(type, genericParameters);

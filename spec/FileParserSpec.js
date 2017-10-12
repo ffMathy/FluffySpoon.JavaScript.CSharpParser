@@ -172,7 +172,8 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].properties.length).toEqual(1);
             expect(file.namespaces[0].classes[0].attributes.length).toEqual(1);
             expect(file.namespaces[0].classes[0].fields.length).toEqual(1);
-            expect(file.namespaces[0].classes[0].methods.length).toEqual(1);
+            expect(file.namespaces[0].classes[0].methods.length).toEqual(0);
+            expect(file.namespaces[0].classes[0].constructors.length).toEqual(1);
             expect(file.namespaces[0].classes[0].genericParameters.length).toEqual(1);
             expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
             expect(file.namespaces[0].classes[0].genericParameters[0].name).toEqual("WithGenerics");
@@ -183,8 +184,8 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true);
             expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int");
             expect(file.namespaces[0].classes[0].fields[0].type.isNullable).toBe(true);
-            expect(file.namespaces[0].classes[0].methods[0].name).toEqual("MyPoco");
-            expect(file.namespaces[0].classes[0].methods[0].isConstructor).toBe(true);
+            expect(file.namespaces[0].classes[0].constructors[0].name).toEqual("MyPoco");
+            expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true);
         }));
         it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', function (parser) {
             var file = parser.parseFile();

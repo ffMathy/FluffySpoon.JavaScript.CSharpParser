@@ -83,6 +83,14 @@ export class ClassParser {
                     classObject.interfaces.push(interfaceObject);
                 }
 
+                classObject.constructors = classObject
+                    .methods
+                    .filter(x => x.isConstructor);
+
+                classObject.methods = classObject
+                    .methods
+                    .filter(x => !x.isConstructor);
+
 				classes.push(classObject);
 
 				console.log("Detected class", classObject);

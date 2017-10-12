@@ -68,6 +68,12 @@ var ClassParser = /** @class */ (function () {
                     var interfaceObject = interfaces_1[_g];
                     classObject.interfaces.push(interfaceObject);
                 }
+                classObject.constructors = classObject
+                    .methods
+                    .filter(function (x) { return x.isConstructor; });
+                classObject.methods = classObject
+                    .methods
+                    .filter(function (x) { return !x.isConstructor; });
                 classes.push(classObject);
                 console.log("Detected class", classObject);
             }
