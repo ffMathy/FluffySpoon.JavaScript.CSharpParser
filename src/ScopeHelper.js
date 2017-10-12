@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ScopeHelper = /** @class */ (function () {
+var ScopeHelper = (function () {
     function ScopeHelper() {
     }
     ScopeHelper.prototype.getCurlyScopes = function (content) {

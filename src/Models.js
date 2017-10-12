@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CSharpType = /** @class */ (function () {
+var CSharpType = (function () {
     function CSharpType(name) {
         this.name = name;
     }
@@ -192,6 +192,7 @@ var CSharpClass = /** @class */ (function () {
         this.enums = [];
         this.properties = [];
         this.fields = [];
+        this.structs = [];
         this.interfaces = [];
         this.attributes = [];
     }

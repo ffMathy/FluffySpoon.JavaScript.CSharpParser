@@ -275,8 +275,9 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     methods: CSharpMethod[];
     classes: CSharpClass[];
     enums: CSharpEnum[];
-    properties: CSharpProperty[];
+	properties: CSharpProperty[];
     fields: CSharpField[];
+    structs: CSharpStruct[];
 
     inheritsFrom?: CSharpType;
     parent: CSharpClass | CSharpNamespace | CSharpFile;
@@ -296,8 +297,9 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.methods = [];
         this.classes = [];
         this.enums = [];
-        this.properties = [];
+		this.properties = [];
         this.fields = [];
+        this.structs = [];
         this.interfaces = [];
         this.attributes = [];
     }
