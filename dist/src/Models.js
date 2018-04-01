@@ -155,6 +155,7 @@ var CSharpInterface = /** @class */ (function () {
         this.methods = [];
         this.properties = [];
         this.attributes = [];
+        this.implements = [];
     }
     Object.defineProperty(CSharpInterface.prototype, "isPublic", {
         get: function () {
@@ -195,6 +196,7 @@ var CSharpClass = /** @class */ (function () {
         this.structs = [];
         this.interfaces = [];
         this.attributes = [];
+        this.inheritsFrom = [];
     }
     Object.defineProperty(CSharpClass.prototype, "isPublic", {
         get: function () {

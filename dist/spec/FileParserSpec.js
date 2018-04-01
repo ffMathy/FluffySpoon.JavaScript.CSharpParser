@@ -190,11 +190,23 @@ describe("FileParser", function () {
             expect(file.namespaces[0].classes[0].constructors[0].name).toEqual("MyPoco");
             expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true);
         }));
+        it("should be able to fetch interfaces that implement something", useCSharp('ImplementedInterface.cs', function (parser) {
+            var file = parser.parseFile();
+            expect(file.interfaces.length).toEqual(1);
+            expect(file.interfaces[0].implements.length).toEqual(2);
+            expect(file.interfaces[0].implements[0]).not.toBeUndefined();
+            expect(file.interfaces[0].implements[0].name).toEqual("IMyInterface1<>");
+            expect(file.interfaces[0].implements[1]).not.toBeUndefined();
+            expect(file.interfaces[0].implements[1].name).toEqual("IMyInterface2<,>");
+        }));
         it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', function (parser) {
             var file = parser.parseFile();
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].inheritsFrom).not.toBeUndefined();
-            expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface<>");
+            expect(file.classes[0].inheritsFrom.length).toEqual(2);
+            expect(file.classes[0].inheritsFrom[0]).not.toBeUndefined();
+            expect(file.classes[0].inheritsFrom[0].name).toEqual("IMyInterface1<>");
+            expect(file.classes[0].inheritsFrom[1]).not.toBeUndefined();
+            expect(file.classes[0].inheritsFrom[1].name).toEqual("IMyInterface2<,>");
         }));
     });
     describe("structs:", function () {

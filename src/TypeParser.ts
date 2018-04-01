@@ -9,7 +9,7 @@ import { NamespaceParser } from './NamespaceParser';
 export class TypeParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
-	
+
 	constructor() {
 
 	}
@@ -86,7 +86,7 @@ export class TypeParser {
 
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			/([\w.]+)(?:\s*<\s*(.+)\s*>)?(\?|(?:\[\]))?/g);
+			new RegExp(RegExHelper.REGEX_TYPE, "g"));
 		var match = matches[0];
 		if (!match)
 			return null;

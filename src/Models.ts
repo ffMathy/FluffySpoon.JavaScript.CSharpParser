@@ -229,7 +229,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
     methods: CSharpMethod[];
     properties: CSharpProperty[];
 
-    inheritsFrom?: CSharpType;
+    implements: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;
@@ -246,6 +246,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
         this.methods = [];
         this.properties = [];
         this.attributes = [];
+        this.implements = [];
     }
 
     get isPublic() {
@@ -279,7 +280,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     fields: CSharpField[];
     structs: CSharpStruct[];
 
-    inheritsFrom?: CSharpType;
+    inheritsFrom: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;
@@ -302,6 +303,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.structs = [];
         this.interfaces = [];
         this.attributes = [];
+        this.inheritsFrom = [];
     }
 
     get isPublic() {
@@ -339,7 +341,7 @@ export class CSharpEnum implements CSharpScope {
 
     parent: CSharpNamespace | CSharpFile | CSharpClass;
 
-    inheritsFrom?: CSharpType;
+    inheritsFrom: CSharpType;
 
     name: string;
     innerScopeText: string;

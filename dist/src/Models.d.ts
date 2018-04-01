@@ -98,7 +98,7 @@ export declare class CSharpStruct implements CSharpScope {
 export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSharpGenericParameterContainer {
     methods: CSharpMethod[];
     properties: CSharpProperty[];
-    inheritsFrom?: CSharpType;
+    implements: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
@@ -118,7 +118,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
     properties: CSharpProperty[];
     fields: CSharpField[];
     structs: CSharpStruct[];
-    inheritsFrom?: CSharpType;
+    inheritsFrom: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;
@@ -133,7 +133,7 @@ export declare class CSharpClass implements CSharpImplementationTypeDeclarationS
 export declare class CSharpEnum implements CSharpScope {
     options: CSharpEnumOption[];
     parent: CSharpNamespace | CSharpFile | CSharpClass;
-    inheritsFrom?: CSharpType;
+    inheritsFrom: CSharpType;
     name: string;
     innerScopeText: string;
     attributes: CSharpAttribute[];

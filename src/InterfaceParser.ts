@@ -31,17 +31,14 @@ export class InterfaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)interface\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
+                new RegExp(RegExHelper.REGEX_INTERFACE, "g"))
             for (var match of matches) {
 				var interfaceObject = new CSharpInterface(match[2]);
 				interfaceObject.innerScopeText = scope.content;
                 interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
 				interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
                 interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
-
-				if (match[2]) {
-					interfaceObject.inheritsFrom = this.typeParser.parseType(match[4]);
-				}
+                interfaceObject.implements = this.typeParser.parseTypesFromGenericParameters(match[4]);
 
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var property of properties) {
