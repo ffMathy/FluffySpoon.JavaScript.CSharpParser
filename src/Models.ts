@@ -82,10 +82,10 @@ export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope
         var classes = new Array<CSharpClass>();
         for(var classObject of this.classes) {
             classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
+            classes = classes.concat(...classObject.getAllClassesRecursively());
         }
         for(var namespace of this.namespaces) {
-            classes = classes.concat(namespace.getAllClassesRecursively());
+            classes = classes.concat(...namespace.getAllClassesRecursively());
         }
         return classes;
     }
@@ -118,10 +118,10 @@ export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
         var classes = new Array<CSharpClass>();
         for(var classObject of this.classes) {
             classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
+            classes = classes.concat(...classObject.getAllClassesRecursively());
         }
         for(var namespace of this.namespaces) {
-            classes = classes.concat(namespace.getAllClassesRecursively());
+            classes = classes.concat(...namespace.getAllClassesRecursively());
         }
         return classes;
     }
@@ -328,7 +328,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         var classes = new Array<CSharpClass>();
         for(var classObject of this.classes) {
             classes.push(classObject);
-            classes = classes.concat(classObject.getAllClassesRecursively());
+            classes = classes.concat(...classObject.getAllClassesRecursively());
         }
         return classes;
     }
