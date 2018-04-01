@@ -55,7 +55,7 @@ var MethodParser = /** @class */ (function () {
     };
     MethodParser.prototype.parseMethodParameters = function (content) {
         var result = new Array();
-        var matches = this.regexHelper.getMatches(content, /((?:\w+\s*<\s*.+\s*>)|(?:\w+))\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+        var matches = this.regexHelper.getMatches(content, /(?:(params)\s*)?([\w.\[\]]+\s*(?:<\s*.+\s*>)?)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
         for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
             var match = matches_2[_i];
             result.push(this.parseMethodParameter(match));
@@ -63,7 +63,7 @@ var MethodParser = /** @class */ (function () {
         return result;
     };
     MethodParser.prototype.parseMethodParameter = function (match) {
-        var valueInput = match[2];
+        var valueInput = match[3];
         var defaultValue = null;
         if (valueInput) {
             if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
@@ -82,8 +82,9 @@ var MethodParser = /** @class */ (function () {
             }
         }
         return {
-            type: this.typeParser.parseType(match[0]),
-            name: match[1],
+            type: this.typeParser.parseType(match[1]),
+            name: match[2],
+            isVariadicContainer: !!match[0],
             defaultValue: defaultValue
         };
     };
