@@ -41,13 +41,13 @@ export class ClassParser {
                 scope.prefix,
                 new RegExp(RegExHelper.REGEX_CLASS, "g"));
             for (var match of matches) {
-                debugger;
 				var classObject = new CSharpClass(match[2]);
 				classObject.isPublic = (match[1] || "").indexOf("public") > -1;
                 classObject.attributes = this.attributeParser.parseAttributes(match[0]);
-				classObject.innerScopeText = scope.content;
+                classObject.innerScopeText = scope.content;
                 classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
-                classObject.inheritsFrom = [this.typeParser.parseType(match[4])];
+                classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(match[4]);
+
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {

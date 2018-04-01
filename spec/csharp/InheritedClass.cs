@@ -10,8 +10,3 @@
 
 	}
 }
-
-interface IMyInterface
-{
-	void Foo();
-}

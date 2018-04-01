@@ -232,7 +232,7 @@ describe("FileParser", function () {
 		}));
 
 		it("should be able to fetch classes inside namespaces", useCSharp('ClassInsideNamespace.cs', (parser) => {
-			var file = parser.parseFile();
+            var file = parser.parseFile();
 
 			expect(file.namespaces.length).toEqual(1);
 			expect(file.namespaces[0].classes.length).toEqual(1);
@@ -258,6 +258,19 @@ describe("FileParser", function () {
 
 			expect(file.namespaces[0].classes[0].constructors[0].name).toEqual("MyPoco");
 			expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true);
+		}));
+
+		it("should be able to fetch interfaces that implement something", useCSharp('ImplementedInterface.cs', (parser) => {
+			var file = parser.parseFile();
+
+			expect(file.interfaces.length).toEqual(1);
+			expect(file.interfaces[0].implements.length).toEqual(2);
+
+			expect(file.interfaces[0].implements[0]).not.toBeUndefined();
+			expect(file.interfaces[0].implements[0].name).toEqual("IMyInterface1<>");
+
+			expect(file.interfaces[0].implements[1]).not.toBeUndefined();
+			expect(file.interfaces[0].implements[1].name).toEqual("IMyInterface2<,>");
 		}));
 
 		it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', (parser) => {

@@ -229,7 +229,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
     methods: CSharpMethod[];
     properties: CSharpProperty[];
 
-    inheritsFrom: CSharpType[];
+    implements: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
     innerScopeText: string;
@@ -246,7 +246,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
         this.methods = [];
         this.properties = [];
         this.attributes = [];
-        this.inheritsFrom = [];
+        this.implements = [];
     }
 
     get isPublic() {

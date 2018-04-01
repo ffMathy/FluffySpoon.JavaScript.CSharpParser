@@ -27,13 +27,12 @@ var ClassParser = /** @class */ (function () {
             var matches = this.regexHelper.getMatches(scope.prefix, new RegExp(RegExHelper_1.RegExHelper.REGEX_CLASS, "g"));
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                debugger;
                 var classObject = new Models_1.CSharpClass(match[2]);
                 classObject.isPublic = (match[1] || "").indexOf("public") > -1;
                 classObject.attributes = this.attributeParser.parseAttributes(match[0]);
                 classObject.innerScopeText = scope.content;
                 classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
-                classObject.inheritsFrom = [this.typeParser.parseType(match[4])];
+                classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(match[4]);
                 var fields = this.fieldParser.parseFields(scope.content);
                 for (var _b = 0, fields_1 = fields; _b < fields_1.length; _b++) {
                     var field = fields_1[_b];

@@ -98,7 +98,7 @@ export declare class CSharpStruct implements CSharpScope {
 export declare class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSharpGenericParameterContainer {
     methods: CSharpMethod[];
     properties: CSharpProperty[];
-    inheritsFrom: CSharpType[];
+    implements: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
     innerScopeText: string;
     name: string;

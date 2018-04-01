@@ -4,7 +4,7 @@ var RegExHelper = /** @class */ (function () {
     function RegExHelper() {
     }
     RegExHelper.getClassOrInterfaceRegex = function (keyword) {
-        return "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*" + RegExHelper.REGEX_MODIFIERS + keyword + "\\s+" + RegExHelper.REGEX_TYPE_NAME + "(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?\\s*(?:\\:\\s*(\\w+?(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?))?(?:\\s*where\\s*(\\w+?)\\s*(?:" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?\\s*\\:\\s*([\\w()]+?(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?))?\\s*{";
+        return "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*" + RegExHelper.REGEX_MODIFIERS + keyword + "\\s+(" + RegExHelper.REGEX_TYPE_NAME + ")(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?\\s*(?:\\:\\s*(" + RegExHelper.REGEX_TYPE_NAME + "(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?))?(?:\\s*where\\s*" + RegExHelper.REGEX_TYPE_NAME + "\\s*(?:" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?\\s*\\:\\s*([\\w()]+?(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?))?\\s*{";
     };
     RegExHelper.prototype.getMatches = function (input, regex) {
         var final = [];
@@ -16,8 +16,8 @@ var RegExHelper = /** @class */ (function () {
     };
     RegExHelper.REGEX_GENERIC_TYPES_WRAPPED = "<\\s*([<>.\\w,\\s]+)\\s*>";
     RegExHelper.REGEX_MODIFIERS = "((?:\\w+\\s)*)";
-    RegExHelper.REGEX_TYPE_NAME = "([\\w.]+)";
-    RegExHelper.REGEX_TYPE = RegExHelper.REGEX_TYPE_NAME + "(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?(\\?|(?:\\[\\]))?";
+    RegExHelper.REGEX_TYPE_NAME = "[\\w.]+";
+    RegExHelper.REGEX_TYPE = "(" + RegExHelper.REGEX_TYPE_NAME + ")(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?(\\?|(?:\\[\\]))?";
     RegExHelper.REGEX_ATTRIBUTE = "((?:\\[.*\\]\\s*?)*)?";
     RegExHelper.REGEX_CLASS = RegExHelper.getClassOrInterfaceRegex("class");
     RegExHelper.REGEX_INTERFACE = RegExHelper.getClassOrInterfaceRegex("interface");

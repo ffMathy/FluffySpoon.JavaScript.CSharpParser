@@ -38,10 +38,7 @@ export class InterfaceParser {
                 interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
 				interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
                 interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
-
-				if (match[2]) {
-					interfaceObject.inheritsFrom = [this.typeParser.parseType(match[4])];
-				}
+                interfaceObject.implements = this.typeParser.parseTypesFromGenericParameters(match[4]);
 
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var property of properties) {
