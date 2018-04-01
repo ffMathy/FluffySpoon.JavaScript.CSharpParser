@@ -68,7 +68,7 @@ describe("FileParser", function () {
         it("should be able to fetch methods inside classes and their parameters", useCSharp('MethodInsideClass.cs', function (parser) {
             var file = parser.parseFile();
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(3);
+            expect(file.classes[0].methods.length).toEqual(4);
             expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
             expect(file.classes[0].methods[1].attributes.length).toEqual(1);
@@ -76,6 +76,9 @@ describe("FileParser", function () {
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
             expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
             expect(file.classes[0].methods[1].parameters[3].attributes.length).toEqual(4);
+            expect(file.classes[0].methods[2].parameters.length).toEqual(2);
+            expect(file.classes[0].methods[2].parameters[0].attributes.length).toEqual(1);
+            expect(file.classes[0].methods[2].parameters[1].attributes.length).toEqual(1);
             expect(file.classes[0].methods[0].returnType.name).toEqual('string');
             expect(file.classes[0].methods[0].isVirtual).toBe(true);
             expect(file.classes[0].methods[0].name).toEqual('MyFunction');
@@ -103,6 +106,12 @@ describe("FileParser", function () {
             expect(file.classes[0].methods[1].parameters[4].name).toEqual('someArray');
             expect(file.classes[0].methods[1].parameters[4].type.name).toEqual('Array<>');
             expect(file.classes[0].methods[1].parameters[4].isVariadicContainer).toEqual(true);
+            expect(file.classes[0].methods[2].parameters[0].name).toEqual('baz');
+            expect(file.classes[0].methods[2].parameters[0].type.name).toEqual('string');
+            expect(file.classes[0].methods[2].parameters[0].attributes[0].name).toEqual('Annotation1');
+            expect(file.classes[0].methods[2].parameters[1].name).toEqual('buz');
+            expect(file.classes[0].methods[2].parameters[1].type.name).toEqual('int');
+            expect(file.classes[0].methods[2].parameters[1].attributes[0].name).toEqual('Annotation2');
         }));
     });
     describe("enums:", function () {

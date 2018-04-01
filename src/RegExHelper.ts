@@ -3,7 +3,7 @@
 	public static readonly REGEX_MODIFIERS = "((?:\\w+\\s)*)";
 	public static readonly REGEX_TYPE_NAME = "[\\w.]+";
 	public static readonly REGEX_TYPE = "(" + RegExHelper.REGEX_TYPE_NAME + ")(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + ")?(\\?|(?:\\[\\]))?";
-	public static readonly REGEX_ATTRIBUTE = "((?:\\[.*\\]\\s*?)*)?";
+	public static readonly REGEX_ATTRIBUTE = "((?:\\[[\\w.,\\s]+\\]\\s*?)*)?";
 	public static readonly REGEX_CLASS = RegExHelper.getClassOrInterfaceRegex("class");
 	public static readonly REGEX_INTERFACE = RegExHelper.getClassOrInterfaceRegex("interface");
 	public static readonly REGEX_METHOD = "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*((?:\\w+\\s)*)((?:[\\w.]+\\s*<\\s*.+\\s*>)|[\\w.]+)\\s+(\\w+?)\\s*\\(((?:.|\\s)*?)\\)\\s*({|;)";

@@ -19,5 +19,8 @@
 
     }
 
+    public string MethodWithMultipleParametersAnnotated([Annotation1]string baz, [Annotation2]int buz) { 
+    }
+
 	List<Dictionary<string, int>> Stuff() { }
 }
