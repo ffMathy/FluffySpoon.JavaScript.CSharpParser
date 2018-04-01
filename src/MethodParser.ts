@@ -31,7 +31,7 @@ export class MethodParser {
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				/\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)((?:[\w.]+\s*<\s*.+\s*>)|[\w.]+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
+				new RegExp(RegExHelper.REGEX_METHOD, "g"));
 			for (var match of matches) {
 				var method = new CSharpMethod(match[3]);
             	method.attributes = this.attributeParser.parseAttributes(match[0]);
@@ -79,7 +79,7 @@ export class MethodParser {
 
 		var matches = this.regexHelper.getMatches(
 			content,
-			/(?:(params)\s*)?([\w.\[\]]+\s*(?:<\s*.+\s*>)?)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+			new RegExp(RegExHelper.REGEX_METHOD_PARAMETER, "g"));
 		for (var match of matches) {
 			result.push(this.parseMethodParameter(match));
 		}
@@ -88,7 +88,7 @@ export class MethodParser {
 	}
 
 	private parseMethodParameter(match: string[]) {
-		var valueInput = match[3];
+		var valueInput = match[4];
 
 		var defaultValue = <CSharpToken>null;
 		if (valueInput) {
@@ -106,9 +106,10 @@ export class MethodParser {
 		}
 
 		return <CSharpMethodParameter>{
-			type: this.typeParser.parseType(match[1]),
-			name: match[2],
-			isVariadicContainer: !!match[0],
+			type: this.typeParser.parseType(match[2]),
+			name: match[3],
+			isVariadicContainer: !!match[1],
+			attributes: this.attributeParser.parseAttributes(match[0]),
 			defaultValue
 		}
 	}

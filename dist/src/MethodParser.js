@@ -16,7 +16,7 @@ var MethodParser = /** @class */ (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)((?:[\w.]+\s*<\s*.+\s*>)|[\w.]+)\s+(\w+?)\s*\(((?:.|\s)*?)\)\s*({|;)/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, new RegExp(RegExHelper_1.RegExHelper.REGEX_METHOD, "g"));
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var method = new Models_1.CSharpMethod(match[3]);
@@ -55,7 +55,7 @@ var MethodParser = /** @class */ (function () {
     };
     MethodParser.prototype.parseMethodParameters = function (content) {
         var result = new Array();
-        var matches = this.regexHelper.getMatches(content, /(?:(params)\s*)?([\w.\[\]]+\s*(?:<\s*.+\s*>)?)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+        var matches = this.regexHelper.getMatches(content, new RegExp(RegExHelper_1.RegExHelper.REGEX_METHOD_PARAMETER, "g"));
         for (var _i = 0, matches_2 = matches; _i < matches_2.length; _i++) {
             var match = matches_2[_i];
             result.push(this.parseMethodParameter(match));
@@ -63,7 +63,7 @@ var MethodParser = /** @class */ (function () {
         return result;
     };
     MethodParser.prototype.parseMethodParameter = function (match) {
-        var valueInput = match[3];
+        var valueInput = match[4];
         var defaultValue = null;
         if (valueInput) {
             if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
@@ -82,9 +82,10 @@ var MethodParser = /** @class */ (function () {
             }
         }
         return {
-            type: this.typeParser.parseType(match[1]),
-            name: match[2],
-            isVariadicContainer: !!match[0],
+            type: this.typeParser.parseType(match[2]),
+            name: match[3],
+            isVariadicContainer: !!match[1],
+            attributes: this.attributeParser.parseAttributes(match[0]),
             defaultValue: defaultValue
         };
     };

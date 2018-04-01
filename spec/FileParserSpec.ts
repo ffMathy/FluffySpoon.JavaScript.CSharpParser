@@ -103,9 +103,10 @@ describe("FileParser", function () {
 			expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
 			expect(file.classes[0].methods[1].attributes.length).toEqual(1);
-			expect(file.classes[0].methods[1].parameters.length).toEqual(4);
+			expect(file.classes[0].methods[1].parameters.length).toEqual(5);
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
+			expect(file.classes[0].methods[1].parameters[3].attributes.length).toEqual(4);
 
 			expect(file.classes[0].methods[0].returnType.name).toEqual('string');
 			expect(file.classes[0].methods[0].isVirtual).toBe(true);
@@ -130,9 +131,16 @@ describe("FileParser", function () {
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[1].name).toEqual('int');
 			expect(file.classes[0].methods[1].parameters[2].defaultValue).toEqual('bar');
 
-            expect(file.classes[0].methods[1].parameters[3].name).toEqual('someArray');
-            expect(file.classes[0].methods[1].parameters[3].type.name).toEqual('Array<>');
-			expect(file.classes[0].methods[1].parameters[3].isVariadicContainer).toEqual(true);
+            expect(file.classes[0].methods[1].parameters[3].name).toEqual('foo2');
+            expect(file.classes[0].methods[1].parameters[3].type.name).toEqual('string');
+			expect(file.classes[0].methods[1].parameters[3].attributes[0].name).toEqual('Hello');
+			expect(file.classes[0].methods[1].parameters[3].attributes[1].name).toEqual('Blah');
+			expect(file.classes[0].methods[1].parameters[3].attributes[2].name).toEqual('Foo');
+			expect(file.classes[0].methods[1].parameters[3].attributes[3].name).toEqual('Bar');
+
+            expect(file.classes[0].methods[1].parameters[4].name).toEqual('someArray');
+            expect(file.classes[0].methods[1].parameters[4].type.name).toEqual('Array<>');
+			expect(file.classes[0].methods[1].parameters[4].isVariadicContainer).toEqual(true);
         }));
 
     });

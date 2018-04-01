@@ -13,7 +13,6 @@ export class AttributeParser {
 
     parseAttributes(content: string) {
         var attributes = new Array<CSharpAttribute>();
-
         if(content) {
             var matches = this.regexHelper.getMatches(
                 content,
