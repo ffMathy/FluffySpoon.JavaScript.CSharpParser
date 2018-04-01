@@ -103,7 +103,7 @@ describe("FileParser", function () {
 			expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
 			expect(file.classes[0].methods[1].attributes.length).toEqual(1);
-			expect(file.classes[0].methods[1].parameters.length).toEqual(3);
+			expect(file.classes[0].methods[1].parameters.length).toEqual(4);
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
 
@@ -117,6 +117,7 @@ describe("FileParser", function () {
 
             expect(file.classes[0].methods[1].parameters[0].name).toEqual('parameter1');
             expect(file.classes[0].methods[1].parameters[0].type.name).toEqual('string');
+			expect(file.classes[0].methods[1].parameters[0].isVariadicContainer).toEqual(false);
 
             expect(file.classes[0].methods[1].parameters[1].name).toEqual('parameter2');
             expect(file.classes[0].methods[1].parameters[1].type.name).toEqual('bool');
@@ -128,6 +129,10 @@ describe("FileParser", function () {
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[0].name).toEqual('string');
 			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[1].name).toEqual('int');
 			expect(file.classes[0].methods[1].parameters[2].defaultValue).toEqual('bar');
+
+            expect(file.classes[0].methods[1].parameters[3].name).toEqual('someArray');
+            expect(file.classes[0].methods[1].parameters[3].type.name).toEqual('Array<>');
+			expect(file.classes[0].methods[1].parameters[3].isVariadicContainer).toEqual(true);
         }));
 
     });

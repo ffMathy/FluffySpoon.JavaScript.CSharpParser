@@ -172,6 +172,8 @@ export class CSharpMethodParameter {
     type: CSharpType;
     defaultValue: CSharpToken;
 
+    isVariadicContainer: boolean;
+
     attributes: CSharpAttribute[];
 
     constructor(name: string) {

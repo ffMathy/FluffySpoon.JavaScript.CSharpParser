@@ -79,7 +79,7 @@ export class MethodParser {
 
 		var matches = this.regexHelper.getMatches(
 			content,
-			/((?:\w+\s*<\s*.+\s*>)|(?:\w+))\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
+			/(?:(params)\s*)?([\w.\[\]]+\s*(?:<\s*.+\s*>)?)\s+(\w+)(?:\s*=\s*(.+?))?\s*(?:,|$)/g);
 		for (var match of matches) {
 			result.push(this.parseMethodParameter(match));
 		}
@@ -88,7 +88,7 @@ export class MethodParser {
 	}
 
 	private parseMethodParameter(match: string[]) {
-		var valueInput = match[2];
+		var valueInput = match[3];
 
 		var defaultValue = <CSharpToken>null;
 		if (valueInput) {
@@ -106,8 +106,9 @@ export class MethodParser {
 		}
 
 		return <CSharpMethodParameter>{
-			type: this.typeParser.parseType(match[0]),
-			name: match[1],
+			type: this.typeParser.parseType(match[1]),
+			name: match[2],
+			isVariadicContainer: !!match[0],
 			defaultValue
 		}
 	}
