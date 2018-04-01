@@ -264,9 +264,13 @@ describe("FileParser", function () {
 			var file = parser.parseFile();
 
 			expect(file.classes.length).toEqual(1);
+			expect(file.classes[0].inheritsFrom.length).toEqual(2);
 
-			expect(file.classes[0].inheritsFrom).not.toBeUndefined();
-			expect(file.classes[0].inheritsFrom.name).toEqual("IMyInterface<>");
+			expect(file.classes[0].inheritsFrom[0]).not.toBeUndefined();
+			expect(file.classes[0].inheritsFrom[0].name).toEqual("IMyInterface1<>");
+
+			expect(file.classes[0].inheritsFrom[1]).not.toBeUndefined();
+			expect(file.classes[0].inheritsFrom[1].name).toEqual("IMyInterface2<,>");
 		}));
 
 	});

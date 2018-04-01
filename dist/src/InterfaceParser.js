@@ -20,7 +20,7 @@ var InterfaceParser = /** @class */ (function () {
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
-            var matches = this.regexHelper.getMatches(scope.prefix, /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)interface\s+(\w+?)(?:\s*<\s*([<>.\w,\s]+)\s*>)?\s*(?:\:\s*(\w+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?(?:\s*where\s*(\w+?)\s*(?:<\s*(([<>.\w,\s]+)+)\s*>)?\s*\:\s*([\w()]+?(?:\s*<\s*(([<>.\w,\s]+)+)\s*>)?))?\s*{/g);
+            var matches = this.regexHelper.getMatches(scope.prefix, new RegExp(RegExHelper_1.RegExHelper.REGEX_INTERFACE, "g"));
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var interfaceObject = new Models_1.CSharpInterface(match[2]);
@@ -29,7 +29,7 @@ var InterfaceParser = /** @class */ (function () {
                 interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
                 interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
                 if (match[2]) {
-                    interfaceObject.inheritsFrom = this.typeParser.parseType(match[4]);
+                    interfaceObject.inheritsFrom = [this.typeParser.parseType(match[4])];
                 }
                 var properties = this.propertyParser.parseProperties(scope.content);
                 for (var _b = 0, properties_1 = properties; _b < properties_1.length; _b++) {
