@@ -21,6 +21,8 @@ var RegExHelper = /** @class */ (function () {
     RegExHelper.REGEX_ATTRIBUTE = "((?:\\[.*\\]\\s*?)*)?";
     RegExHelper.REGEX_CLASS = RegExHelper.getClassOrInterfaceRegex("class");
     RegExHelper.REGEX_INTERFACE = RegExHelper.getClassOrInterfaceRegex("interface");
+    RegExHelper.REGEX_METHOD = "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*((?:\\w+\\s)*)((?:[\\w.]+\\s*<\\s*.+\\s*>)|[\\w.]+)\\s+(\\w+?)\\s*\\(((?:.|\\s)*?)\\)\\s*({|;)";
+    RegExHelper.REGEX_METHOD_PARAMETER = RegExHelper.REGEX_ATTRIBUTE + "(?:(params)\\s*)?([\\w.\\[\\]]+\\s*(?:<\\s*.+\\s*>)?)\\s+(\\w+)(?:\\s*=\\s*(.+?))?\\s*(?:,|$)";
     return RegExHelper;
 }());
 exports.RegExHelper = RegExHelper;
