@@ -19,11 +19,16 @@ var MethodParser = /** @class */ (function () {
             var matches = this.regexHelper.getMatches(scope.prefix, new RegExp(RegExHelper_1.RegExHelper.REGEX_METHOD, "g"));
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
-                var method = new Models_1.CSharpMethod(match[3]);
+                var method = new Models_1.CSharpMethod(match[5]);
                 method.attributes = this.attributeParser.parseAttributes(match[0]);
                 method.innerScopeText = scope.content;
                 method.parent = parent;
-                method.returnType = this.typeParser.parseType(match[2] || "void");
+                var returnType = match[2];
+                if (match[3])
+                    returnType += "<" + match[3] + ">";
+                if (match[4])
+                    returnType += match[4];
+                method.returnType = this.typeParser.parseType(returnType);
                 var modifiers = match[1] || "";
                 if (parent instanceof Models_1.CSharpClass && parent.name === method.name) {
                     method.isConstructor = true;
@@ -35,8 +40,8 @@ var MethodParser = /** @class */ (function () {
                     method.isConstructor = false;
                 }
                 method.isPublic = modifiers.indexOf("public") > -1;
-                method.isBodyless = match[5] === ";";
-                var parameters = this.parseMethodParameters(match[4]);
+                method.isBodyless = match[7] === ";";
+                var parameters = this.parseMethodParameters(match[6]);
                 for (var _b = 0, parameters_1 = parameters; _b < parameters_1.length; _b++) {
                     var parameter = parameters_1[_b];
                     method.parameters.push(parameter);

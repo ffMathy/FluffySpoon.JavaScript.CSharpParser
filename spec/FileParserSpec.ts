@@ -56,6 +56,7 @@ describe("FileParser", function () {
 
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].properties.length).toEqual(2);
+            expect(file.classes[0].methods.length).toEqual(1);            
 
             expect(file.classes[0].properties[0].name).toEqual('Name');
             expect(file.classes[0].properties[0].type.name).toEqual('SomeFoo<,>');
@@ -66,6 +67,10 @@ describe("FileParser", function () {
             expect(file.classes[0].properties[1].type.name).toEqual('SomeFoo<,>');
             expect(file.classes[0].properties[1].type.genericParameters[0].name).toEqual('SomeBar<>');
             expect(file.classes[0].properties[1].type.genericParameters[1].name).toEqual('SomeThing<>');
+
+            expect(file.classes[0].methods[0].name).toEqual('Bar');
+            expect(file.classes[0].methods[0].returnType.name).toEqual('SomeFoo<>');
+            expect(file.classes[0].methods[0].returnType.genericParameters[0].name).toEqual('SomeBar');
         }));
 
     });

@@ -33,12 +33,18 @@ export class MethodParser {
 				scope.prefix,
 				new RegExp(RegExHelper.REGEX_METHOD, "g"));
 			for (var match of matches) {
-				var method = new CSharpMethod(match[3]);
+				var method = new CSharpMethod(match[5]);
             	method.attributes = this.attributeParser.parseAttributes(match[0]);
 				method.innerScopeText = scope.content;
 				method.parent = parent;
 
-				method.returnType = this.typeParser.parseType(match[2] || "void");
+				var returnType = match[2];
+				if(match[3])
+					returnType += "<" + match[3] + ">";
+				if(match[4])
+					returnType += match[4];
+
+				method.returnType = this.typeParser.parseType(returnType);
 
 				var modifiers = match[1] || "";
 				if (parent instanceof CSharpClass && parent.name === method.name) {
@@ -52,9 +58,9 @@ export class MethodParser {
 				}
 
 				method.isPublic = modifiers.indexOf("public") > -1;
-				method.isBodyless = match[5] === ";";
-
-				var parameters = this.parseMethodParameters(match[4]);
+				method.isBodyless = match[7] === ";";
+				
+				var parameters = this.parseMethodParameters(match[6]);
 				for (var parameter of parameters) {
 					method.parameters.push(parameter);
 				}
