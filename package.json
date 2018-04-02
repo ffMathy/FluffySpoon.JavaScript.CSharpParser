@@ -1,5 +1,5 @@
 {
-  "name": "fluffy-spoon.javascript.csharp-parser",
+  "name": "@fluffy-spoon/javascript.csharp-parser",
   "version": "1.0.0",
   "description": "Parses C# code as well as possible into JavaScript objects.",
   "main": "./dist/src/Index",
