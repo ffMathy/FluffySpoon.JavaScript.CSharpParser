@@ -32,6 +32,7 @@ export class MethodParser {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
 				new RegExp(RegExHelper.REGEX_METHOD, "g"));
+				debugger;
 			for (var match of matches) {
 				var method = new CSharpMethod(match[5]);
             	method.attributes = this.attributeParser.parseAttributes(match[0]);

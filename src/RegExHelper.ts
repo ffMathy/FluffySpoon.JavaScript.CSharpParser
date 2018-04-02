@@ -1,6 +1,6 @@
 ﻿export class RegExHelper {
-	public static readonly REGEX_GENERIC_TYPES_WRAPPED = "<\\s*([<>.\\w,\\s]+)\\s*>";
-	public static readonly REGEX_MODIFIERS = "((?:\\w+\\s)*)";
+	public static readonly REGEX_GENERIC_TYPES_WRAPPED = "<\\s*((?:[<>.\\w,\\s]+\\s*?(?:\\?|(?:\\[\\]))?))\\s*>";
+	public static readonly REGEX_MODIFIERS = "((?:\\w+\\s+?)*)";
 	public static readonly REGEX_FULL_TYPE_NAME = "[\\w.]+";
 	public static readonly REGEX_TYPE = "(" + RegExHelper.REGEX_FULL_TYPE_NAME + ")(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + "\\s*)?(\\?|(?:\\[\\]))?";
 	public static readonly REGEX_ATTRIBUTE = "((?:\\[[\\w.,\\s]+\\]\\s*?)*)?";

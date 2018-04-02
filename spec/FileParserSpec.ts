@@ -103,7 +103,7 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(4);
+            expect(file.classes[0].methods.length).toEqual(5);
             
 			expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
@@ -335,6 +335,8 @@ describe("FileParser", function () {
 
         it("should be able to remove comments from output", useCSharp('Comments.cs', (parser) => {
             var file = parser.parseFile();
+
+            debugger;
 
             expect(file.classes.length).toEqual(1);
             expect(file.classes[0].fields.length).toEqual(1);

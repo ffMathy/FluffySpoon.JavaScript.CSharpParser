@@ -17,6 +17,7 @@ var MethodParser = /** @class */ (function () {
         for (var _i = 0, scopes_1 = scopes; _i < scopes_1.length; _i++) {
             var scope = scopes_1[_i];
             var matches = this.regexHelper.getMatches(scope.prefix, new RegExp(RegExHelper_1.RegExHelper.REGEX_METHOD, "g"));
+            debugger;
             for (var _a = 0, matches_1 = matches; _a < matches_1.length; _a++) {
                 var match = matches_1[_a];
                 var method = new Models_1.CSharpMethod(match[5]);

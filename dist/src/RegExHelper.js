@@ -14,8 +14,8 @@ var RegExHelper = /** @class */ (function () {
         }
         return final;
     };
-    RegExHelper.REGEX_GENERIC_TYPES_WRAPPED = "<\\s*([<>.\\w,\\s]+)\\s*>";
-    RegExHelper.REGEX_MODIFIERS = "((?:\\w+\\s)*)";
+    RegExHelper.REGEX_GENERIC_TYPES_WRAPPED = "<\\s*((?:[<>.\\w,\\s]+\\s*?(?:\\?|(?:\\[\\]))?))\\s*>";
+    RegExHelper.REGEX_MODIFIERS = "((?:\\w+\\s+?)*)";
     RegExHelper.REGEX_FULL_TYPE_NAME = "[\\w.]+";
     RegExHelper.REGEX_TYPE = "(" + RegExHelper.REGEX_FULL_TYPE_NAME + ")(?:\\s*" + RegExHelper.REGEX_GENERIC_TYPES_WRAPPED + "\\s*)?(\\?|(?:\\[\\]))?";
     RegExHelper.REGEX_ATTRIBUTE = "((?:\\[[\\w.,\\s]+\\]\\s*?)*)?";

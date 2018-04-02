@@ -23,4 +23,11 @@
     }
 
 	List<Dictionary<string, int>> Stuff() { }
+
+    public Task<string[]> GetAllUsers(string username, string email) {
+        return new [] {
+            "foo",
+            "bar"
+        };
+    }
 }
