@@ -53,8 +53,6 @@ export class InterfaceParser {
                 }
 
 				interfaces.push(interfaceObject);
-
-				console.log("Detected interface", interfaceObject);
             }
         }
 
