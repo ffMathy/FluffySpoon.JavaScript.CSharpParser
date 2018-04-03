@@ -9,6 +9,7 @@ export { AttributeParser } from './AttributeParser';
 export { FieldParser } from './FieldParser';
 export { StructParser } from './StructParser';
 export { InterfaceParser } from './InterfaceParser';
+export { ScopeHelper } from './ScopeHelper';
 
 export {
 	CSharpType,
