@@ -63,8 +63,6 @@ export class StructParser {
                 }
 
 				structs.push(struct);
-
-				console.log("Detected struct", struct);
             }
         }
 

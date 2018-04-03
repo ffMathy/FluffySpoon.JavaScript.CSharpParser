@@ -115,8 +115,6 @@ export class TypeParser {
 			type,
 			genericParameters);
 
-		console.log("Detected type", type);
-
 		return type;
 	}
 }
