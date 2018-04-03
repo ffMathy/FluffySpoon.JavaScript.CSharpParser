@@ -30,4 +30,6 @@
             "bar"
         };
     }
+
+	public void MyNullParameterMethod(string foo = null) { }
 }

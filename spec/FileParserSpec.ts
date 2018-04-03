@@ -1,4 +1,5 @@
 ﻿import { FileParser } from '../src/FileParser';
+import { CSharpNamedToken } from '../src/Index';
 
 var fs = require('fs');
 
@@ -103,7 +104,7 @@ describe("FileParser", function () {
             var file = parser.parseFile();
 
             expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(5);
+            expect(file.classes[0].methods.length).toEqual(6);
             
 			expect(file.classes[0].methods[0].attributes.length).toEqual(0);
             expect(file.classes[0].methods[0].parameters.length).toEqual(0);
@@ -157,6 +158,11 @@ describe("FileParser", function () {
             expect(file.classes[0].methods[2].parameters[1].name).toEqual('buz');
             expect(file.classes[0].methods[2].parameters[1].type.name).toEqual('int');
 			expect(file.classes[0].methods[2].parameters[1].attributes[0].name).toEqual('Annotation2');
+            
+            var defaultValue = file.classes[0].methods[5].parameters[0].defaultValue as CSharpNamedToken;
+            expect(file.classes[0].methods[5].parameters[0].name).toEqual('foo');
+            expect(file.classes[0].methods[5].parameters[0].type.name).toEqual('string');
+            expect(defaultValue.name).toEqual('null');
         }));
 
     });
