@@ -65,12 +65,6 @@ export class MethodParser {
 					method.parameters.push(parameter);
 				}
 
-				var subMethods = this.parseMethods(scope.content, method);
-				for (var subMethod of subMethods) {
-					subMethod.parent = method;
-					method.methods.push(subMethod);
-				}
-
 				methods.push(method);
 			}
 		}

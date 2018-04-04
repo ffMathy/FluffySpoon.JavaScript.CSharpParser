@@ -6,7 +6,9 @@
 	public static readonly REGEX_ATTRIBUTE = "((?:\\[[\\w.,\\s]+\\]\\s*?)*)?";
 	public static readonly REGEX_CLASS = RegExHelper.getClassOrInterfaceRegex("class");
 	public static readonly REGEX_INTERFACE = RegExHelper.getClassOrInterfaceRegex("interface");
-	public static readonly REGEX_METHOD = "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*((?:\\w+\\s)*)" + RegExHelper.REGEX_TYPE + "\\s+(\\w+?)\\s*\\(((?:.|\\s)*?)\\)\\s*({|;)";
+	public static readonly REGEX_METHOD_ROOT = "\\s*" + RegExHelper.REGEX_ATTRIBUTE + "\\s*((?:\\w+\\s)*)" + RegExHelper.REGEX_TYPE + "\\s+(\\w+?)\\s*\\(((?:.|\\s)*?)\\)\\s*";
+	public static readonly REGEX_METHOD = RegExHelper.REGEX_METHOD_ROOT + "({|;)";
+	public static readonly REGEX_SUB_METHOD = RegExHelper.REGEX_METHOD_ROOT + "({)";
 	public static readonly REGEX_METHOD_PARAMETER = RegExHelper.REGEX_ATTRIBUTE + "(?:(params)\\s*)?([\\w.\\[\\]]+\\s*(?:<\\s*.+\\s*>)?)\\s+(\\w+)(?:\\s*=\\s*(.+?))?\\s*(?:,|$)";
 
 	private static getClassOrInterfaceRegex(keyword: "class" | "interface") {

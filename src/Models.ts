@@ -139,7 +139,6 @@ export class CSharpMethod implements CSharpScope {
     returnType: CSharpType;
 
     parameters: CSharpMethodParameter[];
-    methods: CSharpMethod[];
     attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
@@ -148,7 +147,6 @@ export class CSharpMethod implements CSharpScope {
         this.name = name;
 
         this.parameters = [];
-        this.methods = [];
         this.attributes = [];
     }
 
