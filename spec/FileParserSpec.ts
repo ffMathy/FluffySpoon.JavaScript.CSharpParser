@@ -25,7 +25,7 @@ describe("FileParser", function () {
             expect(file.enums[0].attributes.length).toBe(1, "enum attributes length");
 
             expect(file.classes.length).toBe(1, "classes length");
-            expect(file.classes[0].enums.length).toBe(2, "classe enums length");
+            expect(file.classes[0].enums.length).toBe(2, "classes enums length");
             expect(file.namespaces[0].enums.length).toBe(1, "namespace enums length");
 
             expect(file.enums[0].options[1].attributes.length).toBe(2, "enum option 1 attributes length");
