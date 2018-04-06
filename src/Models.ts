@@ -1,4 +1,4 @@
-﻿export class CSharpType {
+﻿export class CSharpType implements CSharpGenericParameterContainer {
     name: string;
     namespace: CSharpNamespace;
     isNullable: boolean;
@@ -8,6 +8,10 @@
     constructor(name: string) {
         this.name = name;
         this.genericParameters = [];
+    }
+
+    get isGeneric() {
+        return this.genericParameters.length > 0;
     }
 
     get fullName() {
