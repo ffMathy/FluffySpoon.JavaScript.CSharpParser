@@ -3,10 +3,11 @@
     namespace: CSharpNamespace;
     isNullable: boolean;
 
-    genericParameters?: CSharpType[];
+    genericParameters: CSharpType[];
 
     constructor(name: string) {
         this.name = name;
+        this.genericParameters = [];
     }
 
     get fullName() {
@@ -42,7 +43,9 @@ export interface CSharpScope {
 }
 
 export interface CSharpGenericParameterContainer {
-    genericParameters?: CSharpType[];
+    genericParameters: CSharpType[];
+
+    isGeneric: boolean;
 }
 
 export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
@@ -138,7 +141,7 @@ export class CSharpMethod implements CSharpScope, CSharpGenericParameterContaine
     parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
 
-    genericParameters?: CSharpType[];
+    genericParameters: CSharpType[];
     parameters: CSharpMethodParameter[];
     attributes: CSharpAttribute[];
 
@@ -149,6 +152,11 @@ export class CSharpMethod implements CSharpScope, CSharpGenericParameterContaine
 
         this.parameters = [];
         this.attributes = [];
+        this.genericParameters = [];
+    }
+
+    get isGeneric() {
+        return this.genericParameters.length > 0;
     }
 
     public get isPublic() {
@@ -236,7 +244,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
     innerScopeText: string;
     name: string;
 
-    genericParameters?: CSharpType[];
+    genericParameters: CSharpType[];
     attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
@@ -248,6 +256,11 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
         this.properties = [];
         this.attributes = [];
         this.implements = [];
+        this.genericParameters = [];
+    }
+
+    get isGeneric() {
+        return this.genericParameters.length > 0;
     }
 
     get isPublic() {
@@ -287,7 +300,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     innerScopeText: string;
     name: string;
 
-    genericParameters?: CSharpType[];
+    genericParameters: CSharpType[];
     attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
@@ -305,6 +318,11 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
         this.interfaces = [];
         this.attributes = [];
         this.inheritsFrom = [];
+        this.genericParameters = [];
+    }
+
+    get isGeneric() {
+        return this.genericParameters.length > 0;
     }
 
     get isPublic() {

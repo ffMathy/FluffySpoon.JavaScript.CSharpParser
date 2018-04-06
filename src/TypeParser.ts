@@ -50,7 +50,7 @@ export class TypeParser {
 	parseTypesFromGenericParameters(content: string): CSharpType[] {
 		var result = new Array<CSharpType>();
 		if (!content)
-			return null;
+			return result;
 			
 		var scopes = this.scopeHelper.getGenericTypeScopes(content);
 		for (var scope of scopes) {
@@ -77,7 +77,7 @@ export class TypeParser {
 			}
 		}
 
-		return result.length === 0 ? null : result;
+		return result;
 	}
 
 	parseType(typeString: string): CSharpType {
