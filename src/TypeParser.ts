@@ -86,7 +86,7 @@ export class TypeParser {
 
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			new RegExp(RegExHelper.REGEX_TYPE, "g"));
+			new RegExp(this.regexHelper.getGenericTypeNameRegex(false, true, true, true), "g"));
 		var match = matches[0];
 		if (!match)
 			return null;

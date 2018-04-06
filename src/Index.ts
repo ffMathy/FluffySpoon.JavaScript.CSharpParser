@@ -10,6 +10,7 @@ export { FieldParser } from './FieldParser';
 export { StructParser } from './StructParser';
 export { InterfaceParser } from './InterfaceParser';
 export { ScopeHelper } from './ScopeHelper';
+export { LiteralParser } from './LiteralParser';
 
 export {
 	CSharpType,
@@ -28,8 +29,10 @@ export {
     CSharpEnum,
     CSharpEnumOption,
     CSharpAttribute,
+    CSharpAttributeParameter,
 	CSharpProperty,
 	CSharpPropertyComponent,
 	CSharpField,
-	CSharpStruct
+    CSharpStruct,
+    CSharpGenericParameterContainer
 } from './Models';

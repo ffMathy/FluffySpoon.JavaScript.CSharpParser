@@ -7,6 +7,54 @@
 }
 
 export class ScopeHelper {
+    getScopedList(separator: string, content: string) {
+        var scopes = [
+            ["<", ">"],
+            ["[", "]"],
+            ["(", ")"],
+            ["{", "}"]
+        ];
+
+        var isEntryScope = (item: string) => !!scopes.filter(x => x[0] === item)[0];
+        var isExitScope = (item: string) => !!scopes.filter(x => x[1] === item)[0];
+
+        var scope = 0;
+        var totalStringSoFar = "";
+        var deepScopeStringSoFar = "";
+        var splits = new Array<string>();
+
+        var pushNewSplit = () => {
+            totalStringSoFar = totalStringSoFar.trim();
+            if(!totalStringSoFar)
+                return;
+            
+            splits.push(totalStringSoFar);
+            totalStringSoFar = "";
+        };
+
+        this.enumerateRelevantCodeCharacterRegions(content, (stringSoFar, character) => {
+            if(isEntryScope(character)) {
+                scope++;
+            } else if(isExitScope(character)) {
+                scope--;
+            }
+
+            if(scope === 0 && (character === separator || separator === "")) {
+                if(separator === "")
+                    totalStringSoFar += character;
+
+                pushNewSplit();
+            } else {
+                totalStringSoFar += character;
+            }
+        });
+
+        if(totalStringSoFar)
+            pushNewSplit();
+
+        return splits;
+    }
+
     getCurlyScopes(content: string) {
         return this.getScopes(content, "{", "}");
     }
@@ -77,11 +125,6 @@ export class ScopeHelper {
             }
 
             if (enumerator) {
-                if (isEnteringCommentScope) {
-                    enumerator(
-                        stringSoFar.substr(0, stringSoFar.length - 1),
-                        stringSoFar.charAt(stringSoFar.length - 2));
-                }
                 enumerator(stringSoFar, character);
             }
 

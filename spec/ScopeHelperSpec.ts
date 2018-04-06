@@ -29,4 +29,15 @@ describe("ScopeHelper", function () {
         expect(trimmed).toEqual("\n\t}  \n bar baz");
     });
 
+    it("should be able to handle lists", () => {
+        var content = "foo { bar { sub bar } other bar<generics, foo<stuff<lala>>, lol> }, other<blah, lol>, foo";
+        var scopes = scopeHelper.getScopedList(",", content);
+
+        expect(scopes.length).toEqual(3);
+
+        expect(scopes[0]).toEqual("foo { bar { sub bar } other bar<generics, foo<stuff<lala>>, lol> }");
+        expect(scopes[1]).toEqual("other<blah, lol>");
+        expect(scopes[2]).toEqual("foo");
+    });
+
 });

@@ -31,7 +31,7 @@ export class InterfaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                new RegExp(RegExHelper.REGEX_INTERFACE, "g"))
+                new RegExp(this.regexHelper.getInterfaceRegex(), "g"))
             for (var match of matches) {
 				var interfaceObject = new CSharpInterface(match[2]);
 				interfaceObject.innerScopeText = scope.content;

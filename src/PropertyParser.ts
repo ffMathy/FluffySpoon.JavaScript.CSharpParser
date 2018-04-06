@@ -25,25 +25,25 @@ export class PropertyParser {
 		var scopes = this.scopeHelper.getCurlyScopes(content);
 
 		for (var scope of scopes) {
-			var subScopes = this.scopeHelper
-				.getCurlyScopes(scope.content);
-			var subScopeContent = subScopes
-				.map(x => x.prefix)
-				.join('');
-
-			var matchCandidate = scope.prefix + subScopeContent;
+			var matchCandidate = scope.prefix;
 			var matches = this.regexHelper.getMatches(
 				matchCandidate,
-				/\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)([^\s]+?(?:<.+>)?)\s+(\w+?)\s*{\s*(?:(?:\w+\s*)?(?:get|set){1}\s*(?:;|\{)\s*){1,2}/g);
-			for (var match of matches) {
-				var property = new CSharpProperty(match[3]);
-                property.attributes = this.attributeParser.parseAttributes(match[0]);
-				property.type = this.typeParser.parseType(match[2]);
+				new RegExp(this.regexHelper.getPropertyRegex(false, true, true, true, true), "g"));
 
+			for (var match of matches) {
+				var attributes = match[0];
 				var modifiers = match[1] || "";
+				var type = match[2];
+				var name = match[3];
+
+				var property = new CSharpProperty(name);
+				property.attributes = this.attributeParser.parseAttributes(attributes);
+				property.type = this.typeParser.parseType(type);
+
 				property.isVirtual = modifiers.indexOf("virtual") > -1;
 				property.isPublic = modifiers.indexOf("public") > -1;
 
+				var subScopes = this.scopeHelper.getCurlyScopes(scope.content);
 				for (var subScope of subScopes) {
 					var componentTypeMatches = this.regexHelper.getMatches(
 						subScope.prefix,
@@ -56,9 +56,11 @@ export class PropertyParser {
 					}
 				}
 
+				if(property.components.length === 0 || property.components.length > 2)
+					continue;
+
 				properties.push(property);
 			}
-
 		}
 
 		return properties;

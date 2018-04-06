@@ -39,15 +39,21 @@ export class ClassParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                new RegExp(RegExHelper.REGEX_CLASS, "g"));
-            for (var match of matches) {
-				var classObject = new CSharpClass(match[2]);
-				classObject.isPublic = (match[1] || "").indexOf("public") > -1;
-                classObject.attributes = this.attributeParser.parseAttributes(match[0]);
-                classObject.innerScopeText = scope.content;
-                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
-                classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(match[4]);
+                new RegExp(this.regexHelper.getClassRegex(), "g"));
 
+            for (var match of matches) {
+                var attributes = match[0];
+                var modifiers = match[1] || "";
+                var name = match[2];
+                var genericParameters = match[3];
+                var inheritance = match[4];
+
+				var classObject = new CSharpClass(name);
+				classObject.isPublic = modifiers.indexOf("public") > -1;
+                classObject.attributes = this.attributeParser.parseAttributes(attributes);
+                classObject.innerScopeText = scope.content;
+                classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
+                classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(inheritance);
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {

@@ -13,12 +13,14 @@ import { ScopeHelper } from './ScopeHelper';
 import { RegExHelper } from './RegExHelper';
 import { TypeParser } from './TypeParser';
 import { AttributeParser } from './AttributeParser';
+import { LiteralParser } from './LiteralParser';
 
 export class MethodParser {
 	private scopeHelper = new ScopeHelper();
 	private regexHelper = new RegExHelper();
 
 	private attributeParser = new AttributeParser();
+	private literalParser = new LiteralParser();
 
 	constructor(
 		private typeParser: TypeParser) {
@@ -31,39 +33,35 @@ export class MethodParser {
         for (var scope of scopes) {
 			var matches = this.regexHelper.getMatches(
 				scope.prefix,
-				new RegExp(RegExHelper.REGEX_METHOD, "g"));
+				new RegExp(this.regexHelper.getMethodRegex(false, true, true, true, true, true, true, true), "g"));
 			for (var match of matches) {
-				var method = new CSharpMethod(match[5]);
-            	method.attributes = this.attributeParser.parseAttributes(match[0]);
+				var attributes = match[0];
+				var modifiers = match[1] || "";
+				var returnType = match[2];
+				var name = match[3];
+				var genericParameters = match[4];
+				var parameters = match[5];
+				var openingType = match[6];
+
+				var method = new CSharpMethod(name);
+				method.attributes = this.attributeParser.parseAttributes(attributes);
+				method.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
+				method.returnType = this.typeParser.parseType(returnType);
+				method.parameters = this.parseMethodParameters(parameters);
+
 				method.innerScopeText = scope.content;
 				method.parent = parent;
 
-				var returnType = match[2];
-				if(match[3])
-					returnType += "<" + match[3] + ">";
-				if(match[4])
-					returnType += match[4];
-
-				method.returnType = this.typeParser.parseType(returnType);
-
-				var modifiers = match[1] || "";
 				if (parent instanceof CSharpClass && parent.name === method.name) {
 					method.isConstructor = true;
 					method.isVirtual = false;
-
-					modifiers = match[2];
 				} else {
 					method.isVirtual = modifiers.indexOf("virtual") > -1;
 					method.isConstructor = false;
 				}
 
 				method.isPublic = modifiers.indexOf("public") > -1;
-				method.isBodyless = match[7] === ";";
-				
-				var parameters = this.parseMethodParameters(match[6]);
-				for (var parameter of parameters) {
-					method.parameters.push(parameter);
-				}
+				method.isBodyless = openingType === ";";
 
 				methods.push(method);
 			}
@@ -75,40 +73,31 @@ export class MethodParser {
 	parseMethodParameters(content: string): CSharpMethodParameter[] {
 		var result = new Array<CSharpMethodParameter>();
 
-		var matches = this.regexHelper.getMatches(
-			content,
-			new RegExp(RegExHelper.REGEX_METHOD_PARAMETER, "g"));
-		for (var match of matches) {
-			result.push(this.parseMethodParameter(match));
+		var attributeSplits = this.scopeHelper.getScopedList(",", content);
+		for(var attributeSplit of attributeSplits) {
+			var matches = this.regexHelper.getMatches(
+				attributeSplit,
+				new RegExp("^" + this.regexHelper.getMethodParameterRegex(false, true, true, true, true, true) + "$", "g"));
+			if(matches.length > 1) {
+				throw new Error("Method parameter split failed.");
+			}
+
+			if(matches[0] === undefined)
+				debugger;
+
+			result.push(this.parseMethodParameter(matches[0]));
 		}
 
 		return result;
 	}
 
 	private parseMethodParameter(match: string[]) {
-		var valueInput = match[4];
-
-		var defaultValue = <CSharpToken>null;
-		if (valueInput) {
-			if ((valueInput.charAt(0) === "\"" || valueInput.charAt(0) === "'") && valueInput.charAt(valueInput.length - 1) === valueInput.charAt(0)) {
-				defaultValue = valueInput.substr(1, valueInput.length - 2);
-			} else if (!isNaN(parseFloat(valueInput))) {
-				defaultValue = parseFloat(valueInput);
-			} else if (valueInput === "false" || valueInput === "true") {
-				defaultValue = valueInput === "true";
-			} else {
-				defaultValue = <CSharpNamedToken>{
-					name: valueInput
-				};
-			}
-		}
-
 		return <CSharpMethodParameter>{
 			type: this.typeParser.parseType(match[2]),
 			name: match[3],
 			isVariadicContainer: !!match[1],
 			attributes: this.attributeParser.parseAttributes(match[0]),
-			defaultValue
+			defaultValue: this.literalParser.parseLiteral(match[4])
 		}
 	}
 }

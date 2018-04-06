@@ -18,19 +18,24 @@ export class EnumParser {
 
     }
 
-    public parseEnums(content: string) {
+    parseEnums(content: string) {
         var enums = new Array<CSharpEnum>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)enum\s+(\w+?)(?:\s*:\s*([\.\w]+?))?\s*{/g);
+                new RegExp(this.regexHelper.getEnumRegex(false, true, true, true, true), "g"));
             for (var match of matches) {
-                var enumObject = new CSharpEnum(match[2]);
-				enumObject.isPublic = (match[1] || "").indexOf("public") > -1;
-                enumObject.attributes = this.attributeParser.parseAttributes(match[0]);
-                enumObject.options = this.parseEnumValues(scope.content);
-                enumObject.inheritsFrom = this.typeParser.parseType(match[3]);
+                var attributes = match[0];
+                var modifiers = match[1] || "";
+                var name = match[2];
+                var inheritance = match[3];
+
+                var enumObject = new CSharpEnum(name);
+				enumObject.isPublic = modifiers.indexOf("public") > -1;
+                enumObject.attributes = this.attributeParser.parseAttributes(attributes);
+                enumObject.options = this.parseEnumOptions(scope.content);
+                enumObject.inheritsFrom = this.typeParser.parseType(inheritance);
 
                 enums.push(enumObject);
             }
@@ -39,28 +44,34 @@ export class EnumParser {
         return enums;
     }
 
-    public parseEnumValues(content: string) {
+    parseEnumOptions(content: string) {
         var result = new Array<CSharpEnumOption>();
 
         var nextValue = 0;
+        var optionSplits = this.scopeHelper.getScopedList(",", content);
+        for(var optionSplit of optionSplits) {
+            var matches = this.regexHelper.getMatches(
+                optionSplit,
+                new RegExp("^" + this.regexHelper.getEnumOptionRegex(false, true, true, true) + "$", "g"));
+            
+            for (var match of matches) {
+                var attributes = match[0];
+                var name = match[1];
+                var value = match[2];
 
-        var matches = this.regexHelper.getMatches(
-            content,
-            /\s*((?:\[.*\]\s*?)*)?\s*(\w+)(?:\s*=\s*(\-*\d+))?/g);
-        
-        for (var match of matches) {
-            var option = new CSharpEnumOption(match[1]);
-            option.attributes = this.attributeParser.parseAttributes(match[0]);
+                var option = new CSharpEnumOption(name);
+                option.attributes = this.attributeParser.parseAttributes(attributes);
 
-            if (match[2]) {
-                option.value = parseInt(match[2]);
-                nextValue = option.value + 1;
-            } else {
-                option.value = nextValue;
-                nextValue++;
+                if (value) {
+                    option.value = parseInt(value);
+                    nextValue = option.value + 1;
+                } else {
+                    option.value = nextValue;
+                    nextValue++;
+                }
+
+                result.push(option);
             }
-
-            result.push(option);
         }
 
         return result;

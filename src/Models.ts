@@ -3,7 +3,7 @@
     namespace: CSharpNamespace;
     isNullable: boolean;
 
-    genericParameters: CSharpType[];
+    genericParameters?: CSharpType[];
 
     constructor(name: string) {
         this.name = name;
@@ -42,7 +42,7 @@ export interface CSharpScope {
 }
 
 export interface CSharpGenericParameterContainer {
-    genericParameters: CSharpType[];
+    genericParameters?: CSharpType[];
 }
 
 export class CSharpNamespace implements CSharpImplementationTypeDeclarationScope {
@@ -127,7 +127,7 @@ export class CSharpFile implements CSharpImplementationTypeDeclarationScope {
     }
 }
 
-export class CSharpMethod implements CSharpScope {
+export class CSharpMethod implements CSharpScope, CSharpGenericParameterContainer {
     name: string;
     innerScopeText: string;
 
@@ -138,6 +138,7 @@ export class CSharpMethod implements CSharpScope {
     parent: CSharpClass | CSharpInterface | CSharpMethod | CSharpStruct;
     returnType: CSharpType;
 
+    genericParameters?: CSharpType[];
     parameters: CSharpMethodParameter[];
     attributes: CSharpAttribute[];
 
@@ -235,7 +236,7 @@ export class CSharpInterface implements CSharpInterfaceTypeDeclarationScope, CSh
     innerScopeText: string;
     name: string;
 
-    genericParameters: CSharpType[];
+    genericParameters?: CSharpType[];
     attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
@@ -286,7 +287,7 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     innerScopeText: string;
     name: string;
 
-    genericParameters: CSharpType[];
+    genericParameters?: CSharpType[];
     attributes: CSharpAttribute[];
 
     private _isPublic: boolean;
@@ -434,10 +435,17 @@ export class CSharpProperty {
 
 export class CSharpAttribute {
     name: string;
+    parameters: CSharpAttributeParameter[];
 
     constructor(name: string) {
         this.name = name;
+        this.parameters = [];
     }
+}
+
+export class CSharpAttributeParameter {
+    name?: string;
+    value: CSharpToken;
 }
 
 export class CSharpEnumOption {

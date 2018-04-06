@@ -6,6 +6,7 @@ var fs = require('fs');
 function useCSharp(file: string, callback: (parser: FileParser) => void) {
     return (done: Function) => {
         fs.readFile('./spec/csharp/' + file, 'utf8', function (err: any, data: any) {
+            console.log("\n\n" + file);
             callback(new FileParser(data));
             done();
         });
@@ -14,86 +15,69 @@ function useCSharp(file: string, callback: (parser: FileParser) => void) {
 
 describe("FileParser", function () {
 
-    describe("usings:", function () {
-        
-        it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', (parser) => {
+    describe("enums:", function () {
+
+        it("should be able to fetch enums and the appropriate values", useCSharp('Enum.cs', (parser) => {
             var file = parser.parseFile();
-            expect(file.usings.length).toEqual(2);
 
-            expect(file.usings[0].alias).toEqual('foo');
-            expect(file.usings[0].namespace.fullName).toEqual('buz.bar');
+            expect(file.enums.length).toBe(1, "enums length");
+            expect(file.enums[0].options.length).toBe(5, "enum options length");
+            expect(file.enums[0].attributes.length).toBe(1, "enum attributes length");
 
-            expect(file.usings[1].alias).toBeUndefined();
-            expect(file.usings[1].namespace.fullName).toEqual('blah.lol.omg');
+            expect(file.classes.length).toBe(1, "classes length");
+            expect(file.classes[0].enums.length).toBe(2, "classe enums length");
+            expect(file.namespaces[0].enums.length).toBe(1, "namespace enums length");
+
+            expect(file.enums[0].options[1].attributes.length).toBe(2, "enum option 1 attributes length");
+            expect(file.enums[0].options[2].attributes.length).toBe(1, "enum option 2 attributes length");
+            expect(file.enums[0].options[3].attributes.length).toBe(3, "enum option 3 attributes length");
+
+            expect(file.enums[0].options[0].name).toBe('FirstValue');
+            expect(file.enums[0].options[0].value).toBe(0);
+
+            expect(file.enums[0].options[1].name).toBe('SecondValue');
+            expect(file.enums[0].options[1].value).toBe(-4);
+            expect(file.enums[0].options[1].attributes[0].name).toBe('SomeStuff');
+            expect(file.enums[0].options[1].attributes[1].name).toBe('SomeAttribute');
+
+            expect(file.enums[0].options[2].name).toBe('ThirdValue');
+            expect(file.enums[0].options[2].value).toBe(-3);
+            expect(file.enums[0].options[2].attributes[0].name).toBe('SomeAttribute');
+
+            expect(file.enums[0].options[3].name).toBe('FourthValue');
+            expect(file.enums[0].options[3].value).toBe(6);
+            expect(file.enums[0].options[3].attributes[0].name).toBe('SomeAttribute');
+            expect(file.enums[0].options[3].attributes[1].name).toBe('FooAttribute');
+            expect(file.enums[0].options[3].attributes[2].name).toBe('BlahAttribute');
+
+            expect(file.enums[0].options[4].name).toBe('FifthValue');
+            expect(file.enums[0].options[4].value).toBe(7);
         }));
 
-        it("should be able to fetch file containing scoped usings", useCSharp('UsingsAndNamespaces.cs', (parser) => {
-            var file = parser.parseFile();
- 
-            expect(file.usings.length).toEqual(2);
-
-            expect(file.usings[0].alias).toEqual('foo');
-            expect(file.usings[0].namespace.fullName).toEqual('buz.bar');
-
-            expect(file.usings[1].alias).toBeUndefined();
-            expect(file.usings[1].namespace.fullName).toEqual('blah');
-
-            expect(file.namespaces[0].usings[0].namespace.name).toEqual('blah.lol.omg');
-            expect(file.namespaces[0].usings[0].parent.name).toEqual('mynamespace');
-
-            expect(file.namespaces[1].name).toEqual('blah');
-            expect(file.namespaces[1].fullName).toEqual('blah');
-
-            expect(file.namespaces[1].namespaces[0].name).toEqual('foo');
-            expect(file.namespaces[1].namespaces[0].fullName).toEqual('blah.foo');
-        }));
-
-    });
+	});
 
     describe("generics:", function () {
 
         it("should be able to handle generics", useCSharp('Generics.cs', (parser) => {
             var file = parser.parseFile();
 
-            expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].properties.length).toEqual(2);
-            expect(file.classes[0].methods.length).toEqual(1);            
+            expect(file.classes.length).toBe(1);
+            expect(file.classes[0].properties.length).toBe(2);
+            expect(file.classes[0].methods.length).toBe(1);            
 
-            expect(file.classes[0].properties[0].name).toEqual('Name');
-            expect(file.classes[0].properties[0].type.name).toEqual('SomeFoo<,>');
-            expect(file.classes[0].properties[0].type.genericParameters[0].name).toEqual('SomeBar');
-            expect(file.classes[0].properties[0].type.genericParameters[1].name).toEqual('SomeThing');
+            expect(file.classes[0].properties[0].name).toBe('Name');
+            expect(file.classes[0].properties[0].type.name).toBe('SomeFoo<,>', "class property 0 type name");
+            expect(file.classes[0].properties[0].type.genericParameters[0].name).toBe('SomeBar');
+            expect(file.classes[0].properties[0].type.genericParameters[1].name).toBe('SomeThing');
 
-            expect(file.classes[0].properties[1].name).toEqual('Foo');
-            expect(file.classes[0].properties[1].type.name).toEqual('SomeFoo<,>');
-            expect(file.classes[0].properties[1].type.genericParameters[0].name).toEqual('SomeBar<>');
-            expect(file.classes[0].properties[1].type.genericParameters[1].name).toEqual('SomeThing<>');
+            expect(file.classes[0].properties[1].name).toBe('Foo');
+            expect(file.classes[0].properties[1].type.name).toBe('SomeFoo<,>', "class property 1 type name");
+            expect(file.classes[0].properties[1].type.genericParameters[0].name).toBe('SomeBar<>');
+            expect(file.classes[0].properties[1].type.genericParameters[1].name).toBe('SomeThing<>');
 
-            expect(file.classes[0].methods[0].name).toEqual('Bar');
-            expect(file.classes[0].methods[0].returnType.name).toEqual('SomeFoo<>');
-            expect(file.classes[0].methods[0].returnType.genericParameters[0].name).toEqual('SomeBar');
-        }));
-
-    });
-
-    describe("namespaces:", function () {
-
-        it("should be able to fetch file containing scoped namespaces", useCSharp('NamespacesNested.cs', (parser) => {
-            var file = parser.parseFile();
-
-            expect(file.namespaces.length).toEqual(2);
-            expect(file.namespaces[0].namespaces.length).toEqual(1);
-            expect(file.namespaces[0].namespaces[0].namespaces.length).toEqual(1);
-
-            expect(file.namespaces[0].name).toEqual('my');
-
-            expect(file.namespaces[0].namespaces[0].name).toEqual('stuff');
-            expect(file.namespaces[0].namespaces[0].fullName).toEqual('my.stuff');
-
-            expect(file.namespaces[0].namespaces[0].namespaces[0].name).toEqual('blah');
-            expect(file.namespaces[0].namespaces[0].namespaces[0].fullName).toEqual('my.stuff.blah');
-
-            expect(file.namespaces[1].name).toEqual('omg');
+            expect(file.classes[0].methods[0].name).toBe('Bar');
+            expect(file.classes[0].methods[0].returnType.name).toBe('SomeFoo<>', "class method 0 type name");
+            expect(file.classes[0].methods[0].returnType.genericParameters[0].name).toBe('SomeBar');
         }));
 
     });
@@ -103,236 +87,261 @@ describe("FileParser", function () {
         it("should be able to fetch methods inside classes and their parameters", useCSharp('MethodInsideClass.cs', (parser) => {
             var file = parser.parseFile();
 
-            expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(6);
+            expect(file.classes.length).toBe(1);
+            expect(file.classes[0].methods.length).toBe(6);
             
-			expect(file.classes[0].methods[0].attributes.length).toEqual(0);
-            expect(file.classes[0].methods[0].parameters.length).toEqual(0);
-			expect(file.classes[0].methods[1].attributes.length).toEqual(1);
-			expect(file.classes[0].methods[1].parameters.length).toEqual(5);
-			expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toEqual(1);
-			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toEqual(2);
-			expect(file.classes[0].methods[1].parameters[3].attributes.length).toEqual(4);
-			expect(file.classes[0].methods[2].parameters.length).toEqual(2);
-			expect(file.classes[0].methods[2].parameters[0].attributes.length).toEqual(1);
-			expect(file.classes[0].methods[2].parameters[1].attributes.length).toEqual(1);
+			expect(file.classes[0].methods[0].attributes.length).toBe(0);
+            expect(file.classes[0].methods[0].parameters.length).toBe(0);
+			expect(file.classes[0].methods[1].attributes.length).toBe(1);
+			expect(file.classes[0].methods[1].parameters.length).toBe(5, "class methods 1 parameters length");
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters.length).toBe(1);
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters.length).toBe(2);
+			expect(file.classes[0].methods[1].parameters[3].attributes.length).toBe(4);
+			expect(file.classes[0].methods[2].parameters.length).toBe(2);
+			expect(file.classes[0].methods[2].parameters[0].attributes.length).toBe(1);
+			expect(file.classes[0].methods[2].parameters[1].attributes.length).toBe(1);
 
-			expect(file.classes[0].methods[0].returnType.name).toEqual('string');
+			expect(file.classes[0].methods[0].returnType.name).toBe('string');
 			expect(file.classes[0].methods[0].isVirtual).toBe(true);
-            expect(file.classes[0].methods[0].name).toEqual('MyFunction');
+            expect(file.classes[0].methods[0].name).toBe('MyFunction');
 
-			expect(file.classes[0].methods[1].returnType.name).toEqual('void');
+			expect(file.classes[0].methods[1].returnType.name).toBe('void');
 			expect(file.classes[0].methods[1].isVirtual).toBe(false);
-            expect(file.classes[0].methods[1].name).toEqual('SomeOtherFunction');
+            expect(file.classes[0].methods[1].name).toBe('SomeOtherFunction');
 
-            expect(file.classes[0].methods[1].parameters[0].name).toEqual('parameter1');
-            expect(file.classes[0].methods[1].parameters[0].type.name).toEqual('string');
-			expect(file.classes[0].methods[1].parameters[0].isVariadicContainer).toEqual(false);
+            expect(file.classes[0].methods[1].parameters[0].name).toBe('parameter1');
+            expect(file.classes[0].methods[1].parameters[0].type.name).toBe('string');
+			expect(file.classes[0].methods[1].parameters[0].isVariadicContainer).toBe(false);
 
-            expect(file.classes[0].methods[1].parameters[1].name).toEqual('parameter2');
-            expect(file.classes[0].methods[1].parameters[1].type.name).toEqual('bool');
-			expect(file.classes[0].methods[1].parameters[1].defaultValue).toEqual(false);
+            expect(file.classes[0].methods[1].parameters[1].name).toBe('parameter2');
+            expect(file.classes[0].methods[1].parameters[1].type.name).toBe('bool');
+			expect(file.classes[0].methods[1].parameters[1].defaultValue).toBe(false);
 
-			expect(file.classes[0].methods[1].parameters[2].name).toEqual('foo');
-			expect(file.classes[0].methods[1].parameters[2].type.name).toEqual('List<>');
-			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].name).toEqual('Dictionary<,>');
-			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[0].name).toEqual('string');
-			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[1].name).toEqual('int');
-			expect(file.classes[0].methods[1].parameters[2].defaultValue).toEqual('bar');
+			expect(file.classes[0].methods[1].parameters[2].name).toBe('foo');
+			expect(file.classes[0].methods[1].parameters[2].type.name).toBe('List<>');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].name).toBe('Dictionary<,>');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[0].name).toBe('string');
+			expect(file.classes[0].methods[1].parameters[2].type.genericParameters[0].genericParameters[1].name).toBe('int');
+			expect(file.classes[0].methods[1].parameters[2].defaultValue).toBe('bar');
 
-            expect(file.classes[0].methods[1].parameters[3].name).toEqual('foo2');
-            expect(file.classes[0].methods[1].parameters[3].type.name).toEqual('string');
-			expect(file.classes[0].methods[1].parameters[3].attributes[0].name).toEqual('Hello');
-			expect(file.classes[0].methods[1].parameters[3].attributes[1].name).toEqual('Blah');
-			expect(file.classes[0].methods[1].parameters[3].attributes[2].name).toEqual('Foo');
-			expect(file.classes[0].methods[1].parameters[3].attributes[3].name).toEqual('Bar');
+            expect(file.classes[0].methods[1].parameters[3].name).toBe('foo2');
+            expect(file.classes[0].methods[1].parameters[3].type.name).toBe('string');
+			expect(file.classes[0].methods[1].parameters[3].attributes[0].name).toBe('Hello');
+			expect(file.classes[0].methods[1].parameters[3].attributes[1].name).toBe('Blah');
+			expect(file.classes[0].methods[1].parameters[3].attributes[2].name).toBe('Foo');
+			expect(file.classes[0].methods[1].parameters[3].attributes[3].name).toBe('Bar');
 
-            expect(file.classes[0].methods[1].parameters[4].name).toEqual('someArray');
-            expect(file.classes[0].methods[1].parameters[4].type.name).toEqual('Array<>');
-            expect(file.classes[0].methods[1].parameters[4].isVariadicContainer).toEqual(true);
+            expect(file.classes[0].methods[1].parameters[4].name).toBe('someArray');
+            expect(file.classes[0].methods[1].parameters[4].type.name).toBe('Array<>');
+            expect(file.classes[0].methods[1].parameters[4].isVariadicContainer).toBe(true);
             
-            expect(file.classes[0].methods[2].parameters[0].name).toEqual('baz');
-            expect(file.classes[0].methods[2].parameters[0].type.name).toEqual('string');
-			expect(file.classes[0].methods[2].parameters[0].attributes[0].name).toEqual('Annotation1');
+            expect(file.classes[0].methods[2].parameters[0].name).toBe('baz');
+            expect(file.classes[0].methods[2].parameters[0].type.name).toBe('string');
+			expect(file.classes[0].methods[2].parameters[0].attributes[0].name).toBe('Annotation1');
             
-            expect(file.classes[0].methods[2].parameters[1].name).toEqual('buz');
-            expect(file.classes[0].methods[2].parameters[1].type.name).toEqual('int');
-			expect(file.classes[0].methods[2].parameters[1].attributes[0].name).toEqual('Annotation2');
+            expect(file.classes[0].methods[2].parameters[1].name).toBe('buz');
+            expect(file.classes[0].methods[2].parameters[1].type.name).toBe('int');
+			expect(file.classes[0].methods[2].parameters[1].attributes[0].name).toBe('Annotation2');
             
             var defaultValue = file.classes[0].methods[5].parameters[0].defaultValue as CSharpNamedToken;
-            expect(file.classes[0].methods[5].parameters[0].name).toEqual('foo');
-            expect(file.classes[0].methods[5].parameters[0].type.name).toEqual('string');
-            expect(defaultValue.name).toEqual('null');
+            expect(file.classes[0].methods[5].parameters[0].name).toBe('foo');
+            expect(file.classes[0].methods[5].parameters[0].type.name).toBe('string');
+            expect(defaultValue.name).toBe('null');
         }));
 
     });
 
-    describe("enums:", function () {
+    it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
+        var file = parser.parseFile();
 
-        it("should be able to fetch enums and the appropriate values", useCSharp('Enum.cs', (parser) => {
+        expect(file.classes.length).toBe(1, "classes length");
+        expect(file.classes[0].properties.length).toBe(4, "class properties length");
+        expect(file.classes[0].properties[0].components.length).toBe(2, "class property 0 components length");
+        expect(file.classes[0].properties[1].components.length).toBe(1, "class property 1 components length");
+        expect(file.classes[0].properties[1].attributes.length).toBe(0, "class property 1 attributes length");
+        expect(file.classes[0].properties[2].components.length).toBe(2, "class property 2 components length");
+        expect(file.classes[0].properties[2].attributes.length).toBe(1, "class property 2 attributes length");
+        expect(file.classes[0].properties[3].components.length).toBe(2, "class property 3 components length");
+
+        expect(file.classes[0].properties[0].name).toBe("MyProperty");
+        expect(file.classes[0].properties[0].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[0].isVirtual).toBe(false);
+        expect(file.classes[0].properties[0].type.name).toBe("string");
+
+        expect(file.classes[0].properties[1].name).toBe("ReadOnlyProperty");
+        expect(file.classes[0].properties[1].isReadOnly).toBe(true);
+        expect(file.classes[0].properties[1].components[0].type).toBe("get");
+        expect(file.classes[0].properties[1].type.name).toBe("string");
+
+        expect(file.classes[0].properties[2].name).toBe("GetSetProperty");
+        expect(file.classes[0].properties[2].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[2].type.name).toBe("string");
+
+        expect(file.classes[0].properties[3].name).toBe("MyPublicVirtualProperty");
+        expect(file.classes[0].properties[3].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[3].isVirtual).toBe(true);
+        expect(file.classes[0].properties[3].type.name).toBe("string");
+    }));
+
+	describe("classes:", function () {
+
+		it("should be able to fetch classes inside namespaces", useCSharp('ClassInsideNamespace.cs', (parser) => {
             var file = parser.parseFile();
 
-            expect(file.enums.length).toEqual(1);
-            expect(file.enums[0].options.length).toEqual(5);
-            expect(file.enums[0].attributes.length).toEqual(1);
+			expect(file.namespaces.length).toBe(1, "namespaces length");
+			expect(file.namespaces[0].classes.length).toBe(1, "namespace classes length");
+			expect(file.namespaces[0].classes[0].properties.length).toBe(1, "namespace class properties length");
+			expect(file.namespaces[0].classes[0].attributes.length).toBe(2, "namespace class attributes length");
+			expect(file.namespaces[0].classes[0].fields.length).toBe(1, "namespace class fields length");
+			expect(file.namespaces[0].classes[0].methods.length).toBe(0, "namespace class methods length");
+			expect(file.namespaces[0].classes[0].constructors.length).toBe(1, "namespace class constructors length");
+			expect(file.namespaces[0].classes[0].genericParameters.length).toBe(1, "namespace class generic parameters length");
 
-            expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].enums.length).toEqual(2);
-            expect(file.namespaces[0].enums.length).toEqual(1);
+			expect(file.namespaces[0].classes[0].name).toBe("MyPoco", "namespace class name");
+            
+			expect(file.namespaces[0].classes[0].genericParameters[0].name).toBe("WithGenerics", "namespace class generic parameter name");
 
-            expect(file.enums[0].options[1].attributes.length).toEqual(2);
-            expect(file.enums[0].options[2].attributes.length).toEqual(1);
-            expect(file.enums[0].options[3].attributes.length).toEqual(3);
+			expect(file.namespaces[0].classes[0].properties[0].name).toBe("Name", "namespace class property name");
+			expect(file.namespaces[0].classes[0].properties[0].type.name).toBe("Array<>", "namespace class property type name");
+			expect(file.namespaces[0].classes[0].properties[0].type.genericParameters[0].name).toBe("string", "namespace class property type generic parameter name");
 
-            expect(file.enums[0].options[0].name).toEqual('FirstValue');
-            expect(file.enums[0].options[0].value).toEqual(0);
+			expect(file.namespaces[0].classes[0].fields[0].name).toBe("someField", "namespace class field name");
+			expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true, "namespace class field public");
+			expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int", "namespace class field type name");
+			expect(file.namespaces[0].classes[0].fields[0].type.isNullable).toBe(true, "namespace class field type nullable");
 
-            expect(file.enums[0].options[1].name).toEqual('SecondValue');
-            expect(file.enums[0].options[1].value).toEqual(-4);
-            expect(file.enums[0].options[1].attributes[0].name).toEqual('SomeStuff');
-            expect(file.enums[0].options[1].attributes[1].name).toEqual('SomeAttribute');
+			expect(file.namespaces[0].classes[0].constructors[0].name).toBe("MyPoco", "namespace class constructor name");
+			expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true, "namespace class constructor is constructor");
 
-            expect(file.enums[0].options[2].name).toEqual('ThirdValue');
-            expect(file.enums[0].options[2].value).toEqual(-3);
-            expect(file.enums[0].options[2].attributes[0].name).toEqual('SomeAttribute');
+			expect(file.namespaces[0].classes[0].attributes[1].name).toBe("SomeAttributeWithParameters", "namespace class attribute name");
+			expect(file.namespaces[0].classes[0].attributes[1].parameters[0].name).toBe("MyName", "namespace class attribute parameter 0 name");
+			expect(file.namespaces[0].classes[0].attributes[1].parameters[0].value).toBe("Foo", "namespace class attribute parameter 0 value");
+			expect(file.namespaces[0].classes[0].attributes[1].parameters[1].name).toBe(null, "namespace class attribute parameter 1 name");
+			expect(file.namespaces[0].classes[0].attributes[1].parameters[1].value).toBe(28, "namespace class attribute parameter 1 value");
+			expect(file.namespaces[0].classes[0].attributes[1].parameters[2].name).toBe(null, "namespace class attribute parameter 2 name");
+            expect((file.namespaces[0].classes[0].attributes[1].parameters[2].value as CSharpNamedToken).name).toBe("Framework.Blah", "namespace class attribute parameter 2 value");
+		}));
 
-            expect(file.enums[0].options[3].name).toEqual('FourthValue');
-            expect(file.enums[0].options[3].value).toEqual(6);
-            expect(file.enums[0].options[3].attributes[0].name).toEqual('SomeAttribute');
-            expect(file.enums[0].options[3].attributes[1].name).toEqual('FooAttribute');
-            expect(file.enums[0].options[3].attributes[2].name).toEqual('BlahAttribute');
+		it("should be able to fetch interfaces that implement something", useCSharp('ImplementedInterface.cs', (parser) => {
+			var file = parser.parseFile();
 
-            expect(file.enums[0].options[4].name).toEqual('FifthValue');
-            expect(file.enums[0].options[4].value).toEqual(7);
-        }));
+			expect(file.interfaces.length).toBe(1);
+			expect(file.interfaces[0].implements.length).toBe(2);
+
+			expect(file.interfaces[0].implements[0]).not.toBeUndefined();
+			expect(file.interfaces[0].implements[0].name).toBe("IMyInterface1<>");
+
+			expect(file.interfaces[0].implements[1]).not.toBeUndefined();
+			expect(file.interfaces[0].implements[1].name).toBe("IMyInterface2<,>");
+		}));
+
+		it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', (parser) => {
+			var file = parser.parseFile();
+
+			expect(file.classes.length).toBe(1);
+			expect(file.classes[0].inheritsFrom.length).toBe(2);
+
+			expect(file.classes[0].inheritsFrom[0]).not.toBeUndefined();
+			expect(file.classes[0].inheritsFrom[0].name).toBe("IMyInterface1<>");
+
+			expect(file.classes[0].inheritsFrom[1]).not.toBeUndefined();
+			expect(file.classes[0].inheritsFrom[1].name).toBe("IMyInterface2<,>");
+		}));
 
 	});
+
+    describe("usings:", function () {
+        
+        it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', (parser) => {
+            var file = parser.parseFile();
+            expect(file.usings.length).toBe(2);
+
+            expect(file.usings[0].alias).toBe('foo');
+            expect(file.usings[0].namespace.fullName).toBe('buz.bar');
+
+            expect(file.usings[1].alias).toBeUndefined();
+            expect(file.usings[1].namespace.fullName).toBe('blah.lol.omg');
+        }));
+
+        it("should be able to fetch file containing scoped usings", useCSharp('UsingsAndNamespaces.cs', (parser) => {
+            var file = parser.parseFile();
+ 
+            expect(file.usings.length).toBe(2);
+
+            expect(file.usings[0].alias).toBe('foo');
+            expect(file.usings[0].namespace.fullName).toBe('buz.bar');
+
+            expect(file.usings[1].alias).toBeUndefined();
+            expect(file.usings[1].namespace.fullName).toBe('blah');
+
+            expect(file.namespaces[0].usings[0].namespace.name).toBe('blah.lol.omg');
+            expect(file.namespaces[0].usings[0].parent.name).toBe('mynamespace');
+
+            expect(file.namespaces[1].name).toBe('blah');
+            expect(file.namespaces[1].fullName).toBe('blah');
+
+            expect(file.namespaces[1].namespaces[0].name).toBe('foo');
+            expect(file.namespaces[1].namespaces[0].fullName).toBe('blah.foo');
+        }));
+
+    });
+
+    describe("namespaces:", function () {
+
+        it("should be able to fetch file containing scoped namespaces", useCSharp('NamespacesNested.cs', (parser) => {
+            var file = parser.parseFile();
+
+            expect(file.namespaces.length).toBe(2);
+            expect(file.namespaces[0].namespaces.length).toBe(1);
+            expect(file.namespaces[0].namespaces[0].namespaces.length).toBe(1);
+
+            expect(file.namespaces[0].name).toBe('my');
+
+            expect(file.namespaces[0].namespaces[0].name).toBe('stuff');
+            expect(file.namespaces[0].namespaces[0].fullName).toBe('my.stuff');
+
+            expect(file.namespaces[0].namespaces[0].namespaces[0].name).toBe('blah');
+            expect(file.namespaces[0].namespaces[0].namespaces[0].fullName).toBe('my.stuff.blah');
+
+            expect(file.namespaces[1].name).toBe('omg');
+        }));
+
+    });
 
     describe("interfaces:", function() {
 
 		it("should be able to fetch interfaces inside namespaces", useCSharp('InterfaceInsideNamespace.cs', (parser) => {
 			var file = parser.parseFile();
 
-			expect(file.namespaces.length).toEqual(1);
-			expect(file.namespaces[0].interfaces.length).toEqual(1);
-			expect(file.namespaces[0].interfaces[0].properties.length).toEqual(1);
-			expect(file.namespaces[0].interfaces[0].methods.length).toEqual(1);
-			expect(file.namespaces[0].interfaces[0].attributes.length).toEqual(1);
+			expect(file.namespaces.length).toBe(1);
+			expect(file.namespaces[0].interfaces.length).toBe(1);
+			expect(file.namespaces[0].interfaces[0].properties.length).toBe(1);
+			expect(file.namespaces[0].interfaces[0].methods.length).toBe(1);
+			expect(file.namespaces[0].interfaces[0].attributes.length).toBe(1);
 
-			expect(file.namespaces[0].interfaces[0].name).toEqual("MyPoco");
+			expect(file.namespaces[0].interfaces[0].name).toBe("MyPoco");
 
-			expect(file.namespaces[0].interfaces[0].properties[0].name).toEqual("Name");
-			expect(file.namespaces[0].interfaces[0].properties[0].type.name).toEqual("Array<>");
-			expect(file.namespaces[0].interfaces[0].properties[0].type.genericParameters[0].name).toEqual("string");
+			expect(file.namespaces[0].interfaces[0].properties[0].name).toBe("Name");
+			expect(file.namespaces[0].interfaces[0].properties[0].type.name).toBe("Array<>");
+			expect(file.namespaces[0].interfaces[0].properties[0].type.genericParameters[0].name).toBe("string");
 
-			expect(file.namespaces[0].interfaces[0].methods[0].name).toEqual("SomeMethod");
-			expect(file.namespaces[0].interfaces[0].methods[0].returnType.name).toEqual("Int32");
-			expect(file.namespaces[0].interfaces[0].methods[0].returnType.fullName).toEqual("System.Int32");
+			expect(file.namespaces[0].interfaces[0].methods[0].name).toBe("SomeMethod");
+			expect(file.namespaces[0].interfaces[0].methods[0].returnType.name).toBe("Int32");
+			expect(file.namespaces[0].interfaces[0].methods[0].returnType.fullName).toBe("System.Int32");
 		}));
 
     });
-
-	describe("classes:", function () {
-
-		it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
-			var file = parser.parseFile();
-
-			expect(file.classes.length).toEqual(1);
-			expect(file.classes[0].properties.length).toEqual(4);
-			expect(file.classes[0].properties[0].components.length).toEqual(2);
-			expect(file.classes[0].properties[1].components.length).toEqual(1);
-			expect(file.classes[0].properties[1].attributes.length).toEqual(0);
-			expect(file.classes[0].properties[2].components.length).toEqual(2);
-			expect(file.classes[0].properties[2].attributes.length).toEqual(1);
-			expect(file.classes[0].properties[3].components.length).toEqual(2);
-
-			expect(file.classes[0].properties[0].name).toEqual("MyProperty");
-			expect(file.classes[0].properties[0].isReadOnly).toBe(false);
-			expect(file.classes[0].properties[0].isVirtual).toBe(false);
-			expect(file.classes[0].properties[0].type.name).toEqual("string");
-
-			expect(file.classes[0].properties[1].name).toEqual("ReadOnlyProperty");
-			expect(file.classes[0].properties[1].isReadOnly).toBe(true);
-			expect(file.classes[0].properties[1].components[0].type).toEqual("get");
-			expect(file.classes[0].properties[1].type.name).toEqual("string");
-
-			expect(file.classes[0].properties[2].name).toEqual("GetSetProperty");
-			expect(file.classes[0].properties[2].isReadOnly).toBe(false);
-			expect(file.classes[0].properties[2].type.name).toEqual("string");
-
-			expect(file.classes[0].properties[3].name).toEqual("MyPublicVirtualProperty");
-			expect(file.classes[0].properties[3].isReadOnly).toBe(false);
-			expect(file.classes[0].properties[3].isVirtual).toBe(true);
-			expect(file.classes[0].properties[3].type.name).toEqual("string");
-		}));
-
-		it("should be able to fetch classes inside namespaces", useCSharp('ClassInsideNamespace.cs', (parser) => {
-            var file = parser.parseFile();
-
-			expect(file.namespaces.length).toEqual(1);
-			expect(file.namespaces[0].classes.length).toEqual(1);
-			expect(file.namespaces[0].classes[0].properties.length).toEqual(1);
-			expect(file.namespaces[0].classes[0].attributes.length).toEqual(1);
-			expect(file.namespaces[0].classes[0].fields.length).toEqual(1);
-			expect(file.namespaces[0].classes[0].methods.length).toEqual(0);
-			expect(file.namespaces[0].classes[0].constructors.length).toEqual(1);
-			expect(file.namespaces[0].classes[0].genericParameters.length).toEqual(1);
-
-			expect(file.namespaces[0].classes[0].name).toEqual("MyPoco");
-            
-			expect(file.namespaces[0].classes[0].genericParameters[0].name).toEqual("WithGenerics");
-
-			expect(file.namespaces[0].classes[0].properties[0].name).toEqual("Name");
-			expect(file.namespaces[0].classes[0].properties[0].type.name).toEqual("Array<>");
-			expect(file.namespaces[0].classes[0].properties[0].type.genericParameters[0].name).toEqual("string");
-
-			expect(file.namespaces[0].classes[0].fields[0].name).toEqual("someField");
-			expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true);
-			expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int");
-			expect(file.namespaces[0].classes[0].fields[0].type.isNullable).toBe(true);
-
-			expect(file.namespaces[0].classes[0].constructors[0].name).toEqual("MyPoco");
-			expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true);
-		}));
-
-		it("should be able to fetch interfaces that implement something", useCSharp('ImplementedInterface.cs', (parser) => {
-			var file = parser.parseFile();
-
-			expect(file.interfaces.length).toEqual(1);
-			expect(file.interfaces[0].implements.length).toEqual(2);
-
-			expect(file.interfaces[0].implements[0]).not.toBeUndefined();
-			expect(file.interfaces[0].implements[0].name).toEqual("IMyInterface1<>");
-
-			expect(file.interfaces[0].implements[1]).not.toBeUndefined();
-			expect(file.interfaces[0].implements[1].name).toEqual("IMyInterface2<,>");
-		}));
-
-		it("should be able to fetch classes that inherit from something", useCSharp('InheritedClass.cs', (parser) => {
-			var file = parser.parseFile();
-
-			expect(file.classes.length).toEqual(1);
-			expect(file.classes[0].inheritsFrom.length).toEqual(2);
-
-			expect(file.classes[0].inheritsFrom[0]).not.toBeUndefined();
-			expect(file.classes[0].inheritsFrom[0].name).toEqual("IMyInterface1<>");
-
-			expect(file.classes[0].inheritsFrom[1]).not.toBeUndefined();
-			expect(file.classes[0].inheritsFrom[1].name).toEqual("IMyInterface2<,>");
-		}));
-
-	});
 
     describe("structs:", function () {
 
         it("should be able to detect structs", useCSharp('Struct.cs', (parser) => {
             var file = parser.parseFile();
 
-			expect(file.structs.length).toEqual(1);
-			expect(file.structs[0].attributes.length).toEqual(1);
+			expect(file.structs.length).toBe(1);
+			expect(file.structs[0].attributes.length).toBe(1);
 
-			expect(file.structs[0].isPublic).toEqual(true);
-			expect(file.structs[0].name).toEqual("MyStruct");
+			expect(file.structs[0].isPublic).toBe(true);
+			expect(file.structs[0].name).toBe("MyStruct");
 		}));
 
     });
@@ -342,16 +351,16 @@ describe("FileParser", function () {
         it("should be able to remove comments from output", useCSharp('Comments.cs', (parser) => {
             var file = parser.parseFile();
 
-            expect(file.classes.length).toEqual(1);
-            expect(file.classes[0].fields.length).toEqual(1);
-            expect(file.classes[0].properties.length).toEqual(1);
-            expect(file.classes[0].methods.length).toEqual(3);
+            expect(file.classes.length).toBe(1);
+            expect(file.classes[0].fields.length).toBe(1);
+            expect(file.classes[0].properties.length).toBe(1);
+            expect(file.classes[0].methods.length).toBe(3);
 
-            expect(file.classes[0].methods[0].returnType.name).toEqual("void");
+            expect(file.classes[0].methods[0].returnType.name).toBe("void");
 
-            expect(file.classes[0].methods[1].parameters[0].defaultValue).toEqual(false);
-            expect(file.classes[0].methods[1].parameters[0].type.name).toEqual("bool");
-            expect(file.classes[0].methods[1].parameters[0].name).toEqual("parameter2");
+            expect(file.classes[0].methods[1].parameters[0].defaultValue).toBe(false);
+            expect(file.classes[0].methods[1].parameters[0].type.name).toBe("bool");
+            expect(file.classes[0].methods[1].parameters[0].name).toBe("parameter2");
         }));
 
     });
