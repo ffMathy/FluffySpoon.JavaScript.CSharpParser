@@ -38,7 +38,7 @@ export class TypeParser {
 			return;
 
 		type.genericParameters = this.parseTypesFromGenericParameters(content);
-		if (type.genericParameters) {
+		if (type.isGeneric) {
 			type.name += "<";
 			for (var i = 1; i < type.genericParameters.length; i++) {
 				type.name += ",";
