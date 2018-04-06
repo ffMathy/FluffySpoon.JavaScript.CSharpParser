@@ -82,9 +82,6 @@ export class MethodParser {
 				throw new Error("Method parameter split failed.");
 			}
 
-			if(matches[0] === undefined)
-				debugger;
-
 			result.push(this.parseMethodParameter(matches[0]));
 		}
 
