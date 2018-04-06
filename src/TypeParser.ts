@@ -36,7 +36,7 @@ export class TypeParser {
 	private prepareTypeForGenericParameters(type: CSharpType, content: string) {
 		if (!content)
 			return;
-
+ 
 		type.genericParameters = this.parseTypesFromGenericParameters(content);
 		if (type.isGeneric) {
 			type.name += "<";
