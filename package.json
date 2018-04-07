@@ -1,7 +1,7 @@
 {
   "name": "@fluffy-spoon/csharp-parser",
   "version": "1.0.0",
-  "description": "Parses C# code as well as possible into JavaScript objects.",
+  "description": "",
   "main": "./dist/src/Index",
   "typings": "./dist/src/Index.d.ts",
   "scripts": {
