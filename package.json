@@ -20,7 +20,9 @@
   "devDependencies": {
     "@types/jasmine": "^2.5.47",
     "@types/node": "^8.0.24",
+    "@types/safe-regex": "^1.1.1",
     "jasmine": "^2.6.0",
-    "regex": "^0.1.1"
-  }
+    "safe-regex": "^1.1.0"
+  },
+  "dependencies": {}
 }
