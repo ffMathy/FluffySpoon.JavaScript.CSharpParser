@@ -7,7 +7,8 @@ describe("RegExHelper", function () {
 
     var assertIsSafe = (name: keyof RegExHelper) => {
         it("should never time out for the regular expression " + name, () => {
-            expect(isSafeRegEx(regexHelper[name].call(regexHelper))).toBe(true);
+            var regex = regexHelper[name].call(regexHelper);
+            expect(isSafeRegEx(regex)).toBe(true, regex);
         });
     };
 
