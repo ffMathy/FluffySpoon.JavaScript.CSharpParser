@@ -47,16 +47,19 @@ export class AttributeParser {
     parseAttributeParameters(content: string) {
         var result = new Array<CSharpAttributeParameter>();
         
-		var matches = this.regexHelper.getMatches(
-			content,
-			new RegExp(this.regexHelper.getAttributeParameterRegex(false, true, true), "g"));
-		for (var match of matches) {
-            var parameter = new CSharpAttributeParameter();
-            parameter.name = match[0] || null;
-            parameter.value = this.literalParser.parseLiteral(match[1]);
+        var splits = this.scopeHelper.getScopedList(",", content);
+        for(var split of splits) {
+            var matches = this.regexHelper.getMatches(
+                split,
+                new RegExp("^" + this.regexHelper.getAttributeParameterRegex(false, true, true) + "$", "g"));
+            for (var match of matches) {
+                var parameter = new CSharpAttributeParameter();
+                parameter.name = match[0] || null;
+                parameter.value = this.literalParser.parseLiteral(match[1]);
 
-			result.push(parameter);
-		}
+                result.push(parameter);
+            }
+        }
 
 		return result;
     }

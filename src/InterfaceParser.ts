@@ -29,30 +29,33 @@ export class InterfaceParser {
         var interfaces = new Array<CSharpInterface>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var matches = this.regexHelper.getMatches(
-                scope.prefix,
-                new RegExp(this.regexHelper.getInterfaceRegex(), "g"))
-            for (var match of matches) {
-				var interfaceObject = new CSharpInterface(match[2]);
-				interfaceObject.innerScopeText = scope.content;
-                interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
-				interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
-                interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
-                interfaceObject.implements = this.typeParser.parseTypesFromGenericParameters(match[4]);
+            var splits = this.scopeHelper.getScopedList(";", scope.prefix);
+            for(var split of splits) {
+                var matches = this.regexHelper.getMatches(
+                    split,
+                    new RegExp("^" + this.regexHelper.getInterfaceRegex() + "$", "g"))
+                for (var match of matches) {
+                    var interfaceObject = new CSharpInterface(match[2]);
+                    interfaceObject.innerScopeText = scope.content;
+                    interfaceObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(match[3]);
+                    interfaceObject.isPublic = (match[1] || "").indexOf("public") > -1;
+                    interfaceObject.attributes = this.attributeParser.parseAttributes(match[0]);
+                    interfaceObject.implements = this.typeParser.parseTypesFromGenericParameters(match[4]);
 
-                var properties = this.propertyParser.parseProperties(scope.content);
-                for (var property of properties) {
-                    property.parent = interfaceObject;
-                    interfaceObject.properties.push(property);
+                    var properties = this.propertyParser.parseProperties(scope.content);
+                    for (var property of properties) {
+                        property.parent = interfaceObject;
+                        interfaceObject.properties.push(property);
+                    }
+
+                    var methods = this.methodParser.parseMethods(scope.content, interfaceObject);
+                    for (var method of methods) {
+                        method.parent = interfaceObject;
+                        interfaceObject.methods.push(method);
+                    }
+
+                    interfaces.push(interfaceObject);
                 }
-
-                var methods = this.methodParser.parseMethods(scope.content, interfaceObject);
-                for (var method of methods) {
-                    method.parent = interfaceObject;
-                    interfaceObject.methods.push(method);
-                }
-
-				interfaces.push(interfaceObject);
             }
         }
 

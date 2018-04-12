@@ -11,32 +11,32 @@
 
 	public getLiteralNumberIntegerRegex(capture: boolean) {
 		var integerRegex = this.wrapInGroup(capture, false, 
-			this.getSignRegex(false) + "?" +
-			this.wrapInGroup(false, true, "\\d+")) + 
-			"[uUlL]*";
+			this.getSignRegex(false) + "??" +
+			this.wrapInGroup(false, true, "\\d+?")) + 
+			"[uUlL]*?";
 		return this.wrapInGroup(false, true, integerRegex + "|" + this.getLiteralNumberHexadecimalRegex(false));
 	}
 	
 	public getLiteralNumberDecimalRegex(capture: boolean) {
-		var decimalDigits = "\\d+";
-		var exponentPart = "[eE]" + (this.getSignRegex(false) + "?") + decimalDigits;
-		var realTypeSuffix = "[fFdDmM]";
+		var decimalDigits = "\\d+?";
+		var exponentPart = this.wrapInGroup(false, false, "[eE]" + (this.getSignRegex(false) + "??") + decimalDigits);
+		var realTypeSuffix = this.wrapInGroup(false, false, "[fFdDmM]");
 
 		var realLiteral = 
-			this.wrapInGroup(false, false, decimalDigits + "\\." + decimalDigits + (exponentPart + "?") + (realTypeSuffix + "?")) + "|" +
-			this.wrapInGroup(false, false, "\\." + decimalDigits + (exponentPart + "?") + (realTypeSuffix + "?")) + "|" +
-			this.wrapInGroup(false, false, decimalDigits + exponentPart + (realTypeSuffix + "?")) + "|" +
+			this.wrapInGroup(false, false, decimalDigits + "\\." + decimalDigits + (exponentPart + "??") + (realTypeSuffix + "??")) + "|" +
+			this.wrapInGroup(false, false, "\\." + decimalDigits + (exponentPart + "??") + (realTypeSuffix + "??")) + "|" +
+			this.wrapInGroup(false, false, decimalDigits + exponentPart + (realTypeSuffix + "??")) + "|" +
 			this.wrapInGroup(false, false, decimalDigits + realTypeSuffix);
 
 		return this.wrapInGroup(false, true, 
-			this.getSignRegex(false) + "?" +
+			this.getSignRegex(false) + "??" +
 			this.wrapInGroup(false, true, realLiteral));
 	}
 
 	public getLiteralNumberRegex(capture: boolean) {
 		return this.wrapInGroup(capture, true, 
 			this.getLiteralNumberDecimalRegex(false) + "|" +
-			this.getLiteralNumberIntegerRegex(false));
+			this.getLiteralNumberIntegerRegex(false) + "{1}?");
 	}
 
 	public getLiteralStringRegex(capture: boolean) {
@@ -49,7 +49,7 @@
 
 	public getLiteralRegex(capture: boolean) {
 		return this.wrapInGroup(capture, true, 
-			this.getLiteralNumberRegex(false) + "|" +
+			this.getLiteralNumberRegex(false) + "{1}?|" +
 			this.getLiteralStringRegex(false) + "|" +
 			this.getLiteralCharacterRegex(false) + "|" +
 			this.getNameRegex(false));
@@ -66,13 +66,13 @@
 		var result = "";
 
 		result += this.getAttributesRegex(captureAttributes);
-		result += this.getModifierRegex(captureModifiers) + "?";
+		result += this.getModifierRegex(captureModifiers) + "??";
 		result += this.getGenericTypeNameRegex(captureType, false, false, false);
 		result += this.getNameRegex(captureName);
 		result += this.wrapInGroup(false, true, 
 			this.wrapInGroup(false, true, "=") +
 			this.getLiteralRegex(captureDefaultValue)) +
-			"?";
+			"??";
 		
 		return this.wrapInGroup(capture, true, result);
 	}
@@ -90,7 +90,7 @@
 		result += this.wrapInGroup(false, true, 
 			this.wrapInGroup(false, true, "=") +
 			this.getLiteralNumberIntegerRegex(captureValue)) +
-			"?";
+			"??";
 
 		return this.wrapInGroup(capture, true, result);
 	}
@@ -105,7 +105,7 @@
 		result += this.wrapInGroup(false, true, 
 			this.wrapInGroup(false, true, ":") +
 			this.getNameRegex(captureInheritance)) +
-			"?";
+			"??";
 		
 		result += this.wrapInGroup(false, true, "{");
 
@@ -126,14 +126,14 @@
 
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifiersRegex(captureModifiers);
-		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false) + "?";
+		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false) + "??";
 		result += this.getGenericNameRegex(false, captureName, captureGenericParameters);
 		result += this.getMethodParametersWrapperRegex(false, captureParameters);
 		result += this.wrapInGroup(false, false, 
 			this.wrapInGroup(false, true, "where") +
 			this.getGenericNameRegex(false, false, false) +
 			this.wrapInGroup(false, true, ":")) + 
-			"*";
+			"*?";
 		result += this.wrapInGroup(captureOpeningMethod, true, "{|;");
 
 		return this.wrapInGroup(capture, false, result);
@@ -141,6 +141,29 @@
 
 	private getWildcardGroup(capture: boolean) {
 		return this.wrapInGroup(capture, false, "(?:\\s|.)*");
+	}
+
+	public getNamespaceRegex(capture: boolean, captureFullName: boolean) {
+		return this.wrapInGroup(capture, true,
+			this.wrapInGroup(false, true, "namespace") +  
+			this.getNameRegex(captureFullName))
+	}
+
+	public getFieldRegex(
+		capture: boolean,
+		captureAttributes: boolean,
+		captureModifiers: boolean,
+		captureReturnType: boolean,
+		captureName: boolean) 
+	{
+		var result = "";
+
+		result += this.getAttributesRegex(captureAttributes);
+		result += this.getModifiersRegex(captureModifiers);
+		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false);
+		result += this.getNameRegex(captureName);
+
+		return this.wrapInGroup(capture, false, result);
 	}
 
 	public getPropertyRegex(
@@ -239,13 +262,13 @@
 	}
 
 	public getModifiersRegex(capture: boolean) {
-		return this.wrapInGroup(capture, false, this.repeatGroups("\\s*", () => this.getModifierRegex(false)) + "*");
+		return this.wrapInGroup(capture, false, this.repeatGroups("\\s*", () => this.getModifierRegex(false)) + "*?");
 	}
 
 	public getAttributeParameterRegex(capture: boolean, captureName: boolean, captureValue: boolean) {
 		var result = "";
 
-		result += this.wrapInGroup(false, true, this.getNameRegex(captureName) + "=") + "?";
+		result += this.wrapInGroup(false, true, this.getNameRegex(captureName) + "=") + "??";
 		result += this.getLiteralRegex(captureValue);
 
 		return this.wrapInGroup(capture, true, result);
@@ -256,11 +279,11 @@
 	}
 
 	public getAttributeRegex(capture: boolean, captureAttributeName: boolean, captureParameters: boolean) {
-		return this.wrapInGroup(capture, true, this.getNameRegex(captureAttributeName) + this.getAttributeParametersRegex(false, captureParameters) + "?");
+		return this.wrapInGroup(capture, true, this.getNameRegex(captureAttributeName) + this.getAttributeParametersRegex(false, captureParameters) + "??");
 	}
 
 	public getAttributesRegex(capture: boolean) {
-		return this.wrapInGroup(capture, false, this.wrapInGroup(false, true, "\\[" + this.repeatGroups(",", () => this.getAttributeRegex(false, false, false)) + "\\]") + "*");
+		return this.wrapInGroup(capture, false, this.wrapInGroup(false, true, "\\[" + this.repeatGroups(",", () => this.getAttributeRegex(false, false, false)) + "\\]") + "*?");
 	}
 
 	public getNameRegex(capture: boolean) {
@@ -268,21 +291,36 @@
 	}
 
 	public getGenericTypeWrapperRegex(capture: boolean, captureContents: boolean) {
-		return this.wrapInGroup(capture, true, "<" + this.wrapInGroup(captureContents, true, ".+") + ">") + "?";
+		return this.wrapInGroup(capture, true, "<" + this.wrapInGroup(captureContents, true, ".+") + ">") + "??";
 	}
 
 	public getTypeConstraintRegex(capture: boolean) {
-		return this.wrapInGroup(capture, true, this.getGenericNameRegex(false, false, false) + "|new\\s*\\(\\s*\\)|class");
+		return this.wrapInGroup(capture, true, this.getGenericNameRegex(false, false, false) + "|new\\s*\\(\\s*\\)|class|struct");
 	}
 
 	public getGenericNameRegex(capture: boolean, captureTypeName: boolean, captureGenericsContent: boolean) {
-		return this.wrapInGroup(capture, true, this.getNameRegex(captureTypeName) + this.getGenericTypeWrapperRegex(false, captureGenericsContent));
+		return this.wrapInGroup(capture, true, 
+			this.getNameRegex(captureTypeName) + 
+			this.getGenericTypeWrapperRegex(false, captureGenericsContent));
+	}
+
+	public getUsingRegex(capture: boolean, captureAlias: boolean, captureNamespace: boolean) {
+		var result = "";
+
+		result += this.wrapInGroup(false, true, "using");
+		result += this.wrapInGroup(false, true, 
+			this.getNameRegex(captureAlias) + 
+			this.wrapInGroup(false, true, "=")) +
+			"??";
+		result += this.getNameRegex(captureNamespace);
+
+		return result;
 	}
 
 	public getGenericTypeNameRegex(capture: boolean, captureTypeName: boolean, captureGenericsContent: boolean, captureSuffix: boolean) {
 		return this.wrapInGroup(capture, true, 
 			this.getGenericNameRegex(false, captureTypeName, captureGenericsContent) + 
-			this.wrapInGroup(captureSuffix, true, "\\?|" + this.wrapInGroup(false, true, "\\[\\s*\\]") + "+") + "?");
+			this.wrapInGroup(captureSuffix, true, "\\?|" + this.wrapInGroup(false, true, "\\[\\s*\\]") + "+") + "??");
 	}
 
 	private wrapInGroup(capture: boolean, wrapInSpaces: boolean, input: string) {
@@ -298,7 +336,32 @@
 	}
 
 	private repeatGroups(separator: string, groupRegexFunction: () => string) {
-		return this.wrapInGroup(false, false, groupRegexFunction() + separator) + "*" + groupRegexFunction();
+		return this.wrapInGroup(false, false, groupRegexFunction() + separator) + "*?" + groupRegexFunction();
+	}
+
+	public getStructRegex() 
+	{
+		var result = "";
+
+		result += this.getAttributesRegex(true);
+		result += this.getModifiersRegex(true);
+		result += this.wrapInGroup(false, true, "struct");
+
+		//struct name
+		result += this.getGenericNameRegex(false, true, true);
+
+		//inheritance.
+		var whereSection = "";
+		whereSection += this.wrapInGroup(false, true, "where");
+		whereSection += this.getNameRegex(false);
+		whereSection += this.wrapInGroup(false, true, ":");
+		whereSection += this.getTypeConstraintRegex(false);
+
+		result += this.wrapInGroup(false, true, whereSection) + "*?";
+
+		result += "{";
+		
+		return this.wrapInGroup(false, false, result);
 	}
 
 	private getClassOrInterfaceRegex(keyword: "class" | "interface") {
@@ -322,8 +385,8 @@
 		inheritanceSection += this.wrapInGroup(false, true, ":");
 		inheritanceSection += this.wrapInGroup(true, true, this.repeatGroups(",", () => this.getGenericNameRegex(false, false, false)));
 
-		result += this.wrapInGroup(false, true, inheritanceSection) + "?";
-		result += this.wrapInGroup(false, true, whereSection) + "*";
+		result += this.wrapInGroup(false, true, inheritanceSection) + "??";
+		result += this.wrapInGroup(false, true, whereSection) + "*?";
 
 		result += "{";
 		
@@ -349,7 +412,10 @@
 			if(!groups[0])
 				continue;
 			
-			final.push(groups.slice(1));
+			final.push(groups
+				.slice(1)
+				.map(x => x || "")
+				.map(x => x.trim()));
 		}
 
 		return final;

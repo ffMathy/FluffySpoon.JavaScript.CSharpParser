@@ -194,7 +194,7 @@ export class CSharpMethodParameter {
     }
 }
 
-export class CSharpStruct implements CSharpScope {
+export class CSharpStruct implements CSharpScope, CSharpGenericParameterContainer {
     properties: CSharpProperty[];
     methods: CSharpMethod[];
     fields: CSharpField[];
@@ -205,6 +205,7 @@ export class CSharpStruct implements CSharpScope {
     name: string;
 
     attributes: CSharpAttribute[];
+    genericParameters: CSharpType[];
     
     private _isPublic: boolean;
 
@@ -215,6 +216,11 @@ export class CSharpStruct implements CSharpScope {
         this.properties = [];
         this.fields = [];
         this.attributes = [];
+        this.genericParameters = [];
+    }
+
+    get isGeneric() {
+        return this.genericParameters.length > 0;
     }
 
     get isPublic() {

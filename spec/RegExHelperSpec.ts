@@ -40,5 +40,9 @@ describe("RegExHelper", function () {
     assertIsSafe('getPropertyRegex');
     assertIsSafe('getSignRegex');
     assertIsSafe('getTypeConstraintRegex');
+    assertIsSafe('getUsingRegex');
+    assertIsSafe('getFieldRegex');
+    assertIsSafe('getNamespaceRegex');
+    assertIsSafe('getStructRegex');
 
 });

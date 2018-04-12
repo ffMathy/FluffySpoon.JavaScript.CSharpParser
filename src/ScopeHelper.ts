@@ -61,10 +61,6 @@ export class ScopeHelper {
 
     getGenericTypeScopes(content: string) {
         var scopes = this.getScopes(content, "<", ">");
-        if (scopes.length > 0 && scopes[scopes.length - 1].prefix.trim() === ">") {
-            scopes = scopes.slice(0, scopes.length - 1);
-        }
-
         return scopes;
     }
 
@@ -157,7 +153,18 @@ export class ScopeHelper {
                 length: entry.length + results[1].length + exit.length
             };
 
-            scopes.push(scopeObject);
+            scopeObject.prefix = scopeObject.prefix.trim();
+            scopeObject.content = scopeObject.content.trim();
+            scopeObject.suffix = scopeObject.suffix.trim();
+
+            if(scopeObject.prefix.startsWith(exit))
+                scopeObject.prefix = scopeObject.prefix.substr(exit.length).trim();
+
+            if(scopeObject.suffix.endsWith(entry))
+                scopeObject.suffix = scopeObject.suffix.substr(0, scopeObject.suffix.length - entry.length).trim();
+
+            if(scopeObject.suffix || scopeObject.content || scopeObject.prefix)
+                scopes.push(scopeObject);
 
             results[0] = results[2] || '';
             results[1] = '';

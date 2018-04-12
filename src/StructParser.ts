@@ -37,12 +37,18 @@ export class StructParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                /\s*((?:\[.*\]\s*?)*)?\s*((?:\w+\s)*)struct\s+(\w+?)\s*(?:\:\s*(\w+?)\s*)?{/g);
+                new RegExp("^" + this.regexHelper.getStructRegex() + "$", "g"));
             for (var match of matches) {
-				var struct = new CSharpStruct(match[2]);
-                struct.attributes = this.attributeParser.parseAttributes(match[0]);
+                var attributes = match[0];
+                var modifiers = match[1] || "";
+                var name = match[2];
+                var genericParameters = match[3];
+
+				var struct = new CSharpStruct(name);
+                struct.attributes = this.attributeParser.parseAttributes(attributes);
+                struct.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
 				struct.innerScopeText = scope.content;
-				struct.isPublic = (match[1] || "").indexOf("public") > -1;
+				struct.isPublic = modifiers.indexOf("public") > -1;
 
 				var fields = this.fieldParser.parseFields(scope.content);
 				for (var field of fields) {

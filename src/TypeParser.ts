@@ -54,14 +54,17 @@ export class TypeParser {
 			
 		var scopes = this.scopeHelper.getGenericTypeScopes(content);
 		for (var scope of scopes) {
-			var trimmedPrefix = scope.prefix.trim();
-			if (trimmedPrefix === ",")
-				continue;
+			var trimmedPrefix = scope.prefix;
+			if (trimmedPrefix.startsWith(","))
+				trimmedPrefix = trimmedPrefix.substr(1);
+
+			trimmedPrefix = trimmedPrefix.trim();
 
 			var typeRegions = trimmedPrefix.split(",");
 			for (var typeRegion of typeRegions) {
 				var type = new CSharpType(this.getTypeNameFromGenericScopePrefix(typeRegion));
 
+				debugger;
 				var arrowTrimmedName = type.name
 					.replace(/</g, "")
 					.replace(/>/g, "")
@@ -84,9 +87,11 @@ export class TypeParser {
 		if(!typeString) 
 			return null;
 
+		const regex = this.regexHelper.getGenericTypeNameRegex(false, true, true, true);
 		var matches = this.regexHelper.getMatches(
 			typeString,
-			new RegExp(this.regexHelper.getGenericTypeNameRegex(false, true, true, true), "g"));
+			new RegExp("^" + regex + "$", "g"));
+
 		var match = matches[0];
 		if (!match)
 			return null;

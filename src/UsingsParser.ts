@@ -21,16 +21,19 @@ export class UsingsParser {
         if (!scope)
             return usings;
 
-        var matches = this.regexHelper.getMatches(
-            scope.prefix,
-            /using\s+(?:(\w+?)\s*=)?\s*([.\w]+?)\s*;/g);
-        for (var match of matches) {
-            var using = <CSharpUsing>{
-                alias: match[0],
-                namespace: new CSharpNamespace(match[1])
-            };
+        var splits = this.scopeHelper.getScopedList(";", scope.prefix);
+        for(var split of splits) {
+            var matches = this.regexHelper.getMatches(
+                split,
+                new RegExp("^" + this.regexHelper.getUsingRegex(false, true, true) + "$", "g"));
+            for (var match of matches) {
+                var using = <CSharpUsing>{
+                    alias: match[0] || null,
+                    namespace: new CSharpNamespace(match[1])
+                };
 
-            usings.push(using);
+                usings.push(using);
+            }
         }
 
         return usings;

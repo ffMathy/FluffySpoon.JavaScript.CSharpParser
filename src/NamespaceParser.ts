@@ -29,7 +29,7 @@ export class NamespaceParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix, 
-                /namespace\s+([\.\w]+?)\s*{/g);
+                new RegExp(this.regexHelper.getNamespaceRegex(false, true), "g"));
             for (var match of matches) {
                 var name = match[0];
                 var namespacesFromName = NamespaceParser.parseNamespacesFromName(name);

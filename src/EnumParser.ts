@@ -24,7 +24,7 @@ export class EnumParser {
         for (var scope of scopes) {
             var matches = this.regexHelper.getMatches(
                 scope.prefix,
-                new RegExp(this.regexHelper.getEnumRegex(false, true, true, true, true), "g"));
+                new RegExp("^" + this.regexHelper.getEnumRegex(false, true, true, true, true) + "$", "g"));
             for (var match of matches) {
                 var attributes = match[0];
                 var modifiers = match[1] || "";
