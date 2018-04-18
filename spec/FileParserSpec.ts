@@ -15,6 +15,53 @@ function useCSharp(file: string, callback: (parser: FileParser) => void) {
 
 describe("FileParser", function () {
 
+    it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
+        var file = parser.parseFile();
+
+        expect(file.classes.length).toBe(1, "classes length");
+        expect(file.classes[0].properties.length).toBe(7, "class properties length");
+        expect(file.classes[0].properties[0].components.length).toBe(2, "class property 0 components length");
+        expect(file.classes[0].properties[1].components.length).toBe(1, "class property 1 components length");
+        expect(file.classes[0].properties[1].attributes.length).toBe(0, "class property 1 attributes length");
+        expect(file.classes[0].properties[2].components.length).toBe(2, "class property 2 components length");
+        expect(file.classes[0].properties[2].attributes.length).toBe(1, "class property 2 attributes length");
+        expect(file.classes[0].properties[4].components.length).toBe(1, "class property 3 components length");
+
+        expect(file.classes[0].properties[0].name).toBe("MyProperty");
+        expect(file.classes[0].properties[0].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[0].isVirtual).toBe(false);
+        expect(file.classes[0].properties[0].type.name).toBe("string");
+
+        expect(file.classes[0].properties[1].name).toBe("ReadOnlyProperty");
+        expect(file.classes[0].properties[1].isReadOnly).toBe(true);
+        expect(file.classes[0].properties[1].components[0].type).toBe("get");
+        expect(file.classes[0].properties[1].type.name).toBe("string");
+
+        expect(file.classes[0].properties[2].name).toBe("GetSetProperty");
+        expect(file.classes[0].properties[2].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[2].type.name).toBe("string");
+
+        expect(file.classes[0].properties[3].name).toBe("MyPublicVirtualProperty");
+        expect(file.classes[0].properties[3].isReadOnly).toBe(false);
+        expect(file.classes[0].properties[3].isVirtual).toBe(true);
+        expect(file.classes[0].properties[3].type.name).toBe("string");
+
+        expect(file.classes[0].properties[4].name).toBe("ReadOnlyShortProperty");
+        expect(file.classes[0].properties[4].isReadOnly).toBe(true);
+        expect(file.classes[0].properties[4].components[0].type).toBe("get");
+        expect(file.classes[0].properties[4].type.name).toBe("string");
+
+        expect(file.classes[0].properties[5].name).toBe("TupleReturningProperty");
+        expect(file.classes[0].properties[5].type.name).toBe("ValueTuple<,>");
+        expect(file.classes[0].properties[5].type.genericParameters[0].name).toBe("string");
+        expect(file.classes[0].properties[5].type.genericParameters[1].name).toBe("int");
+
+        expect(file.classes[0].properties[6].name).toBe("NamedTupleReturningProperty");
+        expect(file.classes[0].properties[6].type.name).toBe("ValueTuple<,>");
+        expect(file.classes[0].properties[6].type.genericParameters[0].name).toBe("string");
+        expect(file.classes[0].properties[6].type.genericParameters[1].name).toBe("int");
+    }));
+
     describe("usings:", function () {
         
         it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', (parser) => {
@@ -253,43 +300,6 @@ describe("FileParser", function () {
         }));
 
     });
-
-    it("should be able to fetch properties inside classes", useCSharp('PropertyInsideClass.cs', (parser) => {
-        var file = parser.parseFile();
-
-        expect(file.classes.length).toBe(1, "classes length");
-        expect(file.classes[0].properties.length).toBe(5, "class properties length");
-        expect(file.classes[0].properties[0].components.length).toBe(2, "class property 0 components length");
-        expect(file.classes[0].properties[1].components.length).toBe(1, "class property 1 components length");
-        expect(file.classes[0].properties[1].attributes.length).toBe(0, "class property 1 attributes length");
-        expect(file.classes[0].properties[2].components.length).toBe(2, "class property 2 components length");
-        expect(file.classes[0].properties[2].attributes.length).toBe(1, "class property 2 attributes length");
-        expect(file.classes[0].properties[4].components.length).toBe(1, "class property 3 components length");
-
-        expect(file.classes[0].properties[0].name).toBe("MyProperty");
-        expect(file.classes[0].properties[0].isReadOnly).toBe(false);
-        expect(file.classes[0].properties[0].isVirtual).toBe(false);
-        expect(file.classes[0].properties[0].type.name).toBe("string");
-
-        expect(file.classes[0].properties[1].name).toBe("ReadOnlyProperty");
-        expect(file.classes[0].properties[1].isReadOnly).toBe(true);
-        expect(file.classes[0].properties[1].components[0].type).toBe("get");
-        expect(file.classes[0].properties[1].type.name).toBe("string");
-
-        expect(file.classes[0].properties[2].name).toBe("GetSetProperty");
-        expect(file.classes[0].properties[2].isReadOnly).toBe(false);
-        expect(file.classes[0].properties[2].type.name).toBe("string");
-
-        expect(file.classes[0].properties[3].name).toBe("MyPublicVirtualProperty");
-        expect(file.classes[0].properties[3].isReadOnly).toBe(false);
-        expect(file.classes[0].properties[3].isVirtual).toBe(true);
-        expect(file.classes[0].properties[3].type.name).toBe("string");
-
-        expect(file.classes[0].properties[4].name).toBe("ReadOnlyShortProperty");
-        expect(file.classes[0].properties[4].isReadOnly).toBe(true);
-        expect(file.classes[0].properties[4].components[0].type).toBe("get");
-        expect(file.classes[0].properties[4].type.name).toBe("string");
-    }));
 
     describe("namespaces:", function () {
 

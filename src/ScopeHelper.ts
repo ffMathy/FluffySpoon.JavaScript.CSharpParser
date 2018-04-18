@@ -39,7 +39,7 @@ export class ScopeHelper {
         this.enumerateRelevantCodeCharacterRegions(content, (stringSoFar, character) => {
             if(isEntryScope(character)) {
                 scope++;
-            } else if(isExitScope(character)) {
+            } else if(isExitScope(character) && scope > 0) {
                 scope--;
             }
 

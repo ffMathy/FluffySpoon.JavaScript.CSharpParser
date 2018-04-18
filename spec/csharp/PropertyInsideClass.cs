@@ -31,4 +31,7 @@
 	public virtual string MyPublicVirtualProperty { get; set; }
 
     string ReadOnlyShortProperty => "foobar";
+
+    (string, int) TupleReturningProperty => ("foobar", 1337);
+    (string a, int b) NamedTupleReturningProperty => ("foobar", 1337);
 }

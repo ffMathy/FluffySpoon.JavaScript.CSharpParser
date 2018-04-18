@@ -85,7 +85,7 @@ export class TypeParser {
 		if(!typeString) 
 			return null;
 
-		const regex = this.regexHelper.getGenericTypeNameRegex(false, true, true, true);
+		const regex = this.regexHelper.getGenericTypeNameRegex(false, true, true, true, true);
 		var matches = this.regexHelper.getMatches(
 			typeString,
 			new RegExp("^" + regex + "$", "g"));
@@ -94,12 +94,19 @@ export class TypeParser {
 		if (!match)
 			return null;
 
-		var isNullable = match[2] === "?";
-		var isArray = match[2] === "[]";
-
-		var genericParameters = match[1];
-
 		var name = match[0];
+		var genericParameters = match[1];
+		var tupleContent = match[2];
+		var suffix = match[3];
+
+		if(tupleContent) {
+			name = "System.ValueTuple";
+			genericParameters = this.prepareGenericParametersStringFromTupleContent(tupleContent);
+		}
+
+		var isNullable = suffix === "?";
+		var isArray = suffix === "[]";
+
 		if(isArray) {
 			genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
 			name = "Array";
@@ -119,5 +126,14 @@ export class TypeParser {
 			genericParameters);
 
 		return type;
+	}
+
+	private prepareGenericParametersStringFromTupleContent(content: string) {
+		var scopes = this.scopeHelper.getScopedList(",", content);
+		return scopes
+			.map(x => x
+				.split(' ')
+				.filter(x => !!x)[0])
+			.join(",");
 	}
 }

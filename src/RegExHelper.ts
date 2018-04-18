@@ -67,7 +67,7 @@
 
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifierRegex(captureModifiers) + "??";
-		result += this.getGenericTypeNameRegex(captureType, false, false, false);
+		result += this.getGenericTypeNameRegex(captureType, false, false, false, false);
 		result += this.getNameRegex(captureName);
 		result += this.wrapInGroup(false, true, 
 			this.wrapInGroup(false, true, "=") +
@@ -126,7 +126,7 @@
 
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifiersRegex(captureModifiers);
-		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false) + "??";
+		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false, false) + "??";
 		result += this.getGenericNameRegex(false, captureName, captureGenericParameters);
 		result += this.getMethodParametersWrapperRegex(false, captureParameters);
 		result += this.wrapInGroup(false, false, 
@@ -163,7 +163,7 @@
 
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifiersRegex(captureModifiers);
-		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false);
+		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false, false);
 		result += this.getNameRegex(captureName);
 		result += this.wrapInGroup(false, true, ";");
 
@@ -182,7 +182,7 @@
 
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifiersRegex(captureModifiers);
-		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false);
+		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false, false);
 		result += this.getNameRegex(captureName);
 		result += this.wrapInGroup(captureOpeningMethod, true, 
 			this.wrapInGroup(false, false, "{") + "|" + 
@@ -325,10 +325,11 @@
 		return result;
 	}
 
-	public getGenericTypeNameRegex(capture: boolean, captureTypeName: boolean, captureGenericsContent: boolean, captureSuffix: boolean) {
-		//TODO: support tuples
+	public getGenericTypeNameRegex(capture: boolean, captureTypeName: boolean, captureGenericsContent: boolean, captureTupleContent: boolean, captureSuffix: boolean) {
 		return this.wrapInGroup(capture, true, 
-			this.getGenericNameRegex(false, captureTypeName, captureGenericsContent) + 
+			this.wrapInGroup(false, false, 
+				this.getGenericNameRegex(false, captureTypeName, captureGenericsContent) + "|" +
+				this.wrapInGroup(false, false, "\\(" + this.wrapInGroup(captureTupleContent, true, ".+?") + "\\)")) + 
 			this.wrapInGroup(captureSuffix, true, "\\?|" + this.wrapInGroup(false, true, "\\[\\s*\\]") + "+") + "??");
 	}
 
