@@ -40,6 +40,7 @@ export class AttributeParser {
                         attributes.push(attribute);
                     } catch(ex) {
                         console.error("Skipping attribute due to parsing error.", innerAttributeSplit, ex);
+						debugger;
                     }
                 }
             }

@@ -74,6 +74,7 @@ export class StructParser {
                         structs.push(struct);
                     } catch(ex) {
                         console.error("Skipping struct due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }

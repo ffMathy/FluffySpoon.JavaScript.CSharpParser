@@ -32,6 +32,6 @@
 
     string ReadOnlyShortProperty => "foobar";
 
-    (string, int) TupleReturningProperty => ("foobar", 1337);
-    (string a, int b) NamedTupleReturningProperty => ("foobar", 1337);
+    (string, Func<int, string>) TupleReturningProperty => ("foobar", 1337);
+    (string a, Func<int, string> b) NamedTupleReturningProperty => ("foobar", 1337);
 }

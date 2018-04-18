@@ -43,6 +43,7 @@ export class EnumParser {
                         enums.push(enumObject);
                     } catch(ex) {
                         console.error("Skipping enum due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }

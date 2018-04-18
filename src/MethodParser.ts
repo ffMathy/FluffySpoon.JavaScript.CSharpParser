@@ -69,6 +69,7 @@ export class MethodParser {
 						methods.push(method);
                     } catch(ex) {
                         console.error("Skipping method due to parsing error.", statement, ex);
+						debugger;
                     }
 				}
 			}
@@ -93,6 +94,7 @@ export class MethodParser {
 				result.push(this.parseMethodParameter(matches[0]));
 			} catch(ex) {
 				console.error("Skipping method parameter due to parsing error.", matches[0], ex);
+				debugger;
 			}
 		}
 

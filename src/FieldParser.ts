@@ -46,6 +46,7 @@ export class FieldParser {
                         fields.push(field);
                     } catch(ex) {
                         console.error("Skipping field due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }

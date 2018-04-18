@@ -104,6 +104,7 @@ export class ClassParser {
                         classes.push(classObject);
                     } catch(ex) {
                         console.error("Skipping class due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }

@@ -78,6 +78,7 @@ export class NamespaceParser {
                         namespaces.push(namespacesFromName[0]);
                     } catch(ex) {
                         console.error("Skipping namespace due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }

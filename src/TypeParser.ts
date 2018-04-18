@@ -52,30 +52,25 @@ export class TypeParser {
 		if (!content)
 			return result;
 			
-		var scopes = this.scopeHelper.getGenericTypeScopes(content);
-		for (var scope of scopes) {
-			var trimmedPrefix = scope.prefix;
-			if (trimmedPrefix.startsWith(","))
-				trimmedPrefix = trimmedPrefix.substr(1);
+		var typeRegions = this.scopeHelper.getScopedList(",", content);
+		for (var typeRegion of typeRegions) {
+			var scope = this.scopeHelper.getGenericTypeScopes(typeRegion).pop();
 
-			trimmedPrefix = trimmedPrefix.trim();
+			var type = new CSharpType(this.getTypeNameFromGenericScopePrefix(scope.prefix));
+			var arrowTrimmedName = type.name
+				.replace(/</g, "")
+				.replace(/>/g, "")
+				.trim();
+			if (!arrowTrimmedName)
+				continue;
 
-			var typeRegions = trimmedPrefix.split(",");
-			for (var typeRegion of typeRegions) {
-				var type = new CSharpType(this.getTypeNameFromGenericScopePrefix(typeRegion));
-				var arrowTrimmedName = type.name
-					.replace(/</g, "")
-					.replace(/>/g, "")
-					.trim();
-				if (!arrowTrimmedName)
-					continue;
-
+			if(scope.content) {
 				this.prepareTypeForGenericParameters(
 					type,
 					scope.content);
-
-				result.push(type);
 			}
+
+			result.push(type);
 		}
 
 		return result;
@@ -109,7 +104,7 @@ export class TypeParser {
 
 		if(isArray) {
 			genericParameters = name + (genericParameters ? "<" + genericParameters + ">" : "");
-			name = "Array";
+			name = "System.Array";
 		}
 
 		var subNames = name.split(".");
@@ -131,9 +126,12 @@ export class TypeParser {
 	private prepareGenericParametersStringFromTupleContent(content: string) {
 		var scopes = this.scopeHelper.getScopedList(",", content);
 		return scopes
-			.map(x => x
-				.split(' ')
-				.filter(x => !!x)[0])
-			.join(",");
+			.map(x => {
+				var regions = this.scopeHelper
+					.getScopedList(" ", x)
+					.filter(x => !!x);
+				return regions[0];
+			})
+			.join(", ");
 	}
 }

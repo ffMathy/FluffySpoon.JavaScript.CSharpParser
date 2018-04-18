@@ -36,6 +36,7 @@ export class UsingsParser {
                     usings.push(using);
                 } catch(ex) {
                     console.error("Skipping using due to parsing error.", statement, ex);
+                    debugger;
                 }
             }
         }

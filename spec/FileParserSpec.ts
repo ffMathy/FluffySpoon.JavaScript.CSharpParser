@@ -53,14 +53,36 @@ describe("FileParser", function () {
 
         expect(file.classes[0].properties[5].name).toBe("TupleReturningProperty");
         expect(file.classes[0].properties[5].type.name).toBe("ValueTuple<,>");
-        expect(file.classes[0].properties[5].type.genericParameters[0].name).toBe("string");
-        expect(file.classes[0].properties[5].type.genericParameters[1].name).toBe("int");
+        debugger;
+        expect(file.classes[0].properties[5].type.genericParameters[1].name).toBe("Func<,>");
+        expect(file.classes[0].properties[5].type.genericParameters[1].genericParameters[0].name).toBe("int");
+        expect(file.classes[0].properties[5].type.genericParameters[1].genericParameters[1].name).toBe("string");
 
         expect(file.classes[0].properties[6].name).toBe("NamedTupleReturningProperty");
         expect(file.classes[0].properties[6].type.name).toBe("ValueTuple<,>");
-        expect(file.classes[0].properties[6].type.genericParameters[0].name).toBe("string");
-        expect(file.classes[0].properties[6].type.genericParameters[1].name).toBe("int");
+        expect(file.classes[0].properties[6].type.genericParameters[1].name).toBe("Func<,>");
+        expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[0].name).toBe("int");
+        expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[1].name).toBe("string");
     }));
+
+    describe("comments:", function () {
+
+        it("should be able to remove comments from output", useCSharp('Comments.cs', (parser) => {
+            var file = parser.parseFile();
+
+            expect(file.classes.length).toBe(1, "classes length");
+            expect(file.classes[0].fields.length).toBe(1, "class fields length");
+            expect(file.classes[0].properties.length).toBe(1, "class properties length");
+            expect(file.classes[0].methods.length).toBe(3, "class methods length");
+
+            expect(file.classes[0].methods[0].returnType.name).toBe("void");
+
+            expect(file.classes[0].methods[1].parameters[0].defaultValue).toBe(false);
+            expect(file.classes[0].methods[1].parameters[0].type.name).toBe("bool");
+            expect(file.classes[0].methods[1].parameters[0].name).toBe("parameter2");
+        }));
+
+    });
 
     describe("usings:", function () {
         
@@ -358,25 +380,6 @@ describe("FileParser", function () {
 			expect(file.structs[0].isPublic).toBe(true);
 			expect(file.structs[0].name).toBe("MyStruct");
 		}));
-
-    });
-
-    describe("comments:", function () {
-
-        it("should be able to remove comments from output", useCSharp('Comments.cs', (parser) => {
-            var file = parser.parseFile();
-
-            expect(file.classes.length).toBe(1);
-            expect(file.classes[0].fields.length).toBe(1);
-            expect(file.classes[0].properties.length).toBe(1);
-            expect(file.classes[0].methods.length).toBe(3);
-
-            expect(file.classes[0].methods[0].returnType.name).toBe("void");
-
-            expect(file.classes[0].methods[1].parameters[0].defaultValue).toBe(false);
-            expect(file.classes[0].methods[1].parameters[0].type.name).toBe("bool");
-            expect(file.classes[0].methods[1].parameters[0].name).toBe("parameter2");
-        }));
 
     });
 

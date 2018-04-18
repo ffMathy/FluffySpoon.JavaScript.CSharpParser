@@ -51,14 +51,17 @@ export class PropertyParser {
 						if(openingType === "{") {
 							var subScopes = this.scopeHelper.getCurlyScopes(scope.content);
 							for (var subScope of subScopes) {
-								var componentTypeMatches = this.regexHelper.getMatches(
-									subScope.prefix,
-									/(get|set)\s*[{;]/g);
-								for (var componentTypeMatch of componentTypeMatches) {
-									var component = new CSharpPropertyComponent();
-									component.type = <"get"|"set">componentTypeMatch[0];
+								var subStatements = this.scopeHelper.getStatements(subScope.prefix);
+								for(var subStatement of subStatements) {
+									var componentTypeMatches = this.regexHelper.getMatches(
+										subStatement,
+										/^(get|set)\s*[{;]$/g);
+									for (var componentTypeMatch of componentTypeMatches) {
+										var component = new CSharpPropertyComponent();
+										component.type = <"get"|"set">componentTypeMatch[0];
 
-									property.components.push(component);
+										property.components.push(component);
+									}
 								}
 							}
 						} else if(openingType === "=>") {
@@ -73,7 +76,8 @@ export class PropertyParser {
 
 						properties.push(property);
                     } catch(ex) {
-                        console.error("Skipping property due to parsing error.", statement, ex);
+						console.error("Skipping property due to parsing error.", statement, ex);
+						debugger;
                     }
 				}
 			}

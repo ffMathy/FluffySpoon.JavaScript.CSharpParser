@@ -58,6 +58,7 @@ export class InterfaceParser {
                         interfaces.push(interfaceObject);
                     } catch(ex) {
                         console.error("Skipping interface due to parsing error.", statement, ex);
+						debugger;
                     }
                 }
             }
