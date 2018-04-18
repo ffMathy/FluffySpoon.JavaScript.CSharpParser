@@ -63,8 +63,6 @@ export class TypeParser {
 			var typeRegions = trimmedPrefix.split(",");
 			for (var typeRegion of typeRegions) {
 				var type = new CSharpType(this.getTypeNameFromGenericScopePrefix(typeRegion));
-
-				debugger;
 				var arrowTrimmedName = type.name
 					.replace(/</g, "")
 					.replace(/>/g, "")

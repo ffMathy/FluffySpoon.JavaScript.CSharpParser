@@ -44,63 +44,67 @@ export class ClassParser {
                     new RegExp("^" + this.regexHelper.getClassRegex() + "$", "g"));
 
                 for (var match of matches) {
-                    var attributes = match[0];
-                    var modifiers = match[1] || "";
-                    var name = match[2];
-                    var genericParameters = match[3];
-                    var inheritance = match[4];
+                    try {
+                        var attributes = match[0];
+                        var modifiers = match[1] || "";
+                        var name = match[2];
+                        var genericParameters = match[3];
+                        var inheritance = match[4];
 
-                    var classObject = new CSharpClass(name);
-                    classObject.isPublic = modifiers.indexOf("public") > -1;
-                    classObject.attributes = this.attributeParser.parseAttributes(attributes);
-                    classObject.innerScopeText = scope.content;
-                    classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
-                    classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(inheritance);
+                        var classObject = new CSharpClass(name);
+                        classObject.isPublic = modifiers.indexOf("public") > -1;
+                        classObject.attributes = this.attributeParser.parseAttributes(attributes);
+                        classObject.innerScopeText = scope.content;
+                        classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
+                        classObject.inheritsFrom = this.typeParser.parseTypesFromGenericParameters(inheritance);
 
-                    var fields = this.fieldParser.parseFields(scope.content);
-                    for (var field of fields) {
-                        field.parent = classObject;
-                        classObject.fields.push(field);
+                        var fields = this.fieldParser.parseFields(scope.content);
+                        for (var field of fields) {
+                            field.parent = classObject;
+                            classObject.fields.push(field);
+                        }
+
+                        var properties = this.propertyParser.parseProperties(scope.content);
+                        for (var property of properties) {
+                            property.parent = classObject;
+                            classObject.properties.push(property);
+                        }
+
+                        var enums = this.enumParser.parseEnums(scope.content);
+                        for (var enumObject of enums) {
+                            enumObject.parent = classObject;
+                            classObject.enums.push(enumObject);
+                        }
+
+                        var methods = this.methodParser.parseMethods(scope.content, classObject);
+                        for (var method of methods) {
+                            method.parent = classObject;
+                            classObject.methods.push(method);
+                        }
+
+                        var subClasses = this.parseClasses(scope.content);
+                        for (var subClass of subClasses) {
+                            subClass.parent = classObject;
+                            classObject.classes.push(subClass);
+                        }
+
+                        var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                        for (var interfaceObject of interfaces) {
+                            classObject.interfaces.push(interfaceObject);
+                        }
+
+                        classObject.constructors = classObject
+                            .methods
+                            .filter(x => x.isConstructor);
+
+                        classObject.methods = classObject
+                            .methods
+                            .filter(x => !x.isConstructor);
+
+                        classes.push(classObject);
+                    } catch(ex) {
+                        console.error("Skipping class due to parsing error.", statement, ex);
                     }
-
-                    var properties = this.propertyParser.parseProperties(scope.content);
-                    for (var property of properties) {
-                        property.parent = classObject;
-                        classObject.properties.push(property);
-                    }
-
-                    var enums = this.enumParser.parseEnums(scope.content);
-                    for (var enumObject of enums) {
-                        enumObject.parent = classObject;
-                        classObject.enums.push(enumObject);
-                    }
-
-                    var methods = this.methodParser.parseMethods(scope.content, classObject);
-                    for (var method of methods) {
-                        method.parent = classObject;
-                        classObject.methods.push(method);
-                    }
-
-                    var subClasses = this.parseClasses(scope.content);
-                    for (var subClass of subClasses) {
-                        subClass.parent = classObject;
-                        classObject.classes.push(subClass);
-                    }
-
-                    var interfaces = this.interfaceParser.parseInterfaces(scope.content);
-                    for (var interfaceObject of interfaces) {
-                        classObject.interfaces.push(interfaceObject);
-                    }
-
-                    classObject.constructors = classObject
-                        .methods
-                        .filter(x => x.isConstructor);
-
-                    classObject.methods = classObject
-                        .methods
-                        .filter(x => !x.isConstructor);
-
-                    classes.push(classObject);
                 }
             }
         }

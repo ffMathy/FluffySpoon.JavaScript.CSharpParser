@@ -21,18 +21,22 @@ export class UsingsParser {
         if (!scope)
             return usings;
 
-        var splits = this.scopeHelper.getStatements(scope.prefix);
-        for(var split of splits) {
+        var statements = this.scopeHelper.getStatements(scope.prefix);
+        for(var statement of statements) {
             var matches = this.regexHelper.getMatches(
-                split,
+                statement,
                 new RegExp("^" + this.regexHelper.getUsingRegex(false, true, true) + "$", "g"));
             for (var match of matches) {
-                var using = <CSharpUsing>{
-                    alias: match[0] || null,
-                    namespace: new CSharpNamespace(match[1])
-                };
+                try {
+                    var using = <CSharpUsing>{
+                        alias: match[0] || null,
+                        namespace: new CSharpNamespace(match[1])
+                    };
 
-                usings.push(using);
+                    usings.push(using);
+                } catch(ex) {
+                    console.error("Skipping using due to parsing error.", statement, ex);
+                }
             }
         }
 

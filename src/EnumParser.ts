@@ -22,22 +22,29 @@ export class EnumParser {
         var enums = new Array<CSharpEnum>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var matches = this.regexHelper.getMatches(
-                scope.prefix,
-                new RegExp("^" + this.regexHelper.getEnumRegex(false, true, true, true, true) + "$", "g"));
-            for (var match of matches) {
-                var attributes = match[0];
-                var modifiers = match[1] || "";
-                var name = match[2];
-                var inheritance = match[3];
+            var statements = this.scopeHelper.getStatements(scope.prefix);
+            for(var statement of statements) {
+                var matches = this.regexHelper.getMatches(
+                    statement,
+                    new RegExp("^" + this.regexHelper.getEnumRegex(false, true, true, true, true) + "$", "g"));
+                for (var match of matches) {
+                    try {
+                        var attributes = match[0];
+                        var modifiers = match[1] || "";
+                        var name = match[2];
+                        var inheritance = match[3];
 
-                var enumObject = new CSharpEnum(name);
-				enumObject.isPublic = modifiers.indexOf("public") > -1;
-                enumObject.attributes = this.attributeParser.parseAttributes(attributes);
-                enumObject.options = this.parseEnumOptions(scope.content);
-                enumObject.inheritsFrom = this.typeParser.parseType(inheritance);
+                        var enumObject = new CSharpEnum(name);
+                        enumObject.isPublic = modifiers.indexOf("public") > -1;
+                        enumObject.attributes = this.attributeParser.parseAttributes(attributes);
+                        enumObject.options = this.parseEnumOptions(scope.content);
+                        enumObject.inheritsFrom = this.typeParser.parseType(inheritance);
 
-                enums.push(enumObject);
+                        enums.push(enumObject);
+                    } catch(ex) {
+                        console.error("Skipping enum due to parsing error.", statement, ex);
+                    }
+                }
             }
         }
 

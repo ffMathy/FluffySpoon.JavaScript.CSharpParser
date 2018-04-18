@@ -326,6 +326,7 @@
 	}
 
 	public getGenericTypeNameRegex(capture: boolean, captureTypeName: boolean, captureGenericsContent: boolean, captureSuffix: boolean) {
+		//TODO: support tuples
 		return this.wrapInGroup(capture, true, 
 			this.getGenericNameRegex(false, captureTypeName, captureGenericsContent) + 
 			this.wrapInGroup(captureSuffix, true, "\\?|" + this.wrapInGroup(false, true, "\\[\\s*\\]") + "+") + "??");

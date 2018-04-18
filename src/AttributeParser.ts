@@ -30,13 +30,17 @@ export class AttributeParser {
                     innerAttributeSplit,
                     new RegExp("^" + this.regexHelper.getAttributeRegex(false, true, true) + "$", "g"));
                 for (var match of matches) {
-                    var name = match[0];
-                    var parameters = match[1];
+                    try {
+                        var name = match[0];
+                        var parameters = match[1];
 
-                    var attribute = new CSharpAttribute(name);
-                    attribute.parameters = this.parseAttributeParameters(parameters);
+                        var attribute = new CSharpAttribute(name);
+                        attribute.parameters = this.parseAttributeParameters(parameters);
 
-                    attributes.push(attribute);
+                        attributes.push(attribute);
+                    } catch(ex) {
+                        console.error("Skipping attribute due to parsing error.", innerAttributeSplit, ex);
+                    }
                 }
             }
         }

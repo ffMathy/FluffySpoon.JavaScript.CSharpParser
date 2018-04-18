@@ -35,40 +35,47 @@ export class StructParser {
         var structs = new Array<CSharpStruct>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var matches = this.regexHelper.getMatches(
-                scope.prefix,
-                new RegExp("^" + this.regexHelper.getStructRegex() + "$", "g"));
-            for (var match of matches) {
-                var attributes = match[0];
-                var modifiers = match[1] || "";
-                var name = match[2];
-                var genericParameters = match[3];
+            var statements = this.scopeHelper.getStatements(scope.prefix);
+            for(var statement of statements) {
+                var matches = this.regexHelper.getMatches(
+                    statement,
+                    new RegExp("^" + this.regexHelper.getStructRegex() + "$", "g"));
+                for (var match of matches) {
+                    try {
+                        var attributes = match[0];
+                        var modifiers = match[1] || "";
+                        var name = match[2];
+                        var genericParameters = match[3];
 
-				var struct = new CSharpStruct(name);
-                struct.attributes = this.attributeParser.parseAttributes(attributes);
-                struct.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
-				struct.innerScopeText = scope.content;
-				struct.isPublic = modifiers.indexOf("public") > -1;
+                        var struct = new CSharpStruct(name);
+                        struct.attributes = this.attributeParser.parseAttributes(attributes);
+                        struct.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
+                        struct.innerScopeText = scope.content;
+                        struct.isPublic = modifiers.indexOf("public") > -1;
 
-				var fields = this.fieldParser.parseFields(scope.content);
-				for (var field of fields) {
-					field.parent = struct;
-					struct.fields.push(field);
-				}
+                        var fields = this.fieldParser.parseFields(scope.content);
+                        for (var field of fields) {
+                            field.parent = struct;
+                            struct.fields.push(field);
+                        }
 
-                var properties = this.propertyParser.parseProperties(scope.content);
-                for (var property of properties) {
-                    property.parent = struct;
-                    struct.properties.push(property);
+                        var properties = this.propertyParser.parseProperties(scope.content);
+                        for (var property of properties) {
+                            property.parent = struct;
+                            struct.properties.push(property);
+                        }
+
+                        var methods = this.methodParser.parseMethods(scope.content, struct);
+                        for (var method of methods) {
+                            method.parent = struct;
+                            struct.methods.push(method);
+                        }
+
+                        structs.push(struct);
+                    } catch(ex) {
+                        console.error("Skipping struct due to parsing error.", statement, ex);
+                    }
                 }
-
-                var methods = this.methodParser.parseMethods(scope.content, struct);
-                for (var method of methods) {
-                    method.parent = struct;
-                    struct.methods.push(method);
-                }
-
-				structs.push(struct);
             }
         }
 

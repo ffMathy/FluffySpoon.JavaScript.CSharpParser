@@ -27,52 +27,59 @@ export class NamespaceParser {
         var namespaces = new Array<CSharpNamespace>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var matches = this.regexHelper.getMatches(
-                scope.prefix, 
-                new RegExp(this.regexHelper.getNamespaceRegex(false, true), "g"));
-            for (var match of matches) {
-                var name = match[0];
-                var namespacesFromName = NamespaceParser.parseNamespacesFromName(name);
+            var statements = this.scopeHelper.getStatements(scope.prefix);
+            for(var statement of statements) {
+                var matches = this.regexHelper.getMatches(
+                    statement, 
+                    new RegExp(this.regexHelper.getNamespaceRegex(false, true), "g"));
+                for (var match of matches) {
+                    try {
+                        var name = match[0];
+                        var namespacesFromName = NamespaceParser.parseNamespacesFromName(name);
 
-                var namespace = namespacesFromName[namespacesFromName.length-1];
-                namespace.innerScopeText = scope.content;
+                        var namespace = namespacesFromName[namespacesFromName.length-1];
+                        namespace.innerScopeText = scope.content;
 
-                var enums = this.enumParser.parseEnums(scope.content);
-                for (var enumObject of enums) {
-                    enumObject.parent = namespace;
-                    namespace.enums.push(enumObject);
+                        var enums = this.enumParser.parseEnums(scope.content);
+                        for (var enumObject of enums) {
+                            enumObject.parent = namespace;
+                            namespace.enums.push(enumObject);
+                        }
+
+                        var classes = this.classParser.parseClasses(scope.content);
+                        for (var classObject of classes) {
+                            classObject.parent = namespace;
+                            namespace.classes.push(classObject);
+                        }
+
+                        var structs = this.structParser.parseStructs(scope.content);
+                        for (var struct of structs) {
+                            struct.parent = namespace;
+                            namespace.structs.push(struct);
+                        }
+
+                        var usings = this.usingsParser.parseUsings(scope.content);
+                        for (var using of usings) {
+                            using.parent = namespace;
+                            namespace.usings.push(using);
+                        }
+                        
+                        var subNamespaces = this.parseNamespacesFromCode(scope.content);
+                        for (let subNamespace of subNamespaces) {
+                            subNamespace.parent = namespace;
+                            namespace.namespaces.push(subNamespace);
+                        }
+
+                        var interfaces = this.interfaceParser.parseInterfaces(scope.content);
+                        for (var interfaceObject of interfaces) {
+                            namespace.interfaces.push(interfaceObject);
+                        }
+
+                        namespaces.push(namespacesFromName[0]);
+                    } catch(ex) {
+                        console.error("Skipping namespace due to parsing error.", statement, ex);
+                    }
                 }
-
-                var classes = this.classParser.parseClasses(scope.content);
-                for (var classObject of classes) {
-                    classObject.parent = namespace;
-                    namespace.classes.push(classObject);
-                }
-
-                var structs = this.structParser.parseStructs(scope.content);
-                for (var struct of structs) {
-                    struct.parent = namespace;
-                    namespace.structs.push(struct);
-                }
-
-                var usings = this.usingsParser.parseUsings(scope.content);
-                for (var using of usings) {
-                    using.parent = namespace;
-                    namespace.usings.push(using);
-                }
-                
-                var subNamespaces = this.parseNamespacesFromCode(scope.content);
-                for (let subNamespace of subNamespaces) {
-                    subNamespace.parent = namespace;
-                    namespace.namespaces.push(subNamespace);
-                }
-
-                var interfaces = this.interfaceParser.parseInterfaces(scope.content);
-                for (var interfaceObject of interfaces) {
-                    namespace.interfaces.push(interfaceObject);
-                }
-
-                namespaces.push(namespacesFromName[0]);
             }
         }
 

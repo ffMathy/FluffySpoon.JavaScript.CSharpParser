@@ -30,19 +30,23 @@ export class FieldParser {
                     statement,
                     new RegExp("^" + this.regexHelper.getFieldRegex(false, true, true, true, true) + "$", "g"));
                 for (var match of matches) {
-                    var attributes = match[0];
-                    var modifiers = match[1] || "";
-                    var returnType = match[2];
-                    var name = match[3];
+                    try {
+                        var attributes = match[0];
+                        var modifiers = match[1] || "";
+                        var returnType = match[2];
+                        var name = match[3];
 
-                    var field = new CSharpField(name);
-                    field.attributes = this.attributeParser.parseAttributes(attributes);
-                    field.type = this.typeParser.parseType(returnType);
+                        var field = new CSharpField(name);
+                        field.attributes = this.attributeParser.parseAttributes(attributes);
+                        field.type = this.typeParser.parseType(returnType);
 
-                    field.isPublic = modifiers.indexOf("public") > -1;
-                    field.isReadOnly = modifiers.indexOf("readonly") > -1;
+                        field.isPublic = modifiers.indexOf("public") > -1;
+                        field.isReadOnly = modifiers.indexOf("readonly") > -1;
 
-                    fields.push(field);
+                        fields.push(field);
+                    } catch(ex) {
+                        console.error("Skipping field due to parsing error.", statement, ex);
+                    }
                 }
             }
 
