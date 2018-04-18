@@ -37,10 +37,10 @@ export class ClassParser {
         var classes = new Array<CSharpClass>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var splits = this.scopeHelper.getScopedList(";", scope.prefix);
-            for(var split of splits) {
+            var statements = this.scopeHelper.getStatements(scope.prefix);
+            for(var statement of statements) {
                 var matches = this.regexHelper.getMatches(
-                    split,
+                    statement,
                     new RegExp("^" + this.regexHelper.getClassRegex() + "$", "g"));
 
                 for (var match of matches) {

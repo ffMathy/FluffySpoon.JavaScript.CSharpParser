@@ -24,7 +24,7 @@ export class FieldParser {
 		var scopes = this.scopeHelper.getCurlyScopes(content);
         
 		for (var scope of scopes) {
-            var statements = this.scopeHelper.getScopedList(";", scope.prefix);
+            var statements = this.scopeHelper.getStatements(scope.prefix);
             for(var statement of statements) {
                 var matches = this.regexHelper.getMatches(
                     statement,

@@ -29,7 +29,7 @@ export class InterfaceParser {
         var interfaces = new Array<CSharpInterface>();
         var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-            var splits = this.scopeHelper.getScopedList(";", scope.prefix);
+            var splits = this.scopeHelper.getStatements(scope.prefix);
             for(var split of splits) {
                 var matches = this.regexHelper.getMatches(
                     split,

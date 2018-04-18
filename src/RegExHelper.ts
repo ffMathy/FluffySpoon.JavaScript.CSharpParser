@@ -134,7 +134,10 @@
 			this.getGenericNameRegex(false, false, false) +
 			this.wrapInGroup(false, true, ":")) + 
 			"*?";
-		result += this.wrapInGroup(captureOpeningMethod, true, "{|;");
+		result += this.wrapInGroup(captureOpeningMethod, true, 
+			this.wrapInGroup(false, false, "{") + "|" + 
+			this.wrapInGroup(false, false, ";") + "|" +
+			this.wrapInGroup(false, false, this.wrapInGroup(false, false, "=>")));
 
 		return this.wrapInGroup(capture, false, result);
 	}
@@ -162,6 +165,7 @@
 		result += this.getModifiersRegex(captureModifiers);
 		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false);
 		result += this.getNameRegex(captureName);
+		result += this.wrapInGroup(false, true, ";");
 
 		return this.wrapInGroup(capture, false, result);
 	}
@@ -171,7 +175,8 @@
 		captureAttributes: boolean,
 		captureModifiers: boolean,
 		captureReturnType: boolean,
-		captureName: boolean) 
+		captureName: boolean,
+		captureOpeningMethod: boolean) 
 	{
 		var result = "";
 
@@ -179,7 +184,9 @@
 		result += this.getModifiersRegex(captureModifiers);
 		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false);
 		result += this.getNameRegex(captureName);
-		result += this.wrapInGroup(false, true, "{");
+		result += this.wrapInGroup(captureOpeningMethod, true, 
+			this.wrapInGroup(false, false, "{") + "|" + 
+			this.wrapInGroup(false, false, this.wrapInGroup(false, false, "=>")));
 
 		return this.wrapInGroup(capture, false, result);
 	}
@@ -313,6 +320,7 @@
 			this.wrapInGroup(false, true, "=")) +
 			"??";
 		result += this.getNameRegex(captureNamespace);
+		result += this.wrapInGroup(false, true, ";");
 
 		return result;
 	}

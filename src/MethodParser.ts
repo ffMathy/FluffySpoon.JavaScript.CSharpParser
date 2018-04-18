@@ -31,39 +31,42 @@ export class MethodParser {
 		var methods = new Array<CSharpMethod>();
 		var scopes = this.scopeHelper.getCurlyScopes(content);
         for (var scope of scopes) {
-			var matches = this.regexHelper.getMatches(
-				scope.prefix,
-				new RegExp(this.regexHelper.getMethodRegex(false, true, true, true, true, true, true, true), "g"));
-			for (var match of matches) {
-				var attributes = match[0];
-				var modifiers = match[1] || "";
-				var returnType = match[2];
-				var name = match[3];
-				var genericParameters = match[4];
-				var parameters = match[5];
-				var openingType = match[6];
+			var statements = this.scopeHelper.getStatements(scope.prefix);
+			for(var statement of statements) {
+				var matches = this.regexHelper.getMatches(
+					statement,
+					new RegExp("^" + this.regexHelper.getMethodRegex(false, true, true, true, true, true, true, true) + "$", "g"));
+				for (var match of matches) {
+					var attributes = match[0];
+					var modifiers = match[1] || "";
+					var returnType = match[2];
+					var name = match[3];
+					var genericParameters = match[4];
+					var parameters = match[5];
+					var openingType = match[6];
 
-				var method = new CSharpMethod(name);
-				method.attributes = this.attributeParser.parseAttributes(attributes);
-				method.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
-				method.returnType = this.typeParser.parseType(returnType);
-				method.parameters = this.parseMethodParameters(parameters);
+					var method = new CSharpMethod(name);
+					method.attributes = this.attributeParser.parseAttributes(attributes);
+					method.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
+					method.returnType = this.typeParser.parseType(returnType);
+					method.parameters = this.parseMethodParameters(parameters);
 
-				method.innerScopeText = scope.content;
-				method.parent = parent;
+					method.innerScopeText = scope.content;
+					method.parent = parent;
 
-				if (parent instanceof CSharpClass && parent.name === method.name) {
-					method.isConstructor = true;
-					method.isVirtual = false;
-				} else {
-					method.isVirtual = modifiers.indexOf("virtual") > -1;
-					method.isConstructor = false;
+					if (parent instanceof CSharpClass && parent.name === method.name) {
+						method.isConstructor = true;
+						method.isVirtual = false;
+					} else {
+						method.isVirtual = modifiers.indexOf("virtual") > -1;
+						method.isConstructor = false;
+					}
+
+					method.isPublic = modifiers.indexOf("public") > -1;
+					method.isBodyless = openingType === ";";
+
+					methods.push(method);
 				}
-
-				method.isPublic = modifiers.indexOf("public") > -1;
-				method.isBodyless = openingType === ";";
-
-				methods.push(method);
 			}
 		}
 

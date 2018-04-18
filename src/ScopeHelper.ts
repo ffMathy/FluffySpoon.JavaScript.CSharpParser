@@ -7,7 +7,11 @@
 }
 
 export class ScopeHelper {
-    getScopedList(separator: string, content: string) {
+    getStatements(content: string) {
+        return this.getScopedList(";", content, true);
+    }
+
+    getScopedList(separator: string, content: string, includeSeparatorInSplits: boolean = false) {
         var scopes = [
             ["<", ">"],
             ["[", "]"],
@@ -40,7 +44,7 @@ export class ScopeHelper {
             }
 
             if(scope === 0 && (character === separator || separator === "")) {
-                if(separator === "")
+                if(separator === "" || includeSeparatorInSplits)
                     totalStringSoFar += character;
 
                 pushNewSplit();

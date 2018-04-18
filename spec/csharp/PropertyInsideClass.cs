@@ -29,4 +29,6 @@
     }
 
 	public virtual string MyPublicVirtualProperty { get; set; }
+
+    string ReadOnlyShortProperty => "foobar";
 }

@@ -258,13 +258,13 @@ describe("FileParser", function () {
         var file = parser.parseFile();
 
         expect(file.classes.length).toBe(1, "classes length");
-        expect(file.classes[0].properties.length).toBe(4, "class properties length");
+        expect(file.classes[0].properties.length).toBe(5, "class properties length");
         expect(file.classes[0].properties[0].components.length).toBe(2, "class property 0 components length");
         expect(file.classes[0].properties[1].components.length).toBe(1, "class property 1 components length");
         expect(file.classes[0].properties[1].attributes.length).toBe(0, "class property 1 attributes length");
         expect(file.classes[0].properties[2].components.length).toBe(2, "class property 2 components length");
         expect(file.classes[0].properties[2].attributes.length).toBe(1, "class property 2 attributes length");
-        expect(file.classes[0].properties[3].components.length).toBe(2, "class property 3 components length");
+        expect(file.classes[0].properties[4].components.length).toBe(1, "class property 3 components length");
 
         expect(file.classes[0].properties[0].name).toBe("MyProperty");
         expect(file.classes[0].properties[0].isReadOnly).toBe(false);
@@ -284,6 +284,11 @@ describe("FileParser", function () {
         expect(file.classes[0].properties[3].isReadOnly).toBe(false);
         expect(file.classes[0].properties[3].isVirtual).toBe(true);
         expect(file.classes[0].properties[3].type.name).toBe("string");
+
+        expect(file.classes[0].properties[4].name).toBe("ReadOnlyShortProperty");
+        expect(file.classes[0].properties[4].isReadOnly).toBe(true);
+        expect(file.classes[0].properties[4].components[0].type).toBe("get");
+        expect(file.classes[0].properties[4].type.name).toBe("string");
     }));
 
     describe("namespaces:", function () {

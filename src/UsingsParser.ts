@@ -21,7 +21,7 @@ export class UsingsParser {
         if (!scope)
             return usings;
 
-        var splits = this.scopeHelper.getScopedList(";", scope.prefix);
+        var splits = this.scopeHelper.getStatements(scope.prefix);
         for(var split of splits) {
             var matches = this.regexHelper.getMatches(
                 split,
