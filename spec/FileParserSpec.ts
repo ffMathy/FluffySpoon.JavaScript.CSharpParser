@@ -129,7 +129,7 @@ describe("FileParser", function () {
 			expect(file.namespaces[0].classes.length).toBe(1, "namespace classes length");
 			expect(file.namespaces[0].classes[0].properties.length).toBe(1, "namespace class properties length");
 			expect(file.namespaces[0].classes[0].attributes.length).toBe(2, "namespace class attributes length");
-			expect(file.namespaces[0].classes[0].fields.length).toBe(1, "namespace class fields length");
+			expect(file.namespaces[0].classes[0].fields.length).toBe(2, "namespace class fields length");
 			expect(file.namespaces[0].classes[0].methods.length).toBe(0, "namespace class methods length");
 			expect(file.namespaces[0].classes[0].constructors.length).toBe(1, "namespace class constructors length");
 			expect(file.namespaces[0].classes[0].genericParameters.length).toBe(1, "namespace class generic parameters length");
@@ -147,8 +147,12 @@ describe("FileParser", function () {
 			expect(file.namespaces[0].classes[0].fields[0].type.name).toBe("int", "namespace class field type name");
 			expect(file.namespaces[0].classes[0].fields[0].type.isNullable).toBe(true, "namespace class field type nullable");
 
+            expect(file.namespaces[0].classes[0].fields[1].type.genericParameters[0].name).toBe("string", "namespace class field generic parameter name");
+            expect(file.namespaces[0].classes[0].fields[1].initialValue).toBe("new List<string>()", "namespace class field initial value");
+
 			expect(file.namespaces[0].classes[0].constructors[0].name).toBe("MyPoco", "namespace class constructor name");
 			expect(file.namespaces[0].classes[0].constructors[0].isConstructor).toBe(true, "namespace class constructor is constructor");
+			expect(file.namespaces[0].classes[0].constructors[0].isPublic).toBe(true, "namespace class constructor is public");
 
 			expect(file.namespaces[0].classes[0].attributes[1].name).toBe("SomeAttributeWithParameters", "namespace class attribute name");
 			expect(file.namespaces[0].classes[0].attributes[1].parameters[0].name).toBe("MyName", "namespace class attribute parameter 0 name");
@@ -379,6 +383,23 @@ describe("FileParser", function () {
 
 			expect(file.structs[0].isPublic).toBe(true);
 			expect(file.structs[0].name).toBe("MyStruct");
+		}));
+
+    });
+
+    describe("statics:", function () {
+
+        it("should be able to detect statics", useCSharp('Static.cs', (parser) => {
+            var file = parser.parseFile();
+
+			expect(file.classes[0].isPublic).toBe(true);
+			expect(file.classes[0].isStatic).toBe(true);
+			expect(file.classes[0].properties[0].isStatic).toBe(true);
+			expect(file.classes[0].fields[0].isPublic).toBe(false);
+			expect(file.classes[0].fields[0].isStatic).toBe(true);
+			expect(file.classes[0].fields[0].isPublic).toBe(true);
+			expect(file.classes[0].fields[0].isStatic).toBe(false);
+			expect(file.classes[0].methods[0].isStatic).toBe(true);
 		}));
 
     });

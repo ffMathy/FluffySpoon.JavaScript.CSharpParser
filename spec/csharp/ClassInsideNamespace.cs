@@ -10,6 +10,8 @@ namespace MyNamespace
 
 		public int? someField;
 
+		public List<string> someField2 = new List<string>();
+
         public MyPoco()
 		{
 
