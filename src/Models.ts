@@ -139,6 +139,7 @@ export class CSharpMethod implements CSharpScope, CSharpGenericParameterContaine
     innerScopeText: string;
 
     isConstructor: boolean;
+    isStatic: boolean;
     isVirtual: boolean;
     isBodyless: boolean;
 
@@ -307,6 +308,8 @@ export class CSharpClass implements CSharpImplementationTypeDeclarationScope, CS
     inheritsFrom: CSharpType[];
     parent: CSharpClass | CSharpNamespace | CSharpFile;
 
+    isStatic: boolean;
+
     innerScopeText: string;
     name: string;
 
@@ -413,9 +416,11 @@ export class CSharpField {
     parent: CSharpClass | CSharpStruct;
 
     isPublic: boolean;
+    isStatic: boolean;
     isReadOnly: boolean;
 
     attributes: CSharpAttribute[];
+    initialValue?: string;
 
     constructor(name: string) {
         this.name = name;
@@ -437,6 +442,7 @@ export class CSharpProperty {
     components: CSharpPropertyComponent[];
     attributes: CSharpAttribute[];
 
+    isStatic: boolean;
     isVirtual: boolean;
 
     private _isPublic: boolean;
