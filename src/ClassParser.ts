@@ -53,6 +53,7 @@ export class ClassParser {
 
                         var classObject = new CSharpClass(name);
                         classObject.isPublic = modifiers.indexOf("public") > -1;
+                        classObject.isStatic = modifiers.indexOf("static") > -1;
                         classObject.attributes = this.attributeParser.parseAttributes(attributes);
                         classObject.innerScopeText = scope.content;
                         classObject.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);

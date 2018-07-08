@@ -41,6 +41,7 @@ export class FieldParser {
                         field.type = this.typeParser.parseType(returnType);
 
                         field.isPublic = modifiers.indexOf("public") > -1;
+                        field.isStatic = modifiers.indexOf("static") > -1;
                         field.isReadOnly = modifiers.indexOf("readonly") > -1;
 
                         fields.push(field);

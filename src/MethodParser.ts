@@ -64,6 +64,7 @@ export class MethodParser {
 						}
 
 						method.isPublic = modifiers.indexOf("public") > -1;
+						method.isStatic = modifiers.indexOf("static") > -1;
 						method.isBodyless = openingType === ";";
 
 						methods.push(method);

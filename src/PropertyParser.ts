@@ -47,6 +47,7 @@ export class PropertyParser {
 
 						property.isVirtual = modifiers.indexOf("virtual") > -1;
 						property.isPublic = modifiers.indexOf("public") > -1;
+						property.isStatic = modifiers.indexOf("static") > -1;
 
 						if(openingType === "{") {
 							var subScopes = this.scopeHelper.getCurlyScopes(scope.content);
