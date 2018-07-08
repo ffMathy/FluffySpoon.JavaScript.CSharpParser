@@ -399,7 +399,11 @@ describe("FileParser", function () {
 			expect(file.classes[0].fields[0].isStatic).toBe(true);
 			expect(file.classes[0].fields[1].isPublic).toBe(true);
 			expect(file.classes[0].fields[1].isStatic).toBe(false);
-			expect(file.classes[0].methods[0].isStatic).toBe(true);
+            expect(file.classes[0].methods[0].isStatic).toBe(true);
+            expect(file.classes[0].constructors[0].isPublic).toBe(true);
+            expect(file.classes[0].constructors[0].isStatic).toBe(true);
+            expect(file.classes[0].constructors[0].parameters[0].name).toBe("str");
+            expect(file.classes[0].constructors[0].parameters[0].type.name).toBe("string");
 		}));
 
     });
