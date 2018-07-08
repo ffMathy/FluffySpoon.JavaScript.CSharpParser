@@ -28,17 +28,19 @@ export class FieldParser {
             for(var statement of statements) {
                 var matches = this.regexHelper.getMatches(
                     statement,
-                    new RegExp("^" + this.regexHelper.getFieldRegex(false, true, true, true, true) + "$", "g"));
+                    new RegExp("^" + this.regexHelper.getFieldRegex(false, true, true, true, true, true) + "$", "g"));
                 for (var match of matches) {
                     try {
                         var attributes = match[0];
                         var modifiers = match[1] || "";
                         var returnType = match[2];
                         var name = match[3];
+                        var initialValue = match[4];
 
                         var field = new CSharpField(name);
                         field.attributes = this.attributeParser.parseAttributes(attributes);
                         field.type = this.typeParser.parseType(returnType);
+                        field.initialValue = initialValue;
 
                         field.isPublic = modifiers.indexOf("public") > -1;
                         field.isStatic = modifiers.indexOf("static") > -1;
