@@ -157,7 +157,8 @@
 		captureAttributes: boolean,
 		captureModifiers: boolean,
 		captureReturnType: boolean,
-		captureName: boolean) 
+		captureName: boolean,
+		captureInitialValue: boolean) 
 	{
 		var result = "";
 
@@ -165,6 +166,7 @@
 		result += this.getModifiersRegex(captureModifiers);
 		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false, false);
 		result += this.getNameRegex(captureName);
+		result += this.getInitialValueRegex(captureInitialValue);
 		result += this.wrapInGroup(false, true, ";");
 
 		return this.wrapInGroup(capture, false, result);
@@ -298,7 +300,7 @@
 	}
 
 	public getGenericTypeWrapperRegex(capture: boolean, captureContents: boolean) {
-		return this.wrapInGroup(capture, true, "<" + this.wrapInGroup(captureContents, true, ".+") + ">") + "??";
+		return this.wrapInGroup(capture, true, "<" + this.wrapInGroup(captureContents, true, "[^=]+") + ">") + "??";
 	}
 
 	public getTypeConstraintRegex(capture: boolean) {
@@ -409,6 +411,13 @@
 
 	public getInterfaceRegex() {
 		return this.getClassOrInterfaceRegex("interface");
+	}
+
+	public getInitialValueRegex(capture: boolean) {
+		var result = this.wrapInGroup(false, true, "=");
+		result += this.wrapInGroup(capture, true, "[^;]+?");
+
+		return this.wrapInGroup(false, false, result) + "??";
 	}
 
 	public getMatches(input: string, regex: RegExp) {

@@ -46,6 +46,12 @@ export class MethodParser {
 						var parameters = match[5];
 						var openingType = match[6];
 
+						var catchNoReturnType = this.regexHelper.getMatches(returnType, new RegExp("^" + this.regexHelper.getModifierRegex(true) + "$", "g"));
+						if (catchNoReturnType.length > 0 && catchNoReturnType[0].length > 0) {
+							modifiers += (modifiers ? " " : "") + catchNoReturnType[0][0]
+							returnType = "";
+						}
+
 						var method = new CSharpMethod(name);
 						method.attributes = this.attributeParser.parseAttributes(attributes);
 						method.genericParameters = this.typeParser.parseTypesFromGenericParameters(genericParameters);
@@ -64,6 +70,7 @@ export class MethodParser {
 						}
 
 						method.isPublic = modifiers.indexOf("public") > -1;
+						method.isStatic = modifiers.indexOf("static") > -1;
 						method.isBodyless = openingType === ";";
 
 						methods.push(method);

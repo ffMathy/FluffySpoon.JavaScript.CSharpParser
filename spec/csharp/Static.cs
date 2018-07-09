@@ -12,4 +12,8 @@ public static class MyPoco
 
 	}
 
+	public static MyPoco(string str)
+	{
+
+	}
 }
