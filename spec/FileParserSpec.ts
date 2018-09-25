@@ -19,7 +19,7 @@ describe("FileParser", function () {
         var file = parser.parseFile();
 
         expect(file.classes.length).toBe(1, "classes length");
-        expect(file.classes[0].properties.length).toBe(7, "class properties length");
+        expect(file.classes[0].properties.length).toBe(8, "class properties length");
         expect(file.classes[0].properties[0].components.length).toBe(2, "class property 0 components length");
         expect(file.classes[0].properties[1].components.length).toBe(1, "class property 1 components length");
         expect(file.classes[0].properties[1].attributes.length).toBe(0, "class property 1 attributes length");
@@ -53,7 +53,7 @@ describe("FileParser", function () {
 
         expect(file.classes[0].properties[5].name).toBe("TupleReturningProperty");
         expect(file.classes[0].properties[5].type.name).toBe("ValueTuple<,>");
-        debugger;
+
         expect(file.classes[0].properties[5].type.genericParameters[1].name).toBe("Func<,>");
         expect(file.classes[0].properties[5].type.genericParameters[1].genericParameters[0].name).toBe("int");
         expect(file.classes[0].properties[5].type.genericParameters[1].genericParameters[1].name).toBe("string");
@@ -63,6 +63,10 @@ describe("FileParser", function () {
         expect(file.classes[0].properties[6].type.genericParameters[1].name).toBe("Func<,>");
         expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[0].name).toBe("int");
         expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[1].name).toBe("string");
+
+        expect(file.classes[0].properties[7].name).toBe("List");
+        expect(file.classes[0].properties[7].type.name).toBe("IList<>");
+        expect(file.classes[0].properties[7].type.genericParameters[0].name).toBe("string");
     }));
 
     describe("comments:", function () {
@@ -85,7 +89,7 @@ describe("FileParser", function () {
     });
 
     describe("usings:", function () {
-        
+
         it("should be able to fetch file containing only usings and no scopes", useCSharp('Usings.cs', (parser) => {
             var file = parser.parseFile();
             expect(file.usings.length).toBe(2);
@@ -99,7 +103,7 @@ describe("FileParser", function () {
 
         it("should be able to fetch file containing scoped usings", useCSharp('UsingsAndNamespaces.cs', (parser) => {
             var file = parser.parseFile();
- 
+
             expect(file.usings.length).toBe(2);
 
             expect(file.usings[0].alias).toBe('foo');
@@ -135,7 +139,7 @@ describe("FileParser", function () {
 			expect(file.namespaces[0].classes[0].genericParameters.length).toBe(1, "namespace class generic parameters length");
 
 			expect(file.namespaces[0].classes[0].name).toBe("MyPoco", "namespace class name");
-            
+
 			expect(file.namespaces[0].classes[0].genericParameters[0].name).toBe("WithGenerics", "namespace class generic parameter name");
 
 			expect(file.namespaces[0].classes[0].properties[0].name).toBe("Name", "namespace class property name");
@@ -198,7 +202,7 @@ describe("FileParser", function () {
 
             expect(file.classes.length).toBe(1, "classes length");
             expect(file.classes[0].properties.length).toBe(2, "class properties length");
-            expect(file.classes[0].methods.length).toBe(1, "class methods length");  
+            expect(file.classes[0].methods.length).toBe(1, "class methods length");
 
             expect(file.classes[0].properties[0].name).toBe('Name', "class property 0 name");
             expect(file.classes[0].properties[0].type.name).toBe('SomeFoo<,>', "class property 0 type name");
@@ -265,7 +269,7 @@ describe("FileParser", function () {
 
             expect(file.classes.length).toBe(1);
             expect(file.classes[0].methods.length).toBe(6);
-            
+
 			expect(file.classes[0].methods[0].attributes.length).toBe(0);
             expect(file.classes[0].methods[0].parameters.length).toBe(0);
 			expect(file.classes[0].methods[1].attributes.length).toBe(1);
@@ -310,15 +314,15 @@ describe("FileParser", function () {
             expect(file.classes[0].methods[1].parameters[4].name).toBe('someArray');
             expect(file.classes[0].methods[1].parameters[4].type.name).toBe('Array<>');
             expect(file.classes[0].methods[1].parameters[4].isVariadicContainer).toBe(true);
-            
+
             expect(file.classes[0].methods[2].parameters[0].name).toBe('baz');
             expect(file.classes[0].methods[2].parameters[0].type.name).toBe('string');
 			expect(file.classes[0].methods[2].parameters[0].attributes[0].name).toBe('Annotation1');
-            
+
             expect(file.classes[0].methods[2].parameters[1].name).toBe('buz');
             expect(file.classes[0].methods[2].parameters[1].type.name).toBe('int');
 			expect(file.classes[0].methods[2].parameters[1].attributes[0].name).toBe('Annotation2');
-            
+
             var defaultValue = file.classes[0].methods[5].parameters[0].defaultValue as CSharpNamedToken;
             expect(file.classes[0].methods[5].parameters[0].name).toBe('foo');
             expect(file.classes[0].methods[5].parameters[0].type.name).toBe('string');
