@@ -34,4 +34,11 @@
 
     (string, Func<int, string>) TupleReturningProperty => ("foobar", 1337);
     (string a, Func<int, string> b) NamedTupleReturningProperty => ("foobar", 1337);
+
+    private IList<string> _list;
+    public IList<string> List
+        {
+            get => _list;
+            set => value == null ? _list = new List<string>() : value;
+        }
 }

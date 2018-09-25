@@ -57,6 +57,13 @@ export class PropertyParser {
 									var componentTypeMatches = this.regexHelper.getMatches(
 										subStatement,
 										/^(get|set)\s*[{;]$/g);
+
+									//Added case for properties with lambda like get => some methods..
+									if (componentTypeMatches.length === 0){
+										componentTypeMatches = this.regexHelper.getMatches(
+											subStatement,
+											/^(get|set)\s*[=>]+/g);
+									}
 									for (var componentTypeMatch of componentTypeMatches) {
 										var component = new CSharpPropertyComponent();
 										component.type = <"get"|"set">componentTypeMatch[0];
