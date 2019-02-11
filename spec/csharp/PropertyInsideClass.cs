@@ -28,7 +28,7 @@
         Stuff
     }
 
-	public virtual string MyPublicVirtualProperty { get; set; }
+	public virtual string MyPublicVirtualProperty { get; set; } = "barfoo";
 
     string ReadOnlyShortProperty => "foobar";
 

@@ -192,6 +192,17 @@
 
 		return this.wrapInGroup(capture, false, result);
 	}
+	
+	public getPropertyInitialValueRegex(capture: boolean) {
+		var result = "";
+		
+		result += this.wrapInGroup(false, true, "}");
+		result += this.wrapInGroup(false, false, "=");
+		result += this.wrapInGroup(capture, true, "[^;]+?");
+		result += this.wrapInGroup(false, false, ";");
+
+		return this.wrapInGroup(false, false, result);
+	}
 
 	public getKeywordRegex(capture: boolean) {
 		var validKeywords = [

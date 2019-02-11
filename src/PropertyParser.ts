@@ -50,6 +50,13 @@ export class PropertyParser {
 						property.isStatic = modifiers.indexOf("static") > -1;
 
 						if(openingType === "{") {
+							var initialValueMatches = this.regexHelper.getMatches(
+								scope.suffix,
+								new RegExp("^" + this.regexHelper.getPropertyInitialValueRegex(true), "g"));
+							if(initialValueMatches.length > 0) {
+								property.initialValue = initialValueMatches[0][0];
+							}
+
 							var subScopes = this.scopeHelper.getCurlyScopes(scope.content);
 							for (var subScope of subScopes) {
 								var subStatements = this.scopeHelper.getStatements(subScope.prefix);
