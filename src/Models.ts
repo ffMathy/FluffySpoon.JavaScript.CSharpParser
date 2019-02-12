@@ -445,6 +445,8 @@ export class CSharpProperty {
     isStatic: boolean;
     isVirtual: boolean;
 
+    initialValue?: string;
+
     private _isPublic: boolean;
 
     constructor(name: string) {

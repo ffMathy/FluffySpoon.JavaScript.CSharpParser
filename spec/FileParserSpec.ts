@@ -31,28 +31,34 @@ describe("FileParser", function () {
         expect(file.classes[0].properties[0].isReadOnly).toBe(false);
         expect(file.classes[0].properties[0].isVirtual).toBe(false);
         expect(file.classes[0].properties[0].type.name).toBe("string");
+        expect(file.classes[0].properties[0].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[1].name).toBe("ReadOnlyProperty");
         expect(file.classes[0].properties[1].isReadOnly).toBe(true);
         expect(file.classes[0].properties[1].components[0].type).toBe("get");
         expect(file.classes[0].properties[1].type.name).toBe("string");
+        expect(file.classes[0].properties[1].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[2].name).toBe("GetSetProperty");
         expect(file.classes[0].properties[2].isReadOnly).toBe(false);
         expect(file.classes[0].properties[2].type.name).toBe("string");
+        expect(file.classes[0].properties[2].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[3].name).toBe("MyPublicVirtualProperty");
         expect(file.classes[0].properties[3].isReadOnly).toBe(false);
         expect(file.classes[0].properties[3].isVirtual).toBe(true);
         expect(file.classes[0].properties[3].type.name).toBe("string");
+        expect(file.classes[0].properties[3].initialValue).toBe('"barfoo"');
 
         expect(file.classes[0].properties[4].name).toBe("ReadOnlyShortProperty");
         expect(file.classes[0].properties[4].isReadOnly).toBe(true);
         expect(file.classes[0].properties[4].components[0].type).toBe("get");
         expect(file.classes[0].properties[4].type.name).toBe("string");
+        expect(file.classes[0].properties[4].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[5].name).toBe("TupleReturningProperty");
         expect(file.classes[0].properties[5].type.name).toBe("ValueTuple<,>");
+        expect(file.classes[0].properties[5].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[5].type.genericParameters[1].name).toBe("Func<,>");
         expect(file.classes[0].properties[5].type.genericParameters[1].genericParameters[0].name).toBe("int");
@@ -63,10 +69,12 @@ describe("FileParser", function () {
         expect(file.classes[0].properties[6].type.genericParameters[1].name).toBe("Func<,>");
         expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[0].name).toBe("int");
         expect(file.classes[0].properties[6].type.genericParameters[1].genericParameters[1].name).toBe("string");
+        expect(file.classes[0].properties[6].initialValue).toBe(undefined);
 
         expect(file.classes[0].properties[7].name).toBe("List");
         expect(file.classes[0].properties[7].type.name).toBe("IList<>");
         expect(file.classes[0].properties[7].type.genericParameters[0].name).toBe("string");
+        expect(file.classes[0].properties[7].initialValue).toBe(undefined);
     }));
 
     describe("comments:", function () {
