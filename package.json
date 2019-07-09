@@ -6,7 +6,8 @@
   "typings": "./dist/src/Index.d.ts",
   "scripts": {
     "test": "jasmine",
-    "build": "tsc"
+    "build": "tsc",
+    "nearley": "nearleyc src/nearley/grammar.ne -o src/nearley/grammar.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,7 @@
     "jasmine": "^2.6.0",
     "safe-regex": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "nearley": "^2.16.0"
+  }
 }
