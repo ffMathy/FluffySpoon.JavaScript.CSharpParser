@@ -5,9 +5,11 @@
 @{% function nuller() { return null; } %}
 @{% function joiner(d) { return d.join(''); } %}
 
+main ->
+    input
+
 input -> 
-    null |
-    input_section
+    input_section:?
 
 input_section ->
     input_section_part |
@@ -36,10 +38,12 @@ next_line_character ->
     "\u0085"
 
 line_separator_character ->
-    "\u2028"
+    "\\u2028"
+    # TODO: removing the double-slash here causes the unparser to crash.
 
 paragraph_separator_character ->
-    "\u2029"
+    "\\u2029"
+    # TODO: removing the double-slash here causes the unparser to crash.
 
 new_line ->
     charriage_return_character |
@@ -603,4 +607,47 @@ not_number_sign ->
     "#" {% nuller %} |
     input_character
 
-# TODO: 7.5.6 diagnostic directives
+pp_diagnostic ->
+    whitespace:? "#" whitespace:? "error" pp_message |
+    whitespace:? "#" whitespace:? "warning" pp_message
+
+pp_message -> 
+    new_line |
+    whitespace input_characters:? new_line
+
+pp_region ->
+    pp_start_region conditional_section:? pp_end_region
+
+pp_start_region ->
+    whitespace:? "#" whitespace:? "region" pp_message
+
+pp_end_region ->
+    whitespace:? "#" whitespace:? "endregion" pp_message
+
+pp_line ->
+    whitespace:? "#" whitespace:? "line" whitespace line_indicator pp_new_line
+
+line_indicator ->
+    decimal_digits whitespace file_name |
+    decimal_digits |
+    "default" |
+    "hidden"
+
+file_name -> 
+    "\"" file_name_characters "\""
+
+file_name_characters ->
+    file_name_character |
+    file_name_characters file_name_character
+
+file_name_character ->
+    "\u0022" {% nuller %} |
+    new_line_character {% nuller %} |
+    input_character
+
+pp_pragma ->
+    whitespace:? "#" whitespace:? "pragma" pp_pragma_text
+
+pp_pragma_text ->
+    new_line |
+    whitespace input_characters:? new_line

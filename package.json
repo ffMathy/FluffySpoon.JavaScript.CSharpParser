@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jasmine",
     "build": "tsc",
-    "nearley": "nearleyc src/nearley/grammar.ne -o src/nearley/grammar.js"
+    "nearley:build": "nearleyc src/nearley/grammar.ne -o src/nearley/grammar.js",
+    "nearley:unparse": "nearley-unparse -n 3 src/nearley/grammar.js"
   },
   "repository": {
     "type": "git",
