@@ -2,12 +2,14 @@
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
- function nuller() { return null; } 
+ function rejecter(d, l, reject) { return reject; } 
  function joiner(d) { return d.join(''); } var grammar = {
     Lexer: undefined,
     ParserRules: [
-    {"name": "input", "symbols": []},
-    {"name": "input", "symbols": ["input_section"]},
+    {"name": "main", "symbols": ["input"]},
+    {"name": "input$ebnf$1", "symbols": ["input_section"], "postprocess": id},
+    {"name": "input$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "input", "symbols": ["input$ebnf$1"]},
     {"name": "input_section", "symbols": ["input_section_part"]},
     {"name": "input_section", "symbols": ["input_section", "input_section_part"]},
     {"name": "input_section_part$ebnf$1", "symbols": ["input_elements"], "postprocess": id},
@@ -36,7 +38,7 @@ function id(x) { return x[0]; }
     {"name": "single_line_comment", "symbols": ["single_line_comment$string$1", "single_line_comment$ebnf$1"]},
     {"name": "input_characters", "symbols": ["input_character"]},
     {"name": "input_characters", "symbols": ["input_characters", "input_character"]},
-    {"name": "input_character", "symbols": ["new_line"], "postprocess": nuller},
+    {"name": "input_character", "symbols": ["new_line"], "postprocess": rejecter},
     {"name": "input_character", "symbols": ["unicode_character"]},
     {"name": "unicode_character", "symbols": [/[\u0000-\uFFFF]/]},
     {"name": "new_line_character", "symbols": ["charriage_return_character"]},
@@ -56,8 +58,8 @@ function id(x) { return x[0]; }
     {"name": "delimited_comment_section", "symbols": ["delimited_comment_section$ebnf$1", "not_slash_or_asterisk"]},
     {"name": "asterisks", "symbols": [{"literal":"*"}]},
     {"name": "asterisks", "symbols": ["asterisks", {"literal":"*"}]},
-    {"name": "not_slash_or_asterisk", "symbols": [{"literal":"/"}], "postprocess": nuller},
-    {"name": "not_slash_or_asterisk", "symbols": [{"literal":"*"}], "postprocess": nuller},
+    {"name": "not_slash_or_asterisk", "symbols": [{"literal":"/"}], "postprocess": rejecter},
+    {"name": "not_slash_or_asterisk", "symbols": [{"literal":"*"}], "postprocess": rejecter},
     {"name": "not_slash_or_asterisk", "symbols": ["unicode_character"]},
     {"name": "whitespace", "symbols": ["whitespace_character"]},
     {"name": "whitespace", "symbols": ["whitespace", "whitespace_character"]},
@@ -80,7 +82,7 @@ function id(x) { return x[0]; }
     {"name": "unicode_escape_sequence", "symbols": ["unicode_escape_sequence$string$1", "hex_digit", "hex_digit", "hex_digit", "hex_digit", "unicode_escape_sequence$string$2", "hex_digit", "hex_digit", "hex_digit", "hex_digit", "hex_digit", "hex_digit", "hex_digit", "hex_digit"]},
     {"name": "identifier", "symbols": ["available_identifier"]},
     {"name": "identifier", "symbols": [{"literal":"@"}, "identifier_or_keyword"]},
-    {"name": "available_identifier", "symbols": ["keyword"], "postprocess": nuller},
+    {"name": "available_identifier", "symbols": ["keyword"], "postprocess": rejecter},
     {"name": "available_identifier", "symbols": ["identifier_or_keyword"]},
     {"name": "identifier_or_keyword$ebnf$1", "symbols": ["identifier_part_characters"], "postprocess": id},
     {"name": "identifier_or_keyword$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
@@ -422,9 +424,9 @@ function id(x) { return x[0]; }
     {"name": "character", "symbols": ["simple_escape_sequence"]},
     {"name": "character", "symbols": ["hexadecimal_escape_sequence"]},
     {"name": "character", "symbols": ["unicode_escape_sequence"]},
-    {"name": "single_character", "symbols": [{"literal":"'"}], "postprocess": nuller},
-    {"name": "single_character", "symbols": [{"literal":"\\"}], "postprocess": nuller},
-    {"name": "single_character", "symbols": ["new_line_character"], "postprocess": nuller},
+    {"name": "single_character", "symbols": [{"literal":"'"}], "postprocess": rejecter},
+    {"name": "single_character", "symbols": [{"literal":"\\"}], "postprocess": rejecter},
+    {"name": "single_character", "symbols": ["new_line_character"], "postprocess": rejecter},
     {"name": "single_character", "symbols": ["character"]},
     {"name": "simple_escape_sequence$string$1", "symbols": [{"literal":"\\"}, {"literal":"'"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simple_escape_sequence", "symbols": ["simple_escape_sequence$string$1"]},
@@ -467,9 +469,9 @@ function id(x) { return x[0]; }
     {"name": "regular_string_literal_character", "symbols": ["simple_escape_sequence"]},
     {"name": "regular_string_literal_character", "symbols": ["hexadecimal_escape_sequence"]},
     {"name": "regular_string_literal_character", "symbols": ["unicode_escape_sequence"]},
-    {"name": "single_regular_string_literal_character", "symbols": [{"literal":"\""}], "postprocess": nuller},
-    {"name": "single_regular_string_literal_character", "symbols": [{"literal":"\\"}], "postprocess": nuller},
-    {"name": "single_regular_string_literal_character", "symbols": ["new_line_character"], "postprocess": nuller},
+    {"name": "single_regular_string_literal_character", "symbols": [{"literal":"\""}], "postprocess": rejecter},
+    {"name": "single_regular_string_literal_character", "symbols": [{"literal":"\\"}], "postprocess": rejecter},
+    {"name": "single_regular_string_literal_character", "symbols": ["new_line_character"], "postprocess": rejecter},
     {"name": "single_regular_string_literal_character", "symbols": ["character"]},
     {"name": "verbatim_string_literal$string$1", "symbols": [{"literal":"@"}, {"literal":"\""}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "verbatim_string_literal$ebnf$1", "symbols": ["verbatim_string_literal_characters"], "postprocess": id},
@@ -479,7 +481,7 @@ function id(x) { return x[0]; }
     {"name": "verbatim_string_literal_characters", "symbols": ["verbatim_string_literal_characters", "verbatim_string_literal_character"]},
     {"name": "verbatim_string_literal_character", "symbols": ["single_verbatim_string_literal_character"]},
     {"name": "verbatim_string_literal_character", "symbols": ["quote_escape_sequence"]},
-    {"name": "single_verbatim_string_literal_character", "symbols": [{"literal":"\""}], "postprocess": nuller},
+    {"name": "single_verbatim_string_literal_character", "symbols": [{"literal":"\""}], "postprocess": rejecter},
     {"name": "single_verbatim_string_literal_character", "symbols": ["character"]},
     {"name": "quote_escape_sequence$string$1", "symbols": [{"literal":"\""}, {"literal":"\""}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "quote_escape_sequence", "symbols": ["quote_escape_sequence$string$1"]},
@@ -562,9 +564,9 @@ function id(x) { return x[0]; }
     {"name": "pp_directive", "symbols": ["pp_region"]},
     {"name": "pp_directive", "symbols": ["pp_pragma"]},
     {"name": "conditional_symbol$string$1", "symbols": [{"literal":"t"}, {"literal":"r"}, {"literal":"u"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "conditional_symbol", "symbols": ["conditional_symbol$string$1"], "postprocess": nuller},
+    {"name": "conditional_symbol", "symbols": ["conditional_symbol$string$1"], "postprocess": rejecter},
     {"name": "conditional_symbol$string$2", "symbols": [{"literal":"f"}, {"literal":"a"}, {"literal":"l"}, {"literal":"s"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "conditional_symbol", "symbols": ["conditional_symbol$string$2"], "postprocess": nuller},
+    {"name": "conditional_symbol", "symbols": ["conditional_symbol$string$2"], "postprocess": rejecter},
     {"name": "conditional_symbol", "symbols": ["identifier_or_keyword"]},
     {"name": "pp_expression$ebnf$1", "symbols": ["whitespace"], "postprocess": id},
     {"name": "pp_expression$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
@@ -679,7 +681,7 @@ function id(x) { return x[0]; }
     {"name": "skipped_characters$ebnf$2", "symbols": ["input_characters"], "postprocess": id},
     {"name": "skipped_characters$ebnf$2", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "skipped_characters", "symbols": ["skipped_characters$ebnf$1", "not_number_sign", "skipped_characters$ebnf$2"]},
-    {"name": "not_number_sign", "symbols": [{"literal":"#"}], "postprocess": nuller},
+    {"name": "not_number_sign", "symbols": [{"literal":"#"}], "postprocess": rejecter},
     {"name": "not_number_sign", "symbols": ["input_character"]},
     {"name": "pp_diagnostic$ebnf$1", "symbols": ["whitespace"], "postprocess": id},
     {"name": "pp_diagnostic$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
@@ -727,8 +729,8 @@ function id(x) { return x[0]; }
     {"name": "file_name", "symbols": [{"literal":"\""}, "file_name_characters", {"literal":"\""}]},
     {"name": "file_name_characters", "symbols": ["file_name_character"]},
     {"name": "file_name_characters", "symbols": ["file_name_characters", "file_name_character"]},
-    {"name": "file_name_character", "symbols": [{"literal":"\""}], "postprocess": nuller},
-    {"name": "file_name_character", "symbols": ["new_line_character"], "postprocess": nuller},
+    {"name": "file_name_character", "symbols": [{"literal":"\""}], "postprocess": rejecter},
+    {"name": "file_name_character", "symbols": ["new_line_character"], "postprocess": rejecter},
     {"name": "file_name_character", "symbols": ["input_character"]},
     {"name": "pp_pragma$ebnf$1", "symbols": ["whitespace"], "postprocess": id},
     {"name": "pp_pragma$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
@@ -741,7 +743,7 @@ function id(x) { return x[0]; }
     {"name": "pp_pragma_text$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "pp_pragma_text", "symbols": ["whitespace", "pp_pragma_text$ebnf$1", "new_line"]}
 ]
-  , ParserStart: "input"
+  , ParserStart: "main"
 }
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;

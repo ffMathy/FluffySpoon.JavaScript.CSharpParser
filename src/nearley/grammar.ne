@@ -2,7 +2,7 @@
 
 # TODO: use underscore to match spaces in grammar
 
-@{% function nuller() { return null; } %}
+@{% function rejecter(d, l, reject) { return reject; } %}
 @{% function joiner(d) { return d.join(''); } %}
 
 main ->
@@ -65,7 +65,7 @@ input_characters ->
     input_characters input_character
 
 input_character ->
-    new_line {% nuller %} |
+    new_line {% rejecter %} |
     unicode_character
 
 unicode_character ->
@@ -94,8 +94,8 @@ asterisks ->
     asterisks "*"
 
 not_slash_or_asterisk ->
-    "/" {% nuller %} |
-    "*" {% nuller %} |
+    "/" {% rejecter %} |
+    "*" {% rejecter %} |
     unicode_character
 
 whitespace ->
@@ -135,7 +135,7 @@ identifier ->
     "@" identifier_or_keyword
 
 available_identifier ->
-    keyword {% nuller %} |
+    keyword {% rejecter %} |
     identifier_or_keyword
 
 identifier_or_keyword ->
@@ -405,9 +405,9 @@ character ->
     unicode_escape_sequence
 
 single_character ->
-    "\u0027" {% nuller %} |
-    "\u005C" {% nuller %} |
-    new_line_character {% nuller %} |
+    "\u0027" {% rejecter %} |
+    "\u005C" {% rejecter %} |
+    new_line_character {% rejecter %} |
     character
 
 simple_escape_sequence ->
@@ -444,9 +444,9 @@ regular_string_literal_character ->
     unicode_escape_sequence
 
 single_regular_string_literal_character ->
-    "\u0022" {% nuller %} |
-    "\u005C" {% nuller %} |
-    new_line_character {% nuller %} |
+    "\u0022" {% rejecter %} |
+    "\u005C" {% rejecter %} |
+    new_line_character {% rejecter %} |
     character
 
 verbatim_string_literal ->
@@ -461,7 +461,7 @@ verbatim_string_literal_character ->
     quote_escape_sequence
 
 single_verbatim_string_literal_character ->
-    "\"" {% nuller %} |
+    "\"" {% rejecter %} |
     character
 
 quote_escape_sequence ->
@@ -532,8 +532,8 @@ pp_directive ->
     pp_pragma
 
 conditional_symbol ->
-    "true" {% nuller %} |
-    "false" {% nuller %} |
+    "true" {% rejecter %} |
+    "false" {% rejecter %} |
     identifier_or_keyword
 
 pp_expression ->
@@ -604,7 +604,7 @@ skipped_characters ->
     whitespace:? not_number_sign input_characters:?
 
 not_number_sign ->
-    "#" {% nuller %} |
+    "#" {% rejecter %} |
     input_character
 
 pp_diagnostic ->
@@ -641,8 +641,8 @@ file_name_characters ->
     file_name_characters file_name_character
 
 file_name_character ->
-    "\u0022" {% nuller %} |
-    new_line_character {% nuller %} |
+    "\u0022" {% rejecter %} |
+    new_line_character {% rejecter %} |
     input_character
 
 pp_pragma ->
