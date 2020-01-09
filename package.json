@@ -28,6 +28,7 @@
     "safe-regex": "^1.1.0"
   },
   "dependencies": {
-    "nearley": "^2.16.0"
+    "nearley": "^2.16.0",
+    "tree-sitter": "^0.16.0"
   }
 }
