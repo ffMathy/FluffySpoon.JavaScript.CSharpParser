@@ -47,6 +47,10 @@
 		return this.wrapInGroup(capture, false, "'" + this.wrapInGroup(false, false, "\\\\?.") + "'");
 	}
 
+	public getTypeOfRegex(capture: boolean) {
+		return this.wrapInGroup(capture, false, "typeof" + this.wrapInGroup(false, true, this.getMethodParametersWrapperRegex(false, false)));
+	}
+
 	public getLiteralRegex(capture: boolean) {
 		return this.wrapInGroup(capture, true, 
 			this.getLiteralNumberRegex(false) + "{1}?|" +
@@ -289,7 +293,8 @@
 		var result = "";
 
 		result += this.wrapInGroup(false, true, this.getNameRegex(captureName) + "=") + "??";
-		result += this.getLiteralRegex(captureValue);
+		result += this.getLiteralRegex(captureValue) + "|";
+		result += this.getTypeOfRegex(captureValue);
 
 		return this.wrapInGroup(capture, true, result);
 	}
