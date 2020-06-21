@@ -3,7 +3,7 @@
 namespace MyNamespace
 {
 	[SomeAttribute]
-	[SomeAttributeWithParameters(MyName = "Foo", 28, Framework.Blah)]
+	[SomeAttributeWithParameters(MyName = "Foo", 28, Framework.Blah, typeof(BlahBlah))]
     abstract class MyPoco<WithGenerics> where WithGenerics : new()
 	{
 		public string[] Name { get; set; }
