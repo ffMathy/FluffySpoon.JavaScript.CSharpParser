@@ -139,7 +139,7 @@ describe("FileParser", function () {
 
 			expect(file.namespaces.length).toBe(1, "namespaces length");
 			expect(file.namespaces[0].classes.length).toBe(1, "namespace classes length");
-			expect(file.namespaces[0].classes[0].properties.length).toBe(1, "namespace class properties length");
+			expect(file.namespaces[0].classes[0].properties.length).toBe(2, "namespace class properties length");
 			expect(file.namespaces[0].classes[0].attributes.length).toBe(2, "namespace class attributes length");
 			expect(file.namespaces[0].classes[0].fields.length).toBe(2, "namespace class fields length");
 			expect(file.namespaces[0].classes[0].methods.length).toBe(0, "namespace class methods length");
@@ -153,6 +153,9 @@ describe("FileParser", function () {
 			expect(file.namespaces[0].classes[0].properties[0].name).toBe("Name", "namespace class property name");
 			expect(file.namespaces[0].classes[0].properties[0].type.name).toBe("Array<>", "namespace class property type name");
 			expect(file.namespaces[0].classes[0].properties[0].type.genericParameters[0].name).toBe("string", "namespace class property type generic parameter name");
+
+            expect(file.namespaces[0].classes[0].properties[1].name).toBe("EscapedName", "namespace class escaped property name");
+            expect(file.namespaces[0].classes[0].properties[1].type.name).toBe("bool", "namespace class escaped property type name");
 
 			expect(file.namespaces[0].classes[0].fields[0].name).toBe("someField", "namespace class field name");
 			expect(file.namespaces[0].classes[0].fields[0].isPublic).toBe(true, "namespace class field public");
@@ -368,7 +371,7 @@ describe("FileParser", function () {
 
 			expect(file.namespaces.length).toBe(1);
 			expect(file.namespaces[0].interfaces.length).toBe(1);
-			expect(file.namespaces[0].interfaces[0].properties.length).toBe(1);
+			expect(file.namespaces[0].interfaces[0].properties.length).toBe(2);
 			expect(file.namespaces[0].interfaces[0].methods.length).toBe(1);
 			expect(file.namespaces[0].interfaces[0].attributes.length).toBe(1);
 
@@ -377,6 +380,9 @@ describe("FileParser", function () {
 			expect(file.namespaces[0].interfaces[0].properties[0].name).toBe("Name");
 			expect(file.namespaces[0].interfaces[0].properties[0].type.name).toBe("Array<>");
 			expect(file.namespaces[0].interfaces[0].properties[0].type.genericParameters[0].name).toBe("string");
+
+            expect(file.namespaces[0].interfaces[0].properties[1].name).toBe("EscapedName");
+            expect(file.namespaces[0].interfaces[0].properties[1].type.name).toBe("bool");
 
 			expect(file.namespaces[0].interfaces[0].methods[0].name).toBe("SomeMethod");
 			expect(file.namespaces[0].interfaces[0].methods[0].returnType.name).toBe("Int32");

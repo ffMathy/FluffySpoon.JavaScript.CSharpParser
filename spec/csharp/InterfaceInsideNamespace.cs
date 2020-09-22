@@ -7,6 +7,8 @@ namespace MyNamespace
 	{
 		string[] Name { get; set; }
 
+		bool @EscapedName { get; set; }
+
 		System.Int32 SomeMethod();
 	}
 }
