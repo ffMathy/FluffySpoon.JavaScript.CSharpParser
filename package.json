@@ -28,6 +28,6 @@
     "safe-regex": "^1.1.0"
   },
   "dependencies": {
-    "nearley": "^2.16.0"
+    "nearley": "^2.19.8"
   }
 }
