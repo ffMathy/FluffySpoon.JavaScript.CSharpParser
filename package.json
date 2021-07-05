@@ -22,7 +22,7 @@
   "homepage": "https://github.com/ffMathy/FluffySpoon.JavaScript.CSharpParser#readme",
   "devDependencies": {
     "@types/jasmine": "^3.6.2",
-    "@types/node": "^15.0.1",
+    "@types/node": "^16.0.0",
     "@types/safe-regex": "^1.1.1",
     "jasmine": "^3.6.3",
     "safe-regex": "^2.1.1"
