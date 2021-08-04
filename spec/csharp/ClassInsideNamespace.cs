@@ -8,6 +8,8 @@ namespace MyNamespace
 	{
 		public string[] Name { get; set; }
 
+		public bool @EscapedName { get; set; }
+
 		public int? someField;
 
 		public List<string> someField2 = new List<string>();

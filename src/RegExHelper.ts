@@ -189,6 +189,7 @@
 		result += this.getAttributesRegex(captureAttributes);
 		result += this.getModifiersRegex(captureModifiers);
 		result += this.getGenericTypeNameRegex(captureReturnType, false, false, false, false);
+		result += "[@]?";
 		result += this.getNameRegex(captureName);
 		result += this.wrapInGroup(captureOpeningMethod, true, 
 			this.wrapInGroup(false, false, "{") + "|" + 
